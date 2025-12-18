@@ -2,7 +2,7 @@
 
 A playful interactive demo where two eyes follow your mouse pointer in real-time.
 
-Features realistic pupils, subtle light glare, and blinking animations for a lifelike effect.
+Features: slit-like pupils, subtle light glare, and blinking animations for a lifelike effect.
 
 **Built with**: HTML, CSS, and JavaScript. CSS variables are used to track the mouse position in real-time.
 
