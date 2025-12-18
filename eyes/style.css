@@ -1,0 +1,89 @@
+:root {
+  --mouse-x: 0;  
+  --mouse-y: 0;
+  --center-x: 50dvw;
+  --center-y: 50dvh;
+  --angle-to-pointer: atan2(
+    calc(var(--mouse-y) * 1px - var(--center-y) * 1px),
+    calc(var(--mouse-x) * 1px - var(--center-x) * 1px)
+  );
+  --padding-top: 6px;
+  --eye-radius: 25px;
+}
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    background-color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    touch-action: none;
+    cursor: pointer;
+}
+
+#eyes {
+  display: flex;
+  flex-direction: row;
+  gap: 2rem;
+  overflow: hidden;
+}
+
+
+.eye {
+  width: 100px;
+  height: 100px;
+  background: linear-gradient(to right, #f7f8f8, #acbb78);
+  position: relative;
+  border-radius: 50%;
+}
+
+
+/* light-glare*/
+.eye::before {
+  content: '';
+  position: absolute;
+  top: 20%;
+  left: 20%;
+  width: 30px;
+  height: 50px;
+  background: white;
+  border-radius: 50%;
+  pointer-events: none;
+  filter: blur(10px);
+}
+
+/* eye-lids*/
+.eye::after {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		height: 0;
+		width: 100%;
+		background: black;
+		animation: blink 4s infinite;
+}
+	
+@keyframes blink {
+  0%, 90%, 100% { height: 0; }
+  95%, 96% { height: 100%; }
+}
+
+.pupil {
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  background-color: black;
+  clip-path: ellipse(20% 50%);
+}
+
+.pupil {
+  top:  calc(sin(var(--angle-to-pointer)) * (var(--eye-radius) - var(--padding-top)) + var(--eye-radius));
+  left: calc(cos(var(--angle-to-pointer)) * var(--eye-radius) + var(--eye-radius));
+}
