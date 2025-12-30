@@ -1,10 +1,8 @@
 # Impractical Series
 
-**A delightfully unnecessary project collection.**
+The Impractical Series is a collection of intentionally non-essential builds. Each project starts with a vague idea and evolves through experimentation.
 
-The Impractical Series is a collection of intentionally non-essential builds. Each project starts with a vague idea and evolves through experimentation, constraint, and occasional chaos.
-
-I aim to preserve the original visual or conceptual intent I enthusiastically had as much as possible; regardless the project does offer room to pivot only when reality well pushes back. 
+I aim to preserve the original visual or conceptual intent I enthusiastically had as much as possible; regardless the project does offer room to pivot only when reality ... well pushes back. 
 
 
 **Each project is designed to be both:**
