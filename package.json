@@ -4,9 +4,9 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build",
-    "preview": "vite preview"
+    "dev:threaded": "npm -w experiments/threaded run dev",
+    "build:threaded": "npm -w projects/threaded run build",
+    "build:all": "npm -ws run build"
   },
   "devDependencies": {
     "typescript": "~5.9.3",
