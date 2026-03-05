@@ -1,6 +1,9 @@
 # Impractical Series
 
-A collection of intentionally non-essential builds. Each project starts with a vague idea and evolves through experimentation, preserving the original visual or conceptual intent as much as possible, with room to pivot only when reality pushes back.
+This is a collection of intentionally non-essential builds. 
+
+Each project starts with a vague idea and evolves through experimentation.
+I aim to preserve the original visual or conceptual intent I enthusiastically had as much as possible; regardless the project does offer room to pivot only when reality ... well pushes back. 
 
 ## Philosophy
 

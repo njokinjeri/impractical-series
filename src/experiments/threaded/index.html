@@ -10,8 +10,10 @@
     <canvas id="c"></canvas>
     <main>
 		<header>
-			<h1>THREADED</h1>
-        	<button id="log-btn">// LOG</button>
+			<div class="logo-wrapper">
+				<h1 id="title">THREADED</h1>
+        		<button id="log-btn">// LOG</button>
+			</div>
       	</header>
 		<div>
 			<div id="log-drawer">
@@ -21,19 +23,17 @@
 				</div>
 				<div id="log-body">
 					<div id="log-binary-row">
-						<div class="log-section-label">HELLO, WORLD! → BINARY (ASCII · same output for every language)</div>
+						<div class="log-section-label">HELLO, WORLD! → BINARY (ASCII: same output for every language)</div>
 						<div id="log-binary-table"></div>
 					</div>
 					<div id="log-langs"></div>
 				</div>
 			</div>
 		</div>
-		<section>
-			<div id="translation-bar">
-        		<div id="trans-label">// HELLO, WORLD! &#8594; BINARY</div>
-        		<div id="trans-sequence">
-					<span id="trans-cursor">▮</span>
-      			</div>
+		<section id="translation-bar">
+        	<div id="trans-label">// HELLO, WORLD! &#8594; BINARY</div>
+        	<div id="trans-sequence">
+				<span id="trans-cursor">▮</span>
       		</div>
 		</section>
     </main>
