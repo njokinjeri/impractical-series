@@ -22,6 +22,6 @@ And what's the point of wondering when you can just dive right in.
 
 ## Projects
 
-| Project | Description | Stack |
-|---------|-------------|-------|
-| [Threaded]() | All programming languages collapse into the same binary | Canvas API, TypeScript |
+| # | Project | Description | Stack |
+|---|---|---|---|
+| 01 | [Threaded]() | Threads of source code converge into a single point and emerge as binary | Canvas API, TypeScript |
