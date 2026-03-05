@@ -2,11 +2,14 @@
 
 ## What this is?
 A visual simulation of how programming languages, despite their widely different syntax, collapse into the same binary at the machine level.
-As seem the threads of source code flow from the left, converge at a single point and fan out as binary on the right.
+
+As visualized the selected threads of source code flow from the left, converge at a single point and fan out as binary on the right.
 
 
 ## Initial Inspiration
-The idea spawned from the thinking about Hello World as a universal ritual in programming. Every programmer writes it first, in whatever language they learn. The question became: what if many “Hello World” programs appeared at once, and we could watch them collapse into the same binary underneath?
+The idea began with Hello World, the universal ritual of programming. Every developer writes it first, regardless of the language they start with.
+
+The question became: what if many “Hello World” programs appeared at once, and we could watch them collapse into the same binary underneath?
 
 
 ## Concept
@@ -26,16 +29,15 @@ The idea spawned from the thinking about Hello World as a universal ritual in pr
 
 
 ## Key concepts encountered
-- `requestAnimationFrame` loop and frame-based timing
-- Canvas trail fade via semi-transparent fillRect each frame
-- Cubic bezier path calculation from scratch
-- Responsive canvas, resize handler recalculates all geometry
-- Glow text via double draw: blurred pass + sharp pass
+- `requestAnimationFrame` for frame-based animation loops
+- Canvas trail fading using a semi-transparent `fillRect` on every frame
+- Cubic Bézier curve calculation implemented from scratch
+- Responsive canvas handling, recalculating geometry on window resize
+- Glowing text rendering using a double-pass draw (blurred layer + sharp layer)
 
 
 
 ## What didn't work
 
-- The initial version lacked labels and logs, which made the experience confusing—elements appeared and disappeared without clear explanation.
-- Displaying all 14 languages at once also made the interface cluttered, so I introduced a round-based rotation to keep the visualization readable.
-
+- The initial version lacked labels and logs, which made the experience confusing as elements appeared and disappeared without clear explanation.
+- Displaying all 16 languages at once also made the interface cluttered, so I introduced a round-based rotation to keep the visualization readable.

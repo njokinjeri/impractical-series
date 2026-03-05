@@ -34,7 +34,7 @@ function refreshLogLangs(): void {
         const row = document.createElement('div')
         row.className = 'log-lang-row'
         row.innerHTML = `
-            <div class="log-lang-name" style="color:${lang.color}>${lang.name.toUpperCase()}</div>
+            <div class="log-lang-name" style="color:${lang.color}">${lang.name.toUpperCase()}</div>
             <div class="log-lang-code">${lang.code}</div>
         `
         logLangs.appendChild(row)
