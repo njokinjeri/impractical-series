@@ -88,6 +88,12 @@ header {
 	box-shadow: rgba(230, 59, 167, 0.4) 5px 5px, rgba(238, 64, 174, 0.3) 10px 10px, rgba(230, 66, 169, 0.2) 15px 15px, rgba(240, 70, 178, 0.1) 20px 20px, rgba(248, 75, 185, 0.05) 25px 25px;
 }
 
+#round-label {
+	padding: 1rem 0;
+	color: rgba(255,255,255,0.08);
+  	user-select: none;
+}
+
 #log-drawer {
 	position: fixed;
 	top: 0;
@@ -143,15 +149,52 @@ header {
 }
 
 #log-binary-row { 
-	padding: 1.35rem; 
+	padding: 1rem; 
 	border-bottom: 0.063rem solid rgba(255,255,255,0.04);
 }
 
 .log-section-label { 
 	font-size: 0.75rem; 
 	letter-spacing: 0.35em; 
-	color: var(--dark-gray); 
+	color: rgba(255,255,255,0.5);
+	padding-bottom: 1.6rem;
 }
+
+#log-binary-table {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+}
+
+.log-binary-entry {
+  	display: grid; 
+  	grid-template-columns: repeat(3, 1fr);
+  	gap: 1rem; 
+  	align-items: center; 
+  	font-size: 0.875rem;
+}
+
+.log-char { 
+	color: var(--dark-gray) 
+}
+
+.log-nibble { 
+	color: rgba(180,210,255,0.65); 
+	letter-spacing: 0.125rem; 
+}
+
+.log-charname { 
+	color: var(--dark-gray);  
+	letter-spacing: 0.25rem; 
+}
+
+.log-empty { 
+	padding: 2rem; 
+	font-size: 1rem; 
+	color: rgba(255,255,255,0.3);
+	text-align: center; 
+}
+
 
 #translation-bar {
 	position: fixed;
@@ -179,6 +222,7 @@ header {
 	gap: clamp(0.375rem, 1.2vw, 0.875rem);
 	overflow: hidden;
 }
+
 
 #trans-cursor {
 	font-size: 1rem;
