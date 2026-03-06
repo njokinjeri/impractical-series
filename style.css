@@ -18,13 +18,15 @@
 }
 
 body {
+    min-height: 100vh;
     background: var(--bg);
     color: var(--text);
     padding: 2rem;
     font-family: var(--font-mono);
-    min-height: 100vh;
     display: flex;
     flex-direction: column;
+    overflow: hidden;
+    position: relative;
 }
 
 header {
@@ -143,7 +145,7 @@ td:first-child {
 
 .view-link {
     letter-spacing: 0.3rem;
-     text-decoration: none;
+    text-decoration: none;
 }
 
 .status-live:hover {
@@ -152,6 +154,7 @@ td:first-child {
 
 footer {
     margin-top: auto;
+    padding-top: 2rem;
 }
 
 .footer-wrapper {
@@ -179,12 +182,24 @@ footer {
 }
 
 @media (max-width: 600px) {
-    .stack, 
-    th.stack-col { 
-        display: none; 
+    .stack,
+    th.stack-col {
+        display: none;
     }
-    footer { 
-        flex-direction: column; 
-        align-items: flex-start; 
+
+    th {
+        font-size: 0.7rem;
+        letter-spacing: 0.18rem;
+        padding-right: 1rem;
     }
+
+    td {
+        padding: 0.75rem 0.5rem;
+        font-size: 0.7rem;
+    }
+
+    .project-name {
+        font-size: 1rem;
+    }
+
 }
