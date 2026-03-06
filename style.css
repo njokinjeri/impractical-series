@@ -25,8 +25,7 @@ body {
     font-family: var(--font-mono);
     display: flex;
     flex-direction: column;
-    overflow: hidden;
-    position: relative;
+    overflow-x: hidden;
 }
 
 header {
@@ -71,9 +70,15 @@ hr {
     margin: clamp(2rem, 4vh, 3rem) 0;
 }
 
+.table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+}
+
 table {
     width: 100%;
     border-collapse: collapse;
+    flex: 1;
 }
 
 thead tr { 
@@ -124,9 +129,9 @@ td:first-child {
     color: var(--light);
 }
 
-.desc { 
+.desc {
     font-size: 0.875rem;
-    color: var(--mid); 
+    color: var(--mid);
 }
 
 .stack {
@@ -183,7 +188,9 @@ footer {
 
 @media (max-width: 600px) {
     .stack,
-    th.stack-col {
+    th.stack-col,
+    .project-index,
+    th:first-child {
         display: none;
     }
 
