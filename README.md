@@ -1,5 +1,7 @@
 # Impractical Series
 
+**Live Site:** https://njokinjeri.github.io/impractical-series/
+
 This is a collection of intentionally non-essential builds. 
 
 Each project starts with a vague idea and evolves through experimentation.
