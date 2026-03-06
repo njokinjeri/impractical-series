@@ -41,3 +41,6 @@ The question became: what if many “Hello World” programs appeared at once, a
 
 - The initial version lacked labels and logs, which made the experience confusing as elements appeared and disappeared without clear explanation.
 - Displaying all 16 languages at once also made the interface cluttered, so I introduced a round-based rotation to keep the visualization readable.
+- The vertical flow on mobile works conceptually but text positioning at the thread edges clips on narrow screens. The geometry assumes a minimum width that not all devices honour. A future pass would constrain label rendering to available thread width rather than fixed pixel offsets.
+- Canvas ctx.filter blur calls are extremely expensive at scale, calling them per particle per frame at 60fps locked the CPU and caused pointer lag. Replaced with a double-draw glow technique (oversized low-alpha pass + sharp pass) which approximates the effect at a fraction of the cost. 
+- The translation bar was removed on mobile and tablet. The layout couldn't accommodate both the vertical flow canvas and the fixed bottom bar without one compromising the other. On smaller screens the bar either obscured the convergence point or pushed the canvas into too narrow a vertical range to read clearly. A future pass might explore a collapsible or overlay version of the bar for smaller screens.
