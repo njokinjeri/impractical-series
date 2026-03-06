@@ -24,4 +24,4 @@ And what's the point of wondering when you can just dive right in.
 
 | # | Project | Description | Stack |
 |---|---|---|---|
-| 01 | [Threaded]() | Threads of source code converge into a single point and emerge as binary | Canvas API, TypeScript |
+| 01 | [Threaded](https://njokinjeri.github.io/impractical-series/src/experiments/threaded/) | Threads of source code converge into a single point and emerge as binary | Canvas API, TypeScript |
