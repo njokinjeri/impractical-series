@@ -1,23 +1,26 @@
 import type { Language } from './types'
 import { HELLO_SEQ } from './languages'
+import { pauseEngine, resumeEngine } from './canvas'
+
 
 const logDrawer = document.getElementById('log-drawer')!
-const logBtn = document.getElementById('log-btn')!
-const logClose = document.getElementById('log-close')!
 const logLangs = document.getElementById('log-langs')!
 const transSeq = document.getElementById('trans-sequence')!
-const roundLabel = document.getElementById('round-label')!
-const table = document.getElementById("log-binary-table")!
-const cursor = document.getElementById('trans-cursor')!
-
+const pauseBtn = document.getElementById('pause-btn')!
+const table = document.getElementById('log-binary-table')!
+const logBtn = document.getElementById('log-btn')!
+const logClose = document.getElementById('log-close')!
 
 const seenLanguages = new Map<string, Language>()
 
+type EngineState = 'running' | 'paused'
+let engineState: EngineState = 'running'
 
-export function updateRoundLabel(roundIndex: number, langs: Language[]): void {
-    roundLabel.textContent = `ROUND ${roundIndex + 1} // ${langs.map(l => l.name).join(' . ')}`
+export function setEngineState(s: EngineState): void {
+    engineState = s
+    pauseBtn.textContent = s === 'running' ? '// PAUSE' : '// RESUME'
+    pauseBtn.classList.remove('done')
 }
-
 
 export function addLangsToLog(langs: Language[]): void {
     langs.forEach(l => seenLanguages.set(l.name, l))
@@ -33,13 +36,13 @@ function refreshLogLangs(): void {
     seenLanguages.forEach(lang => {
         const row = document.createElement('div')
         row.className = 'log-lang-row'
-        row.innerHTML = `
-            <div class="log-lang-name" style="color:${lang.color}">${lang.name.toUpperCase()}</div>
-            <div class="log-lang-code">${lang.code}</div>
-        `
-        logLangs.appendChild(row)
+    row.innerHTML = `
+        <div class="log-lang-name" style="color:${lang.color}">${lang.name.toUpperCase()}</div>
+        <div class="log-lang-code">${lang.code}</div>
+    `
+    logLangs.appendChild(row)
         requestAnimationFrame(() => setTimeout(() => row.classList.add('visible'), 30))
-    })
+  })
 }
 
 export function populateLogTable(): void {
@@ -60,38 +63,29 @@ export function populateLogTable(): void {
 
 let byteEls: HTMLElement[] = []
 
-
 export function resetTransBar(): void {
     byteEls.forEach(el => el.remove())
     byteEls = []
 }
 
-
 export function addTransByte(idx: number): void {
     if (idx >= HELLO_SEQ.length) return
-    const { char, nibble} = HELLO_SEQ[idx]
-
+    const { char, nibble } = HELLO_SEQ[idx]
+    const cursor = document.getElementById('trans-cursor')!
     const el = document.createElement('div')
-    el.className= 'trans-byte'
+    el.className = 'trans-byte'
     el.innerHTML = `
         <div class="trans-nibble">${nibble}</div>
         <div class="trans-char">${char === ' ' ? '·' : char}</div>
-    `
+  `
     transSeq.insertBefore(el, cursor)
     byteEls.push(el)
     requestAnimationFrame(() => el.classList.add('show'))
 }
 
-
 export function fadeTransBar(onDone: () => void): void {
-    byteEls.forEach((el, i) => {
-        setTimeout(() => el.classList.add('fade'), i * 45)
-    })
-
-    setTimeout(() => {
-        resetTransBar()
-        onDone()
-    }, byteEls.length * 45 + 600)
+    byteEls.forEach((el, i) => setTimeout(() => el.classList.add('fade'), i * 45))
+    setTimeout(() => { resetTransBar(); onDone() }, byteEls.length * 45 + 600)
 }
 
 
@@ -105,5 +99,10 @@ export function initUI(): void {
 
     logClose.addEventListener('click', () => {
         logDrawer.classList.remove('open')
+    })
+
+    pauseBtn.addEventListener('click', () => {
+        if (engineState === 'running') pauseEngine()
+        else resumeEngine()
     })
 }

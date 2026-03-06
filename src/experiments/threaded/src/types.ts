@@ -7,7 +7,6 @@ export interface Language {
     _spawnDelay: number;
 }
 
-
 export interface Particle {
     langIdx: number;
     char: string;
@@ -17,7 +16,6 @@ export interface Particle {
     progress: number;
     speed: number;
 }
-
 
 export interface StampedNibble {
     x: number;
@@ -32,15 +30,15 @@ export interface HelloByte {
     nibble: string;
 }
 
-
 export type Phase = 'FLOWING' | 'HOLDING' | 'FADING'
-
+export type DeviceType = 'mobile' | 'tablet' | 'desktop'
 
 export interface CanvasState {
     W: number;
     H: number;
     CX: number;
     CY: number;
-    isMobile: boolean;
+    device: DeviceType;
     threadCount: number;
+    vertical: boolean;
 }
