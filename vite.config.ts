@@ -11,6 +11,7 @@ export default defineConfig({
       input: {
         main:     resolve(__dirname, 'index.html'),
         threaded: resolve(__dirname, 'src/experiments/threaded/index.html'),
+        hypnosis: resolve(__dirname, 'src/experiments/hypnosis-spiral/index.html'),
       }
     }
   }
