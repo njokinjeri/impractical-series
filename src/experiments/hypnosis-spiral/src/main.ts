@@ -1,75 +1,80 @@
-interface SpiralSettings {
-    color: string;
-    speed: number;
-    isPaused: boolean;
-    loops: number;
-    growth: number;
-}
+import {SpiralRenderer, type SpiralSettings} from './spiral'
 
 const canvas = document.getElementById('spiral') as HTMLCanvasElement;
-const ctx = canvas.getContext('2d')!;
-
 const settings: SpiralSettings = {
-    color: '#d1d1f0',
-    speed: 0.09,
-    isPaused: false,
-    loops: 40,
-    growth: 5
+    color: '#d1d1f0', 
+    speed: 0.2, 
+    direction: 1,
+    loops: 40, 
+    growth: 5 
+};
+const renderer = new SpiralRenderer(canvas, settings);
+renderer.draw();
+
+const speedInput = document.getElementById('speed') as HTMLInputElement;
+const loopsInput = document.getElementById('loops') as HTMLInputElement;
+const colorInput = document.getElementById('color') as HTMLInputElement;
+const directionToggle = document.getElementById('dir-toggle') as HTMLDivElement;
+
+
+speedInput.value = renderer.settings.speed.toString();
+loopsInput.value = renderer.settings.loops.toString();
+colorInput.value = renderer.settings.color;
+
+
+speedInput.addEventListener('input', (e) => {
+    renderer.settings.speed = parseFloat((e.target as HTMLInputElement).value)
+})
+
+loopsInput.addEventListener('input', (e) => {
+    renderer.settings.loops = parseInt((e.target as HTMLInputElement).value);
+});
+
+colorInput.addEventListener('input', (e) => {
+    renderer.settings.color = (e.target as HTMLInputElement).value;
+});
+
+directionToggle.addEventListener('click', () => {
+    renderer.settings.speed *= -1;
+});
+
+
+const infoBtn = document.getElementById('info-panel') as HTMLButtonElement
+const infoContent = document.querySelector('.info-content') as HTMLDivElement
+const pauseBtn = document.getElementById('pause-btn') as HTMLButtonElement
+
+
+infoBtn.addEventListener('click', () => {
+    const isHidden = window.getComputedStyle(infoContent).display === 'none';
+    infoContent.style.display = isHidden ? 'flex' : 'none';
+});
+
+const togglePlayback = () => {
+    renderer.isPaused = !renderer.isPaused;
+
+    pauseBtn.innerHTML = !renderer.isPaused ? '&#x23F8;' : '&#x25B6;';
+
+    if (!renderer.isPaused) {
+        renderer.draw();
+    } else {
+        renderer.stop ();
+    }
 };
 
-let rotation = 0;
+canvas.addEventListener('click', togglePlayback)
+pauseBtn.addEventListener('click', togglePlayback)
 
-function draw() {
-    if (settings.isPaused) return;
-
-    ctx.fillStyle = 'rgba(0, 0, 0, 0.15)';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-    ctx.save();
-    ctx.translate(canvas.width / 2, canvas.height / 2);
-    ctx.rotate(rotation);
-
-    ctx.beginPath();
-    ctx.fillStyle = settings.color;
-
-    const maxThickness = 16;
-    const precision = 0.1;
-
-
-    for (let a = 0; a < Math.PI * 2 * settings.loops; a += precision) {
-        const taper = Math.min(a, 10) / 10;
-        const r = a * settings.growth;
-        const x = (r + maxThickness * taper) * Math.cos(a);
-        const y = (r + maxThickness * taper) * Math.sin(a);
-        ctx.lineTo(x, y)
+window.addEventListener('keydown', (e) => {
+    if (e.code === 'Space') {
+        e.preventDefault();
+        togglePlayback();
     }
+});
 
-    for (let a = Math.PI * 2 * settings.loops; a >= 0; a -= precision) {
-        const r = a * settings.growth;
-        const x = r * Math.cos(a);
-        const y = r * Math.sin(a);
-        ctx.lineTo(x, y);
-    }
-
-    ctx.fill();
-    ctx.restore()
-
-    rotation -= settings.speed;
-    requestAnimationFrame(draw)
-}
-
-function resizeCanvas() {
+const resizeCanvas = () => {
     canvas.width = canvas.clientWidth;
     canvas.height = canvas.clientHeight;
 }
 
 window.addEventListener('resize', resizeCanvas);
 resizeCanvas();
-
-canvas.addEventListener('click', () => {
-    settings.isPaused = !settings.isPaused;
-    if (!settings.isPaused) draw();
-})
-
-
-draw()

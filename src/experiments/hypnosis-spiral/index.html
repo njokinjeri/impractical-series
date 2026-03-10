@@ -1,31 +1,54 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="bulb icon" href="/bulb.png" type="image/png">
-	<link rel="stylesheet" href="./src/style.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Hypnosis Spiral</title>
-  </head>
-  <body>
+	<head>
+		<meta charset="UTF-8" />
+		<link rel="bulb icon" href="/bulb.png" type="image/png">
+		<link rel="stylesheet" href="./src/style.css">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Hypnosis Spiral</title>
+	</head>
+	<body>
 	<main>
-	    <canvas id="spiral"></canvas>
+		<canvas id="spiral" width="600" height="600"></canvas>
 		<aside id="controls" class="controls-panel">
 			<button id="info-panel">ⓘ</button>
 			<div class="info-content">
 				<h1>Hypnosis Spiral</h1>
-				<p>This spiral attempts to simulate a <strong>Motion Aftereffect</strong>
-					Stare at the center for 20 seconds, then look away at a stationary object and observe the visual distortion.
-				</p>
+				<div class="info-instructions">
+					<p>This utility simulates the <strong>Motion Aftereffect (MAE)</strong>:
+						a sensory phenomenon where the brain’s motion-detecting neurons become fatigued.
+					</p>
+					<h3>Instructions</h3>
+					<ol>
+						<li>Maintain a steady gaze on the central point for 20–30 seconds.</li>
+						<li>Try not to blink or scan the edges of the spiral.</li>
+        				<li>Immediately shift your gaze to a static object or a textured surface.</li>
+    				</ol>
+					<p>
+						<em>Note: You will perceive the static object as if it is expanding or contracting. 
+							This effect is a temporary byproduct of neural adaptation and will fade within seconds.
+						</em>
+					</p>
+				</div>
 			</div>
 			<div class="control-settings">
-				<label>Speed</label>
-				<label>Loops</label>
-				<label>Color</label>
+				<label for="speed">Speed
+					<input type="range" id="speed" min="0.01" max="0.4" step="0.01">
+				</label>
+				<label for="loops">Loops
+					<input type="range" id="loops" min="15" max="60" step="1" value="40">
+				</label>
+				<label for="color">Color
+					<input type="color" id="color" value="#d1d1f0">
+				</label>
+				<div>
+					<p>Direction</p>
+					<button id="dir-toggle" title="Reverse Rotation">&#x21BB;</button>
+				</div>
 			</div>
-			<button>&#x23F8;</button>
+			<button id="pause-btn">&#x23F8;</button>
 		</aside>
 	</main>
-	<script type="module" src="./src/main.ts"></script>
-  </body>
+<script type="module" src="./src/main.ts"></script>
+</body>
 </html>
