@@ -5,11 +5,15 @@ const settings: SpiralSettings = {
     color: '#d1d1f0', 
     speed: 0.2, 
     direction: 1,
-    loops: 40, 
-    growth: 5 
+    loops: 15, 
 };
+
 const renderer = new SpiralRenderer(canvas, settings);
+const resizeObserver = new ResizeObserver(() => renderer.resize());
+resizeObserver.observe(canvas)
+
 renderer.draw();
+
 
 const speedInput = document.getElementById('speed') as HTMLInputElement;
 const loopsInput = document.getElementById('loops') as HTMLInputElement;
@@ -38,10 +42,17 @@ directionToggle.addEventListener('click', () => {
     renderer.settings.speed *= -1;
 });
 
+const controlsToggle = document.getElementById('controls-toggle') as HTMLButtonElement;
+const controlsPanel = document.getElementById('controls') as HTMLElement
+const infoBtn = document.getElementById('info-panel') as HTMLButtonElement;
+const infoContent = document.querySelector('.info-content') as HTMLDivElement;
+const pauseBtn = document.getElementById('pause-btn') as HTMLButtonElement;
 
-const infoBtn = document.getElementById('info-panel') as HTMLButtonElement
-const infoContent = document.querySelector('.info-content') as HTMLDivElement
-const pauseBtn = document.getElementById('pause-btn') as HTMLButtonElement
+
+controlsToggle.addEventListener('click', () => {
+    controlsPanel.classList.toggle('collapsed');
+    controlsToggle.innerHTML = controlsPanel.classList.contains('collapsed') ? '&#x25B2;' : '&#x25BC;';
+})
 
 
 infoBtn.addEventListener('click', () => {
@@ -70,21 +81,3 @@ window.addEventListener('keydown', (e) => {
         togglePlayback();
     }
 });
-
-const resizeCanvas = () => {
-    const displayWidth = canvas.clientWidth;
-    const displayHeight = canvas.clientHeight;
-
-    if (canvas.width !== displayWidth || canvas.height !== displayHeight) {
-        canvas.width = displayWidth;
-        canvas.height = displayHeight;
-        renderer.recalculate();
-
-        if (renderer.isPaused) {
-            renderer.drawFrame()
-        }
-    }
-}
-
-const resizeObserver = new ResizeObserver(() => resizeCanvas())
-resizeObserver.observe(canvas)
