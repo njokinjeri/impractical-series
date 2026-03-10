@@ -83,6 +83,7 @@ const togglePlayback = () => {
     renderer.isPaused = !renderer.isPaused;
 
     pauseBtn.innerHTML = !renderer.isPaused ? '&#x23F8;' : '&#x25B6;';
+    pauseBtn.dataset.tooltip = renderer.isPaused ? 'Play' : 'Pause'
 
     if (!renderer.isPaused) {
         renderer.draw();

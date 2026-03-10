@@ -9,10 +9,14 @@
 	</head>
 	<body>
 	<main>
-		<canvas id="spiral" width="600" height="600"></canvas>
+		<canvas id="spiral"></canvas>
 		<aside id="controls" class="controls-panel">
-			<button id="info-panel">ⓘ</button>
-			<div class="info-content">
+			<button id="controls-toggle" title="Toggle Controls" data-tooltip="Toggle controls">&#x25BC;</button>
+			<div class="controls-actions">
+				<button id="info-panel" data-tooltip="How it works">ⓘ</button>
+				<button id="pause-btn" data-tooltip="Pause">&#x23F8;</button>
+			</div>
+			<div class="info-content visible">
 				<h1>Hypnosis Spiral</h1>
 				<div class="info-instructions">
 					<p>This utility simulates the <strong>Motion Aftereffect (MAE)</strong>:
@@ -36,19 +40,18 @@
 					<input type="range" id="speed" min="0.01" max="0.4" step="0.01">
 				</label>
 				<label for="loops">Loops
-					<input type="range" id="loops" min="15" max="60" step="1" value="40">
+					<input type="range" id="loops" min="15" max="30" step="1" value="15">
 				</label>
 				<label for="color">Color
 					<input type="color" id="color" value="#d1d1f0">
 				</label>
 				<div>
 					<p>Direction</p>
-					<button id="dir-toggle" title="Reverse Rotation">&#x21BB;</button>
+					<button id="dir-toggle" title="Reverse Rotation" data-tooltip="Reverse direction">&#x21BB;</button>
 				</div>
 			</div>
-			<button id="pause-btn">&#x23F8;</button>
 		</aside>
 	</main>
-<script type="module" src="./src/main.ts"></script>
+	<script type="module" src="./src/main.ts"></script>
 </body>
 </html>
