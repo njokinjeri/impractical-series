@@ -3,11 +3,29 @@
   <head>
     <meta charset="UTF-8" />
     <link rel="bulb icon" href="/bulb.png" type="image/png">
+	<link rel="stylesheet" href="./src/style.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Hypnosis Spiral</title>
   </head>
   <body>
-	    <canvas id="c"></canvas>
-    	<script type="module" src="./src/main.ts"></script>
+	<main>
+	    <canvas id="spiral"></canvas>
+		<aside id="controls" class="controls-panel">
+			<button id="info-panel">ⓘ</button>
+			<div class="info-content">
+				<h1>Hypnosis Spiral</h1>
+				<p>This spiral attempts to simulate a <strong>Motion Aftereffect</strong>
+					Stare at the center for 20 seconds, then look away at a stationary object and observe the visual distortion.
+				</p>
+			</div>
+			<div class="control-settings">
+				<label>Speed</label>
+				<label>Loops</label>
+				<label>Color</label>
+			</div>
+			<button>&#x23F8;</button>
+		</aside>
+	</main>
+	<script type="module" src="./src/main.ts"></script>
   </body>
 </html>
