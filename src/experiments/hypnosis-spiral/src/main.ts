@@ -72,9 +72,19 @@ window.addEventListener('keydown', (e) => {
 });
 
 const resizeCanvas = () => {
-    canvas.width = canvas.clientWidth;
-    canvas.height = canvas.clientHeight;
+    const displayWidth = canvas.clientWidth;
+    const displayHeight = canvas.clientHeight;
+
+    if (canvas.width !== displayWidth || canvas.height !== displayHeight) {
+        canvas.width = displayWidth;
+        canvas.height = displayHeight;
+        renderer.recalculate();
+
+        if (renderer.isPaused) {
+            renderer.drawFrame()
+        }
+    }
 }
 
-window.addEventListener('resize', resizeCanvas);
-resizeCanvas();
+const resizeObserver = new ResizeObserver(() => resizeCanvas())
+resizeObserver.observe(canvas)
