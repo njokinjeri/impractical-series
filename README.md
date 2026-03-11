@@ -27,3 +27,4 @@ And what's the point of wondering when you can just dive right in.
 | # | Project | Description | Stack |
 |---|---|---|---|
 | 01 | [Threaded](https://njokinjeri.github.io/impractical-series/src/experiments/threaded/) | Threads of source code converge into a single point and emerge as binary | Canvas API, TypeScript |
+| 02 | [Hypnosis Spiral](https://njokinjeri.github.io/impractical-series/src/experiments/hypnosis-spiral/) | An interactive spiral designed to study perceptual motion aftereffects | Canvas API, TypeScript |
