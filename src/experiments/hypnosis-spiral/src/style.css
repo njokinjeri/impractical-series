@@ -88,7 +88,7 @@ button:active {
 [data-tooltip]::after {
     content: attr(data-tooltip);
     position: absolute;
-    bottom: calc(100% + 0.5rem);
+    top: 3rem;
     left: 50%;
     transform: translateX(-50%);
     background: var(--text);
