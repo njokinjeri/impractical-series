@@ -23,7 +23,7 @@ And what's the point of wondering when you can just dive right in.
 
 ## Projects
 
-| # | Preview | Project | Description | Stack |
+| # | Project | Description | Stack | Live Demo |
 |---|---|---|---|---|
-| 01 | [![](src/assets/demos/threaded.gif)](https://njokinjeri.github.io/impractical-series/src/experiments/threaded/) | [Threaded](https://njokinjeri.github.io/impractical-series/src/experiments/threaded/) | Code to binary visual | Canvas, TS |
-| 02 | [![](src/assets/demos/hypnosis-spiral.gif)](https://njokinjeri.github.io/impractical-series/src/experiments/hypnosis-spiral/) | [Hypnosis Spiral](https://njokinjeri.github.io/impractical-series/src/experiments/hypnosis-spiral/) | Motion aftereffect | Canvas, TS |
+| 01 | [Threaded](https://njokinjeri.github.io/impractical-series/src/experiments/threaded/) | Code to binary visual | Canvas, TS | [View](https://njokinjeri.github.io/impractical-series/src/experiments/threaded/) |
+| 02 | [Hypnosis Spiral](https://njokinjeri.github.io/impractical-series/src/experiments/hypnosis-spiral/) | Motion aftereffect | Canvas, TS | [View](https://njokinjeri.github.io/impractical-series/src/experiments/hypnosis-spiral/) |
