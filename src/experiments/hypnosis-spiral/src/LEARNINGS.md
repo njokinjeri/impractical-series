@@ -39,7 +39,7 @@ Key ideas behind the concept:
 
 **Archimedean Spiral**:the spiral is drawn using polar coordinates where radius grows linearly with angle (`r = a * growth`). Each arm is a closed filled path with an outer and inner edge, tapered at the center.
 
-**requestAnimationFrame**:the animation loop runs via `requestAnimationFrame` rather than `setInterval`. It syncs to the screen refresh rate (~60fps) and automatically pauses when the tab is backgrounded.
+**requestAnimationFrame**: Moving the loop to `requestAnimationFrame` ensures the animation runs at a fluid 60fps. It’s a cleaner approach that automatically pauses the spiral when you navigate away, preventing unnecessary background processing.
 
 **Canvas state management**:`ctx.save()` and `ctx.restore()` wrap each frame so transformations like `translate` and `rotate` don't accumulate across frames.
 
