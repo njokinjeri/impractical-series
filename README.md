@@ -27,3 +27,4 @@ And what's the point of wondering when you can just dive right in.
 |---|---|---|---|---|
 | 01 | [Threaded](https://njokinjeri.github.io/impractical-series/src/experiments/threaded/) | Code to binary visual | Canvas, TS | [View](https://njokinjeri.github.io/impractical-series/src/experiments/threaded/) |
 | 02 | [Hypnosis Spiral](https://njokinjeri.github.io/impractical-series/src/experiments/hypnosis-spiral/) | Motion aftereffect | Canvas, TS | [View](https://njokinjeri.github.io/impractical-series/src/experiments/hypnosis-spiral/) |
+| 03 | [Penumbra](https://njokinjeri.github.io/impractical-series/src/experiments/penumbra/) | Interactive blind simulation with cast light | HTML, CSS, TS | [View](https://njokinjeri.github.io/impractical-series/src/experiments/penumbra/) |
