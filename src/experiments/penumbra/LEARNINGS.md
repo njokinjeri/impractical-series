@@ -28,8 +28,6 @@ Key ideas behind the concept:
 - Typescript
 
 
-## Key Concepts encountered
-
 ## Key Concepts Encountered
 
 **CSS 3D perspective**: slats are plain divs rotated with `rotateY()` / `rotateX()` inside a container with `perspective: 1400px`. The browser handles all projection math; foreshortening, depth, the physical tilt, with no additional library.
