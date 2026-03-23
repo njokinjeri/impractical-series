@@ -9,9 +9,10 @@ export default defineConfig({
   build: {
     rollupOptions: {
       input: {
-        main:     resolve(__dirname, 'index.html'),
+        main: resolve(__dirname, 'index.html'),
         threaded: resolve(__dirname, 'src/experiments/threaded/index.html'),
         hypnosis: resolve(__dirname, 'src/experiments/hypnosis-spiral/index.html'),
+        penumbra: resolve(__dirname, 'src/experiments/penumbra/index.html'),
       }
     }
   }
