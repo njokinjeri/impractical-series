@@ -6,13 +6,141 @@
     box-sizing: border-box;
 }
 
-
-body {
+html, body {
     width: 100%;
     height: 100%;
     overflow: hidden;
     font-family: "Courier Prime", monospace;
+    background: #111014;
+}
+
+#glow {
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    opacity: 0;
+    will-change: opacity;
+    background: radial-gradient(
+        ellipse 75% 55% at 50% 50%,
+        rgba(255, 190, 70, 0.32) 0%,
+        rgba(210, 110, 20, 0.12) 48%,
+        transparent 72%
+    );
+}
+
+#scene {
+    position: fixed;
+    inset: 0;
+    z-index: 2;
+}
+
+#blinds {
+    position: absolute;
+    inset: 0;
+    perspective: 1400px;
+    perspective-origin: 50% 50%;
+}
+
+#cast-top,
+#cast-mid,
+#cast-low {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    mix-blend-mode: multiply;
+    opacity: 0;
+    will-change: background, opacity;
+}
+
+#cast-top { z-index: 3; }
+#cast-mid { z-index: 4; }
+#cast-low { z-index: 5; }
+
+#bloom {
+    position: fixed;
+    inset: 0;
+    z-index: 6;
+    pointer-events: none;
+    mix-blend-mode: screen;
+    opacity: 0;
+    will-change: background, opacity;
+}
+
+#grain {
+    position: fixed;
+    inset: 0;
+    z-index: 40;
+    pointer-events: none;
+    opacity: 0.072;
+    mix-blend-mode: screen;
 }
 
 
+#title {
+    position: fixed;
+    top: 28px;
+    left: 32px;
+    z-index: 100;
+    pointer-events: none;
+}
 
+#title .name {
+    font-size: 16px;
+    letter-spacing: 7px;
+    text-transform: uppercase;
+    color: rgba(237, 228, 214, 0.75);
+}
+
+
+#ui {
+    position: fixed;
+    bottom: 28px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.btn {
+    font-family: "Courier Prime", monospace;
+    font-size: 12px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    padding: 7px 20px;
+    border: 1px solid rgba(255, 165, 0, 0.25);
+    background: rgba(255, 165, 0, 0.04);
+    color: rgba(255, 165, 0, 0.60);
+    cursor: pointer;
+    border-radius: 1px;
+    transition: color 0.2s, border-color 0.2s, background 0.2s;
+    user-select: none;
+}
+
+.btn:hover {
+    color: rgba(255, 165, 0, 0.90);
+    border-color: rgba(255, 165, 0, 0.45);
+    background: rgba(255, 165, 0, 0.08);
+}
+
+.btn.on {
+    color: rgba(255, 165, 0, 1);
+    border-color: rgba(255, 165, 0, 0.60);
+    background: rgba(255, 165, 0, 0.10);
+}
+
+#readout {
+    font-size: 16px;
+    letter-spacing: 3px;
+    color: rgba(255, 165, 0, 0.80);
+    min-width: 36px;
+    text-align: center;
+}
+
+.sep {
+    width: 1px;
+    height: 16px;
+    background: rgba(255, 165, 0, 0.20);
+}
