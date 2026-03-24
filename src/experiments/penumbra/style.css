@@ -33,13 +33,12 @@ html, body {
     position: fixed;
     inset: 0;
     z-index: 2;
+    isolation: isolate;
 }
 
 #blinds {
     position: absolute;
     inset: 0;
-    perspective: 1400px;
-    perspective-origin: 50% 50%;
 }
 
 #cast-top,

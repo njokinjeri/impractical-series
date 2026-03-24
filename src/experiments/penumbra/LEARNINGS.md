@@ -41,6 +41,6 @@ Key ideas behind the concept:
 
 - The first version of the cast light used a generic warm/cool two-colour split, it read as a default gradient effect rather than a specific light source. Expanding the palette to a full sunset spectrum periwinkle, orange, deep red through to near-black navy gave the cast a distinct colour temperature and made it feel intentional.
 
-- The initial version opened at 0° with the mouse driving the full −75° to +75° range. The flat resting state made the piece feel unfinished. Constraining the mouse to ±30° around a 45° rest resolved this the blinds never go fully flat, and the cast light is visible from the first frame.
+- The initial version opened at 0° with the mouse driving the full −75° to +75° range. The flat resting state made the piece feel unfinished. Constraining the mouse to ±30° around a 45° rest resolved this, the blinds never go fully flat, and the cast light is visible from the first frame.
 
 - Over-modularising this particular project seemed like overkill. Lesson learnt- only split when a module has reason to change independently, not on a "just because basis."

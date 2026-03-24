@@ -37,6 +37,9 @@ function slatBg(index: number, total: number, orientation: Orientation): string 
  
 export function buildSlats(container: HTMLDivElement, orientation: Orientation): HTMLDivElement[] {
     container.innerHTML = '';
+    container.style.perspective = `${window.innerWidth * 1.5}px`;
+    container.style.perspectiveOrigin = '50% 50%';
+    
     const slats: HTMLDivElement[] = [];
     const W = window.innerWidth, H = window.innerHeight;
     
@@ -50,9 +53,11 @@ export function buildSlats(container: HTMLDivElement, orientation: Orientation):
         if (orientation === 'vertical') {
             const sw = W / count;
             el.style.cssText = `position:absolute;transform-origin:50% 50%;will-change:transform,background,box-shadow;top:0;height:100%;width:${sw - CONFIG.gap}px;left:${i * sw}px`;
+            el.style.backfaceVisibility = 'hidden';
         } else {
             const sh = H / count;
             el.style.cssText = `position:absolute;transform-origin:50% 50%;will-change:transform,background,box-shadow;left:0;width:100%;height:${sh - CONFIG.gap}px;top:${i * sh}px`;
+            el.style.backfaceVisibility = 'hidden';
         }
         
         el.style.background = slatBg(i, count, orientation);
