@@ -16,28 +16,39 @@ const config: HeartConfig = {
     wireframeOpacity: 0.65,
 };
 
+const engine = new HeartEngine(document.body, config);
+let bounds = engine.getBounds(config.size);
+
 const state = {
-    targetY: 50,
-    currentY: 50,
+    targetY: bounds.max,
+    currentY: bounds.max,
     isBursting: false,
     heartsCreated: 0,
 };
-
-const engine = new HeartEngine(document.body, config);
 
 const updateStats = () => {
     document.getElementById('hearts-count')!.textContent = state.heartsCreated.toString();
 };
 
 const updateFillBar = () => {
-    const maxY = 100 * config.size;
-    const currentFill = 50 * config.size - state.currentY;
-    const percent = Math.round((currentFill / maxY) * 100);
-    const capped = Math.min(Math.max(percent, 0), 100);
+    const totalHeight = bounds.max - bounds.min;
+    const currentProgress = state.currentY - bounds.min;
+    let percent = Math.round((currentProgress / totalHeight) * 100);
+
+    const capped = 100 - Math.min(Math.max(percent, 0), 100);
   
-    document.getElementById('fill-percent')!.textContent = capped.toString();
+    document.getElementById('fill-percent')!.textContent = capped + '%';
     document.getElementById('fill-bar-inner')!.style.width = capped + '%';
     document.getElementById('fill-percent-text')!.textContent = capped + '%';
+};
+
+const fillHeart = () => {
+    if (state.isBursting) return;
+    state.targetY -= 5 * config.size; 
+
+    if (state.targetY <= bounds.min) {
+        burst();
+    }
 };
 
 const burst = () => {
@@ -47,16 +58,10 @@ const burst = () => {
     engine.triggerBurst();
 
     setTimeout(() => {
-        state.targetY = state.currentY = 50 * config.size;
+        state.targetY = state.currentY = bounds.max; 
         state.isBursting = false;
         engine.resetVisuals();
     }, 5000);
-};
-
-const fillHeart = () => {
-    if (state.isBursting) return;
-    state.targetY -= 12 * config.size;
-    if (state.targetY <= -50 * config.size) burst();
 };
 
 const colorGrid = document.getElementById('color-grid')!;
@@ -76,9 +81,10 @@ Object.entries(COLORS).forEach(([name, color]) => {
 document.getElementById('size-slider')!.oninput = (e) => {
     const val = parseFloat((e.target as HTMLInputElement).value);
     config.size = val;
-    engine.updateSize(val);
-    state.targetY = state.currentY = 50 * val;
     
+    bounds = engine.getBounds(val); 
+    engine.updateSize(val);
+    state.targetY = state.currentY = bounds.max; 
     document.getElementById('size-value')!.textContent = Math.round(val * 100).toString();
 };
 

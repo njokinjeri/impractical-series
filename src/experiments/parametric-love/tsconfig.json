@@ -1,8 +1,8 @@
 {
   "compilerOptions": {
-	"target": "ES2020",
+    "target": "ESNext",
     "useDefineForClassFields": true,
-    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "lib": ["ESNext", "DOM", "DOM.Iterable"],
     "module": "ESNext",
     "skipLibCheck": true,
 
@@ -12,7 +12,6 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx",
 
     /* Strict type checking */
     "strict": true,
@@ -23,9 +22,7 @@
     "forceConsistentCasingInFileNames": true,
 
     /* Source maps for debugging */
-    "sourceMap": true,
-    "declaration": true,
-    "declarationMap": true
+    "sourceMap": true
   },
-  "include": ["main.ts", "heartsEngine.ts"]
+  "include": ["src/**/*.ts"] 
 }

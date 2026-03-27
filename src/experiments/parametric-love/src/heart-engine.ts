@@ -62,7 +62,20 @@ export class HeartEngine {
         }
         geometry.computeVertexNormals();
         geometry.center();
+        geometry.computeBoundingBox();
         return geometry;
+    }
+
+    public getBounds(scale: number) {
+        const geo = this.createHeartGeometry(scale);
+        const min = geo.boundingBox!.min.y;
+        const max = geo.boundingBox!.max.y;
+        
+        return {
+            min: min,
+            max: max,
+            geometry: geo
+        };
     }
     
     private initHeart() {
