@@ -88,6 +88,19 @@ document.getElementById('wire-slider')!.oninput = (e) => {
     document.getElementById('wire-value')!.textContent = Math.round(val * 100).toString();
 };
 
+const burstSlider = document.getElementById('burst-slider') as HTMLInputElement;
+const burstValueDisplay = document.getElementById('burst-value');
+
+if (burstSlider) {
+    burstSlider.addEventListener('input', (e) => {
+        const val = parseInt((e.target as HTMLInputElement).value);
+        engine.updateBurstCount(val);
+        if (burstValueDisplay) {
+            burstValueDisplay.textContent = val.toString();
+        }
+    });
+}
+
 
 const collapseBtn = document.getElementById('collapse-btn');
 const panel = document.getElementById('control-panel');

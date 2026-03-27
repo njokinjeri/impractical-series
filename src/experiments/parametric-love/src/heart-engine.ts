@@ -102,16 +102,31 @@ export class HeartEngine {
         return new THREE.CanvasTexture(canvas);
     }
 
+    public updateBurstCount(count: number) {
+        this.config.burstCount = count;
+        this.initializeParticles();
+    }
+    
     public initializeParticles() {
-        this.particles.forEach((p) => this.scene.remove(p.obj));
-        this.particles = [];
-        for (let i = 0; i < this.config.burstCount; i++) {
-            const mat = new THREE.SpriteMaterial({ map: this.heartTex, color: this.config.color, transparent: true, opacity: 0 });
-            const s = new THREE.Sprite(mat);
+    this.particles.forEach((p) => this.scene.remove(p.obj));
+    this.particles = [];
+
+    for (let i = 0; i < this.config.burstCount; i++) {
+        const mat = new THREE.SpriteMaterial({ 
+            map: this.heartTex, 
+            color: this.config.color, 
+            transparent: true, 
+            opacity: 0 
+        });
+        const s = new THREE.Sprite(mat);
             this.scene.add(s);
             this.particles.push({
-                obj: s,
-                vel: new THREE.Vector3((Math.random() - 0.5) * 0.15, (Math.random() - 0.5) * 0.15, (Math.random() - 0.5) * 0.15),
+            obj: s,
+            vel: new THREE.Vector3(
+                (Math.random() - 0.5) * 0.15, 
+                (Math.random() - 0.5) * 0.15, 
+                (Math.random() - 0.5) * 0.15
+                ),
             });
         }
     }

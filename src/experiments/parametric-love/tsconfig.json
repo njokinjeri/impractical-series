@@ -27,6 +27,5 @@
     "declaration": true,
     "declarationMap": true
   },
-  "include": ["main.ts", "heartsEngine.ts"],
-  "references": [{ "path": "./tsconfig.json" }]
+  "include": ["main.ts", "heartsEngine.ts"]
 }
