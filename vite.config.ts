@@ -13,6 +13,7 @@ export default defineConfig({
         threaded: resolve(__dirname, 'src/experiments/threaded/index.html'),
         hypnosis: resolve(__dirname, 'src/experiments/hypnosis-spiral/index.html'),
         penumbra: resolve(__dirname, 'src/experiments/penumbra/index.html'),
+        parametric: resolve(__dirname, 'src/experiments/parametric-love/index.html')
       }
     }
   }

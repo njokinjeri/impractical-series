@@ -44,7 +44,7 @@ const updateFillBar = () => {
 
 const fillHeart = () => {
     if (state.isBursting) return;
-    state.targetY -= 5 * config.size; 
+    state.targetY -= 12 * config.size; 
 
     if (state.targetY <= bounds.min) {
         burst();
@@ -118,28 +118,45 @@ if (collapseBtn && panel) {
     });
 }
 
-
 let isDragging = false;
-let prevMouse = { x: 0, y: 0 };
+let startPoint = { x: 0, y: 0 };
+let hasMoved = false;
 
-engine.getCanvas().addEventListener('mousedown', (e) => {
+const canvas = engine.getCanvas();
+canvas.style.touchAction = 'none'; 
+
+canvas.addEventListener('pointerdown', (e) => {
     isDragging = true;
-    prevMouse = { x: e.clientX, y: e.clientY };
+    hasMoved = false; 
+    startPoint = { x: e.clientX, y: e.clientY };
+    
+    if ("vibrate" in navigator) navigator.vibrate(5);
 });
 
-window.addEventListener('mousemove', (e) => {
+
+window.addEventListener('pointermove', (e) => {
     if (!isDragging || state.isBursting) return;
-    const dx = (e.clientX - prevMouse.x) * 0.01;
-    const dy = (e.clientY - prevMouse.y) * 0.01;
-    engine.rotateHeart(dx, dy);
-    prevMouse = { x: e.clientX, y: e.clientY };
+
+    const dx = e.clientX - startPoint.x;
+    const dy = e.clientY - startPoint.y;
+
+    if (Math.abs(dx) > 5 || Math.abs(dy) > 5) {
+        hasMoved = true;
+        engine.rotateHeart(dx * 0.01, dy * 0.01);
+        startPoint = { x: e.clientX, y: e.clientY };
+    }
 });
 
-window.addEventListener('mouseup', () => isDragging = false);
 
-engine.getCanvas().addEventListener('click', () => {
-    if(!isDragging) fillHeart();
+window.addEventListener('pointerup', () => {
+    if (isDragging && !hasMoved && !state.isBursting) {
+        fillHeart();
+        
+        if ("vibrate" in navigator) navigator.vibrate(10);
+    }
+    isDragging = false;
 });
+
 
 const animate = () => {
     requestAnimationFrame(animate);
