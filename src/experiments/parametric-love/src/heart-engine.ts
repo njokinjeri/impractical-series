@@ -86,6 +86,9 @@ export class HeartEngine {
             wireframe: true,
             transparent: true,
             opacity: this.config.wireframeOpacity,
+            polygonOffset: true,
+            polygonOffsetFactor: 1,
+            polygonOffsetUnits: 1
         });
 
         const liquid = new THREE.MeshPhongMaterial({
@@ -129,7 +132,9 @@ export class HeartEngine {
             map: this.heartTex, 
             color: this.config.color, 
             transparent: true, 
-            opacity: 0 
+            opacity: 0,
+            depthTest: true,
+            depthWrite: false
         });
         const s = new THREE.Sprite(mat);
             this.scene.add(s);
@@ -184,10 +189,13 @@ export class HeartEngine {
     }
 
     public render(currentY: number, isBursting: boolean) {
-        this.clipPlane.constant = -currentY;
-        this.heartGroup.rotation.y += 0.01;
-        if (isBursting) {
-            this.particles.forEach((p) => p.obj.position.add(p.vel));
+        if(isBursting) {
+            this.renderer.localClippingEnabled = false;
+            this.particles.forEach((p) => p.obj.position.add(p.vel))
+        } else {
+            this.renderer.localClippingEnabled = true;
+            this.clipPlane.constant = -currentY;
+            this.heartGroup.rotation.y += 0.01;
         }
         this.renderer.render(this.scene, this.camera);
     }
