@@ -233,6 +233,10 @@ body {
         background-blend-mode: overlay, screen, multiply;
 }
 
+.book.selected {
+    box-shadow: 0 0 15px var(--gold), 0 0 30px rgba(212, 175, 55, 0.4);
+}
+
 .book-spine-text {
     writing-mode: vertical-rl; 
     transform: rotate(180deg);
@@ -295,4 +299,14 @@ body {
 .bookshelf-container.secret-open .shelf-back {
     filter: brightness(0.8);
     box-shadow: -20px 0 50px rgba(0,0,0,0.9);
+}
+
+@media (max-width: 600px) {
+    .shelf .book:nth-child(n+8) {
+        display: none;
+    }
+
+    .bookshelf-container {
+        max-width: 95%;
+    }
 }
