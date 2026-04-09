@@ -14,7 +14,7 @@ export default defineConfig({
         hypnosis: resolve(__dirname, 'src/experiments/hypnosis-spiral/index.html'),
         penumbra: resolve(__dirname, 'src/experiments/penumbra/index.html'),
         parametric: resolve(__dirname, 'src/experiments/parametric-love/index.html'),
-        archivist: resolve(__dirname, 'src/experiments/archivist/index.html'),
+        archivist: resolve(__dirname, 'src/experiments/archivist-vault/index.html'),
       }
     }
   }
