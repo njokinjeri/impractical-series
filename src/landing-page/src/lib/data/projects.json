@@ -1,0 +1,43 @@
+[
+    {
+        "id": 1,
+        "title": "Parametric Love",
+        "description": "Procedural vertex sculpting and interactive fluid clipping simulation.",
+        "tags": ["Math", "GLSL", "3D"],
+        "link": "https://njokinjeri.github.io/impractical-series/src/experiments/threaded/",
+        "source": "https://github.com/njokinjeri/impractical-series/tree/main/src/experiments/threaded",
+    },
+    {
+        "id": 2,
+        "title": "Hypnosis Spiral",
+        "description": "Procedural vertex sculpting and interactive fluid clipping simulation.",
+        "tags": ["Canvas", "TS"],
+        "link": "https://njokinjeri.github.io/impractical-series/src/experiments/threaded/",
+        "source": "https://github.com/njokinjeri/impractical-series/tree/main/src/experiments/threaded",
+    },
+    {
+        "id": 3,
+        "title": "Threaded",
+        "description": "Procedural vertex sculpting and interactive fluid clipping simulation.",
+        "tags": ["Canvas", "TS"],
+        "link": "https://njokinjeri.github.io/impractical-series/src/experiments/threaded/",
+        "source": "https://github.com/njokinjeri/impractical-series/tree/main/src/experiments/threaded",
+    },
+    {
+        "id": 4,
+        "title": "Penumbra",
+        "description": "Procedural vertex sculpting and interactive fluid clipping simulation.",
+        "tags": ["CSS", "TS"],
+        "link": "https://njokinjeri.github.io/impractical-series/src/experiments/threaded/",
+        "source": "https://github.com/njokinjeri/impractical-series/tree/main/src/experiments/threaded",
+    },
+    {
+        "id": 5,
+        "title": "Archivist Vault",
+        "description": "Procedural vertex sculpting and interactive fluid clipping simulation.",
+        "tags": ["CSS", "TS", "3D"],
+        "link": "https://njokinjeri.github.io/impractical-series/src/experiments/threaded/",
+        "source": "https://github.com/njokinjeri/impractical-series/tree/main/src/experiments/threaded",
+    }
+
+]
