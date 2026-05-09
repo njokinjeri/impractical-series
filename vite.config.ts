@@ -8,7 +8,7 @@ export default defineConfig({
   base: '/impractical-series/',
   resolve: {
     alias: {
-      'simplex-noise': resolve(__dirname, 'node_modules/simplex-noise')
+      'simplex-noise': resolve(__dirname, 'node_modules/simplex-noise/dist/esm/simplex-noise.js')
     }
   },
   build: {
