@@ -15,7 +15,7 @@ export default defineConfig({
         penumbra: resolve(__dirname, 'src/experiments/penumbra/index.html'),
         parametric: resolve(__dirname, 'src/experiments/parametric-love/index.html'),
         archivist: resolve(__dirname, 'src/experiments/archivist-vault/index.html'),
-        astreaus: resolve(__dirname, 'src/experiments/astreaus-flow/index.html'),
+        astreaus: resolve(__dirname, 'src/experiments/astraeus-flow/index.html'),
       }
     }
   }
