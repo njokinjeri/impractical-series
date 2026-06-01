@@ -19,7 +19,7 @@ export class GrassField {
   private blades: GrassBlade[] = []
   private time: number  = 0
   private lastTime: number  = 0
-  private raf: number  = 0
+  private raf:  number  = 0
   private pointer: Pointer = { x: -9999, y: -9999, vx: 0, vy: 0, active: false }
   private idleTimer: number  = 0
   private overgrown: boolean = false
@@ -51,7 +51,7 @@ export class GrassField {
   }
 
   private resize() {
-    this.canvas.width = window.innerWidth
+    this.canvas.width  = window.innerWidth
     this.canvas.height = window.innerHeight
     this.blades = []
     this.bgGrad = null
@@ -62,7 +62,7 @@ export class GrassField {
   private populate() {
     const W = this.canvas.width
     const H = this.canvas.height
-    const spacing = 14
+    const spacing  = 14
     const totalCols = Math.floor(W / spacing) + 2
 
     for (let col = 0; col < totalCols; col++) {
@@ -70,7 +70,7 @@ export class GrassField {
       const bladesPerCol = Math.random() < 0.45 ? 2 : 1
 
       for (let b = 0; b < bladesPerCol; b++) {
-        const bx = x + (Math.random() - 0.5) * 7
+        const bx    = x + (Math.random() - 0.5) * 7
         const depth = Math.random()
         const baseY = H - 4 - depth * 22 - Math.random() * 14
 
@@ -90,8 +90,8 @@ export class GrassField {
           lean: (Math.random() - 0.5) * 0.28,
           colorSeed: Math.random(),
           phase: Math.random() * Math.PI * 2,
-          growthTarget: Math.max(40, heightBase),
-          currentHeight: Math.max(40, heightBase) * (0.15 + Math.random() * 0.35),
+          growthTarget:  Math.max(40, heightBase),
+          currentHeight: Math.max(10, heightBase * (0.08 + Math.random() * 0.18)),
         }))
       }
     }
@@ -108,7 +108,7 @@ export class GrassField {
       this.pointer.x = cx
       this.pointer.y = cy
       this.pointer.active = true
-      this.idleTimer = 0
+      this.idleTimer  = 0
 
       if (this.overgrown) this.resetGrowth()
     }
@@ -126,11 +126,9 @@ export class GrassField {
     if (!this.pointer.active) return
 
     const speed = Math.sqrt(this.pointer.vx ** 2 + this.pointer.vy ** 2)
-    if (speed < 0.5) return
-
     const px = this.pointer.x
     const py = this.pointer.y
-    const radius = 90 + speed * 2.0
+    const radius   = 90 + speed * 2.0
     const radiusSq = radius * radius
     const pvx = this.pointer.vx
 
@@ -178,7 +176,7 @@ export class GrassField {
 
   private resetGrowth() {
     if (!this.overgrown) return
-    this.overgrown = false
+    this.overgrown  = false
     this.windTarget = this.userWind
     this.callbacks.onInteract?.()
 
@@ -209,7 +207,7 @@ export class GrassField {
   private drawBackground() {
     if (!this.bgGrad) this.buildBgGrads()
     const { width: W, height: H } = this.canvas
-    this.ctx.fillStyle = this.bgGrad!;     this.ctx.fillRect(0, 0, W, H)
+    this.ctx.fillStyle = this.bgGrad!; this.ctx.fillRect(0, 0, W, H)
     this.ctx.fillStyle = this.groundGrad!; this.ctx.fillRect(0, H * 0.82, W, H * 0.18)
   }
 
@@ -223,7 +221,7 @@ export class GrassField {
   }
 
   private update(dt: number) {
-    this.time      += dt
+    this.time += dt
     this.idleTimer += dt
 
     if (!this.overgrown && this.userWind === 0 && this.idleTimer > 3.5) {

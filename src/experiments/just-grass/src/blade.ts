@@ -24,6 +24,7 @@ export class GrassBlade {
   displacement: number = 0
   damping: number
   stiffness: number
+  growthRate: number
 
   private cRoot: string
   private cMid: string
@@ -38,7 +39,7 @@ export class GrassBlade {
   }
 
   static controlPoints(bx: number, by: number, h: number, tipDisp: number) {
-    const sign   = tipDisp >= 0 ? 1 : -1
+    const sign = tipDisp >= 0 ? 1 : -1
     const absTip = Math.abs(tipDisp)
     const cp1off = sign * absTip * 0.10
     const cp2off = sign * Math.min(absTip * 0.55, absTip * 0.88)
@@ -59,8 +60,9 @@ export class GrassBlade {
     this.phase = opts.phase
     this.growthTarget = opts.growthTarget
     this.currentHeight = opts.currentHeight
-    this.damping = 0.82 + Math.random() * 0.06
-    this.stiffness = 0.06 + Math.random() * 0.03
+    this.damping = 0.88 + Math.random() * 0.06
+    this.stiffness = 0.10 + Math.random() * 0.04
+    this.growthRate = 18 + Math.random() * 16
 
     const t  = opts.colorSeed
     const rH = 108 + t * 14 | 0, rS = 52 + t * 12 | 0, rL = 16 + t * 7  | 0
@@ -78,8 +80,9 @@ export class GrassBlade {
   }
 
   update(dt: number, windStrength: number, time: number) {
+    // Height growth/shrink toward target
     if (this.currentHeight < this.growthTarget) {
-      this.currentHeight += dt * 22
+      this.currentHeight += dt * this.growthRate
       if (this.currentHeight > this.growthTarget) this.currentHeight = this.growthTarget
     } else if (this.currentHeight > this.growthTarget) {
       this.currentHeight -= dt * 4
@@ -93,16 +96,19 @@ export class GrassBlade {
       windForce = (wave + micro) * windStrength
     }
 
-    const ambient = Math.sin(time * 0.7 + this.x * 0.003 + this.phase) * 0.08
+    const heightFactor = Math.min(1, this.currentHeight / 60) // full effect by 60px
+    const ambient = (Math.sin(time * 0.9  + this.x * 0.003 + this.phase)       * 0.32
+                   + Math.sin(time * 1.7  + this.x * 0.007 + this.phase * 1.4) * 0.14)
+                   * (0.3 + heightFactor * 0.7) // 30% amplitude even at zero height
 
     const spring = -this.stiffness * this.displacement
-    const damp = -(1.0 - this.damping) * this.velocity
-    this.velocity += (spring + damp + windForce + ambient) * dt * 60
+    const damp   = -(1.0 - this.damping) * this.velocity
+    this.velocity     += (spring + damp + windForce + ambient) * dt * 60
     this.displacement += this.velocity * dt * 60
 
     const maxDisp = this.currentHeight * 0.42
-    if (this.displacement >  maxDisp) { this.displacement =  maxDisp; this.velocity *= -0.15 }
-    if (this.displacement < -maxDisp) { this.displacement = -maxDisp; this.velocity *= -0.15 }
+    if (this.displacement >  maxDisp) { this.displacement =  maxDisp; this.velocity = Math.min(this.velocity, 0) }
+    if (this.displacement < -maxDisp) { this.displacement = -maxDisp; this.velocity = Math.max(this.velocity, 0) }
   }
 
   draw(ctx: CanvasRenderingContext2D) {
@@ -114,7 +120,7 @@ export class GrassBlade {
     const { cp1x, cp1y, cp2x, cp2y, tx, ty } =
       GrassBlade.controlPoints(bx, by, h, tipDisp)
 
-    const hw = this.width
+    const hw    = this.width
     const STEPS = 10
     const left: [number, number][] = []
     const right: [number, number][] = []
@@ -129,7 +135,7 @@ export class GrassBlade {
       let w: number
       if (f < 0.55) w = hw * (1.0   - f * 0.12)
       else if (f < 0.74) w = hw * (0.934 + (f - 0.55) * 0.38)
-      else               w = hw * (1.006 - (f - 0.74) * 4.8)
+      else w = hw * (1.006 - (f - 0.74) * 4.8)
       w = Math.max(w, 0)
 
       let tanx: number, tany: number
