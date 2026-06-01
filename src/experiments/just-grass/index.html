@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Just Grass</title>
+  <link rel="stylesheet" href="./src/style.css">
+</head>
+<body>
+  <section id="ui">
+    <h1>Just Grass</h1>
+    <div id="instructions">Interact to agitate. Leave idle to watch overgrowth</div>
+    <div id="state"></div>
+  </section>
+
+  <div id="wind-panel">
+    <button id="wind-toggle">
+      <span id="wind-icon">◎</span>
+      <span id="wind-label">wind off</span>
+    </button>
+    <div id="wind-slider-wrap">
+      <input type="range" id="wind-strength" min="1" max="10" value="3" step="1" />
+      <div id="wind-ticks">
+        <span>gentle</span>
+        <span>storm</span>
+      </div>
+    </div>
+  </div>
+  <canvas id="grassCanvas"></canvas>
+  <script type="module" src="/src/main.ts"></script>
+</body>
+</html>
