@@ -9,11 +9,11 @@ I aim to preserve the original visual or conceptual intent I enthusiastically ha
 
 ## Philosophy
 
-Each project is a visual question. The code is the answer, or part of one.
+- Each project is a visual question. The code is the answer, or part of one.
 
-Every project includes a `LEARNINGS.md` documenting the concept, process, and what it opened up. Each build serves two things simultaneously: technical growth, and the freedom to test ideas that feel premature, impractical, or *not yet reachable* at the time they're built.
+- Every project includes a `LEARNINGS.md` documenting the concept, process, and what it opened up. Each build serves two things simultaneously: technical growth, and the freedom to test ideas that feel premature, impractical, or *not yet reachable* at the time they're built.
 
-Projects are deliberately unplanned. There is no roadmap. Curiosity paves the way.
+- Projects are deliberately unplanned. There is no roadmap. Curiosity paves the way.
 
 ### Why "Impractical"?
 
