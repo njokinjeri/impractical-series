@@ -1,4 +1,4 @@
-# Chimera Bloom
+# Bloom
 
 ## What this is?
 

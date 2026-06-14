@@ -8,9 +8,9 @@ import {
     type FlowerKey,
     type PaletteVariant,
 } from "./constants.js";
-import { state } from "./state.ts";
-import { build } from "./geometry.ts";
-import { drawBg } from "./renderer.ts";
+import { state } from "./state.js";
+import { build } from "./geometry.js";
+import { drawBg } from "./renderer.js";
 
 
 function getEl<T extends HTMLElement>(id: string): T {
@@ -30,6 +30,7 @@ function buildFlowerButtons(): void {
         btn.textContent = LABELS[flowerKey];
 
         btn.addEventListener("click", () => {
+            state.pts = [];
             state.flower = flowerKey;
             state.variant = 0;
 
@@ -45,7 +46,6 @@ function buildFlowerButtons(): void {
         container.appendChild(btn);
     });
 }
-
 
 function buildSwatches(): void {
     const container = getEl("swatch-container");
@@ -96,7 +96,6 @@ function wireSlider({
     });
 }
 
-
 function initDragListeners(canvas: HTMLCanvasElement): void {
     canvas.addEventListener("mousedown", (e: MouseEvent) => {
         state.drag = true;
@@ -119,21 +118,25 @@ function initDragListeners(canvas: HTMLCanvasElement): void {
     canvas.addEventListener(
         "touchstart",
         (e: TouchEvent) => {
-            state.drag = true;
-            state.lastX = e.touches[0].clientX;
-            state.lastY = e.touches[0].clientY;
+            if (e.touches.length === 1) {
+                state.drag = true;
+                state.lastX = e.touches[0].clientX;
+                state.lastY = e.touches[0].clientY;
+            } else {
+                state.drag = false;
+            }
         },
         { passive: true },
     );
 
-    window.addEventListener("touchend", () => {
-        state.drag = false;
+    window.addEventListener("touchend", (e: TouchEvent) => {
+        if (e.touches.length === 0) state.drag = false;
     });
 
     window.addEventListener(
         "touchmove",
         (e: TouchEvent) => {
-            if (!state.drag) return;
+            if (!state.drag || e.touches.length !== 1) return;
             state.rotY += (e.touches[0].clientX - state.lastX) * 0.4;
             state.rotX += (e.touches[0].clientY - state.lastY) * 0.4;
             state.lastX = e.touches[0].clientX;
@@ -143,7 +146,52 @@ function initDragListeners(canvas: HTMLCanvasElement): void {
     );
 }
 
-function initZoomListener(canvas: HTMLCanvasElement): void {
+
+function initPinchZoom(canvas: HTMLCanvasElement): void {
+    let lastPinchDist = 0;
+
+    canvas.addEventListener(
+        "touchstart",
+        (e: TouchEvent) => {
+            if (e.touches.length === 2) {
+                const dx = e.touches[0].clientX - e.touches[1].clientX;
+                const dy = e.touches[0].clientY - e.touches[1].clientY;
+                lastPinchDist = Math.hypot(dx, dy);
+            }
+        },
+        { passive: true },
+    );
+
+    canvas.addEventListener(
+        "touchmove",
+        (e: TouchEvent) => {
+            if (e.touches.length !== 2) return;
+
+            const dx = e.touches[0].clientX - e.touches[1].clientX;
+            const dy = e.touches[0].clientY - e.touches[1].clientY;
+            const dist = Math.hypot(dx, dy);
+
+            if (lastPinchDist > 0) {
+                const delta = (dist - lastPinchDist) * 0.008;
+                state.zoom = Math.max(0.7, Math.min(1.8, state.zoom + delta));
+            }
+
+            lastPinchDist = dist;
+        },
+        { passive: true },
+    );
+
+    canvas.addEventListener(
+        "touchend",
+        (e: TouchEvent) => {
+            if (e.touches.length < 2) lastPinchDist = 0;
+        },
+        { passive: true },
+    );
+}
+
+
+function initScrollZoom(canvas: HTMLCanvasElement): void {
     canvas.addEventListener(
         "wheel",
         (e: WheelEvent) => {
@@ -157,6 +205,7 @@ function initZoomListener(canvas: HTMLCanvasElement): void {
     );
 }
 
+
 function initResizeListener(canvas: HTMLCanvasElement): void {
     const onResize = (): void => {
         const parent = canvas.parentElement;
@@ -168,6 +217,7 @@ function initResizeListener(canvas: HTMLCanvasElement): void {
     window.addEventListener("resize", onResize);
     onResize();
 }
+
 
 export function initControls(
     canvas: HTMLCanvasElement,
@@ -199,7 +249,8 @@ export function initControls(
     });
 
     initDragListeners(canvas);
-    initZoomListener(canvas);
+    initPinchZoom(canvas);
+    initScrollZoom(canvas);
     initResizeListener(canvas);
 
     getEl("bloom-trigger").addEventListener("click", onBloom);
