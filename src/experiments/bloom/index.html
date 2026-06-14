@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Bloom</title>
+        <link rel="icon" href="/bulb.png" type="image/png" />
+        <link rel="stylesheet" href="style.css" />
+    </head>
+    <body>
+        <div id="app">
+            <aside class="settings-panel">
+                <div class="brand-identity">
+                    Bloom <small>Botanist Canvas</small>
+                </div>
+                <div class="control-group">
+                    <div class="control-label">Flower Type</div>
+                    <div
+                        class="flower-selector-container"
+                        id="flower-selector"
+                    ></div>
+                </div>
+                <div class="control-group">
+                    <div class="control-label">Color</div>
+                    <div class="swatch-container" id="swatch-container"></div>
+                </div>
+                <div class="settings-sliders">
+                    <div class="slider-wrapper">
+                        <label>Density <b id="density-label">lush</b></label>
+                        <input
+                            type="range"
+                            id="density-slider"
+                            min="1"
+                            max="3"
+                            step="1"
+                            value="3"
+                        />
+                    </div>
+
+                    <div class="slider-wrapper">
+                        <label>Petal Glow <b id="glow-label">warm</b></label>
+                        <input
+                            type="range"
+                            id="glow-slider"
+                            min="1"
+                            max="3"
+                            step="1"
+                            value="2"
+                        />
+                    </div>
+
+                    <div class="slider-wrapper">
+                        <label>Spin <b id="spin-label">slow</b></label>
+                        <input
+                            type="range"
+                            id="spin-slider"
+                            min="0"
+                            max="3"
+                            step="1"
+                            value="1"
+                        />
+                    </div>
+                </div>
+
+                <button class="bloom-action-button" id="bloom-trigger">
+                    Bloom again
+                </button>
+            </aside>
+            <main>
+                <canvas id="c"></canvas>
+                <div id="hint">Drag to orbit ~ scroll to zoom</div>
+            </main>
+        </div>
+        <script type="module" src="./src/main.ts"></script>
+    </body>
+</html>

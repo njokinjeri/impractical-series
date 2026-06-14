@@ -16,7 +16,8 @@ export default defineConfig({
         parametric: resolve(__dirname, 'src/experiments/parametric-love/index.html'),
         archivist: resolve(__dirname, 'src/experiments/archivist-vault/index.html'),
         astraeus: resolve(__dirname, 'src/experiments/astraeus-flow/index.html'),
-        grass: resolve(__dirname, 'src/experiments/just-grass/index.html')
+        grass: resolve(__dirname, 'src/experiments/just-grass/index.html'),
+        bloom: resolve(__dirname, 'src/experiments/bloom/index.html')
       }
     }
   }
