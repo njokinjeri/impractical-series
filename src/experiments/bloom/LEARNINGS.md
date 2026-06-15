@@ -42,7 +42,7 @@ The density slider controls how frequently the formula is evaluated, fewer evalu
 
 - I tried adding a bit of diversification with the flower selection from Anthurium, Tulip, Plumeria, Passionflower, Fritillary, and Hibiscus but they didn't quite fit.
 - Adjusting HSL values without seeing output caused several wrong turns. The glow mode multiplies lightness by a depth scalar, which amplifies saturated inner stops aggressively on warm mode. The fix was matching the lightness range of a working colour (42–68) rather than tuning hue alone.
-- Red flash on flower switch — switching flowers triggered one frame where the new palette applied to the old point cloud. Fixed by clearing state.pts = [] before updating state.flower.
+- Switching flowers triggered one frame where the new palette applied to the old point cloud. Fixed by clearing state.pts = [] before updating state.flower.
 
 
 ## Attribution
@@ -56,4 +56,4 @@ This project wouldn't exist without the mathematical foundations laid by these b
 
 
 ## Performance - Ongoing
-rAF frames take ~54ms on dense flowers, the cost is inherent to sorting and drawing 40k points per frame via fillRect. Tried pre-caching all flowers and staggering builds across setTimeout tasks to reduce INP, but the frame cost itself remains. The real fix is switching from fillRect to ImageData pixel writes, one flush per frame instead of one API call per point, estimated 3–5x faster. This is yet to be implemented.
+rAF frames take ~54ms on dense flowers, the cost is inherent to sorting and drawing 40k points per frame via fillRect. Tried pre-caching all flowers and staggering builds across setTimeout tasks to reduce INP, but the frame cost itself remains. The real fix is switching from fillRect to ImageData pixel writes, one flush per frame instead of one API call per point, estimated 3-5x faster. This is yet to be implemented.
