@@ -109,7 +109,7 @@ function initDragListeners(canvas: HTMLCanvasElement): void {
 
     window.addEventListener("mousemove", (e: MouseEvent) => {
         if (!state.drag) return;
-        state.rotY += (e.clientX - state.lastX) * 0.4;
+        state.rotY -= (e.clientX - state.lastX) * 0.4;
         state.rotX += (e.clientY - state.lastY) * 0.4;
         state.lastX = e.clientX;
         state.lastY = e.clientY;
@@ -137,7 +137,7 @@ function initDragListeners(canvas: HTMLCanvasElement): void {
         "touchmove",
         (e: TouchEvent) => {
             if (!state.drag || e.touches.length !== 1) return;
-            state.rotY += (e.touches[0].clientX - state.lastX) * 0.4;
+            state.rotY -= (e.touches[0].clientX - state.lastX) * 0.4;
             state.rotX += (e.touches[0].clientY - state.lastY) * 0.4;
             state.lastX = e.touches[0].clientX;
             state.lastY = e.touches[0].clientY;
