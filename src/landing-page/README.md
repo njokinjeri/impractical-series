@@ -1,1 +1,0 @@
-## Impractical Series Landing Page
