@@ -3,12 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta
-      name="description"
-      content="Impractical Series: a growing collection of generative and interactive experiments built for the joy of building."
-    />
-    <link rel="bulb icon" type="image/png" href="/bulb.png" />
-    <link rel="stylesheet" href="./style.css" />
+    <meta name="description" content="Get in touch - Impractical Series." />
+    <title>Contact - Impractical Series</title>
+    <link rel="icon" type="image/png" href="/impractical-series/bulb.png" />
+    <link rel="stylesheet" href="style.css" />
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
@@ -16,34 +14,57 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     />
-    <title>Impractical Series</title>
   </head>
   <body>
-    <header class="site-nav">
-        <a class="brand" href="/impractical-series/" aria-label="Impractical Series">
-            impractical_
-        </a>
-        <nav aria-label="Site navigation">
-            <a class="nav-pill" href="/impractical-series/about">about</a>
-            <a class="nav-pill" href="/impractical-series/contact">contact</a>
-        </nav>
+    <header class="site-nav" role="banner">
+      <a class="brand" href="/impractical-series/">impractical_</a>
+      <nav aria-label="Site navigation">
+        <a class="nav-pill" href="/impractical-series/about">about</a>
+        <a
+          class="nav-pill"
+          href="/impractical-series/contact"
+          data-active="true"
+          style="--pill-accent: var(--color-amber)"
+          >contact</a
+        >
+      </nav>
     </header>
+
     <main>
-        <section class="hero" aria-label="Interactive physics sandbox">
-            <canvas id="hero-canvas" aria-hidden="true"></canvas>
-            <p class="hero-hint" aria-live="polite">drag a shape to interrupt</p>
-        </section>
+      <h1 class="page-title">got a crazy idea?</h1>
+      <p class="page-desc">
+        drop a line. thoughts, bugs, or side-project concepts.
+      </p>
 
-        <section class="projects" aria-labelledby="projects-heading">
-            <h2 id="projects-heading" class="sr-only">Experiments</h2>
-            <div class="card-grid" id="card-grid" role="list"></div>
+      <form id="contact-form" novalidate>
+        <label class="sr-only" for="contact-name">name</label>
+        <input
+          id="contact-name"
+          class="field"
+          type="text"
+          placeholder="name"
+          autocomplete="name"
+        />
 
-            <nav class="pagination" aria-label="Project pagination">
-                <button class="pagination__prev" id="page-prev" aria-label="Previous page">previous</button>
-                <span class="pagination__indicator" id="page-indicator" aria-live="polite">1 of 1</span>
-                <button class="pagination__next" id="page-next" aria-label="Next page">next</button>
-            </nav>
-        </section>
+        <label class="sr-only" for="contact-email">email</label>
+        <input
+          id="contact-email"
+          class="field"
+          type="email"
+          placeholder="email"
+          autocomplete="email"
+        />
+
+        <label class="sr-only" for="contact-idea">your idea</label>
+        <textarea
+          id="contact-idea"
+          class="field"
+          rows="4"
+          placeholder="your idea"
+        ></textarea>
+
+        <button class="btn btn--primary" type="submit">send</button>
+      </form>
     </main>
     <footer class="site-footer">
       <div class="footer-art" aria-hidden="true">
@@ -89,6 +110,6 @@
         </div>
       </div>
     </footer>
-    <script type="module" src="./main.ts"></script>
+    <script type="module" src="./src/landing-page/components/contact.ts"></script>
   </body>
 </html>

@@ -10,6 +10,8 @@ export default defineConfig({
     rollupOptions: {
       input: {
         main: resolve(__dirname, 'index.html'),
+        about: resolve(__dirname, 'about.html'),
+        contact: resolve(__dirname, 'contact/index.html'),
         threaded: resolve(__dirname, 'src/experiments/threaded/index.html'),
         hypnosis: resolve(__dirname, 'src/experiments/hypnosis-spiral/index.html'),
         penumbra: resolve(__dirname, 'src/experiments/penumbra/index.html'),

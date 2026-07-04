@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="About the Impractical Series - experiments built for the joy of building." />
+    <title>About - Impractical Series</title>
+    <link rel="icon" type="image/png" href="/impractical-series/bulb.png" />
+    <link rel="stylesheet" href="/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+      integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+  </head>
+  <body>
+
+    <header class="site-nav" role="banner">
+      <a class="brand" href="/impractical-series/">impractical_</a>
+      <nav aria-label="Site navigation">
+        <a
+          class="nav-pill"
+          href="/impractical-series/about"
+          data-active="true"
+          style="--pill-accent: var(--color-green)"
+        >about</a>
+        <a class="nav-pill" href="/impractical-series/contact">contact</a>
+      </nav>
+    </header>
+
+    <main>
+      <h1 class="page-title">about the series</h1>
+      <p class="page-desc">
+        Impractical Series is a growing collection of generative and interactive
+        experiments - built for the joy of building, not the need to ship.
+      </p>
+
+      <div class="page-section">
+        <p class="page-section__label">why</p>
+        <p class="page-section__body">
+          To play with ideas that don't need a business case - canvas, shaders,
+          physics, procedural geometry, and anything else that seems interesting
+          at 2am.
+        </p>
+      </div>
+
+      <div class="page-section">
+        <p class="page-section__label">how</p>
+        <p class="page-section__body">
+          TypeScript first. No frameworks unless the idea demands one.
+          Each experiment ships as a standalone page with its own entry point.
+          Built in public - all the wrong turns included.
+        </p>
+      </div>
+
+      <div class="page-section">
+        <p class="page-section__label">who</p>
+        <p class="page-section__body">
+            <a href="https://linkedin.com/in/njokinjeri">
+                Njoki Njeri ~ Creative Technologist & Fullstack Engineer
+            </a>
+        </p>
+      </div>
+    </main>
+    <footer class="site-footer">
+      <div class="footer-art" aria-hidden="true">
+        <canvas id="footer-canvas"></canvas>
+        <div class="footer-wordmark">
+          <span class="footer-wordmark__main">IMPRACTICAL</span>
+          <span class="footer-wordmark__sub">series</span>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <nav class="footer-socials" aria-label="Social links">
+          <a
+            href="https://github.com/njokinjeri"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Github repository"
+          >
+            <i class="fa-brands fa-github"></i>
+          </a>
+          <a
+            href="https://linkedin.com/in/njokinjeri"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="LinkedIn Profile"
+          >
+            <i class="fa-brands fa-linkedin"></i>
+          </a>
+          <a href="mailto:njerinjoki33@gmail.com" aria-label="Send email">
+            <i class="fa-solid fa-envelope"></i>
+          </a>
+        </nav>
+        <div class="footer-credit">
+          <p class="footer-text">
+            curiously tinkered with
+            <span
+              class="footer-heart"
+              id="footer-heart"
+              aria-label="love"
+              role="img"
+            ></span>
+          </p>
+          <span class="footer-copyright">&copy; 2026</span>
+        </div>
+      </div>
+    </footer>
+    <script type="module" src="/src/landing-page/components/footer-mount.ts"></script>
+    <script type="module">
+      import { mountFooter } from '/src/landing-page/components/footer-mount.ts'
+      mountFooter(15)
+    </script>
+  </body>
+</html>
