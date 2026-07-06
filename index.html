@@ -20,30 +20,67 @@
   </head>
   <body>
     <header class="site-nav">
-        <a class="brand" href="/impractical-series/" aria-label="Impractical Series">
-            impractical_
-        </a>
-        <nav aria-label="Site navigation">
-            <a class="nav-pill" href="/impractical-series/about">about</a>
-            <a class="nav-pill" href="/impractical-series/contact">contact</a>
-        </nav>
+      <a
+        class="brand"
+        href="/impractical-series/"
+        aria-label="Impractical Series"
+      >
+        impractical_
+      </a>
+      <nav aria-label="Site navigation">
+        <a class="nav-pill" href="/impractical-series/about">about</a>
+        <a class="nav-pill" href="/impractical-series/contact">contact</a>
+      </nav>
     </header>
     <main>
-        <section class="hero" aria-label="Interactive physics sandbox">
-            <canvas id="hero-canvas" aria-hidden="true"></canvas>
-            <p class="hero-hint" aria-live="polite">drag a shape to interrupt</p>
-        </section>
+      <section class="hero" aria-label="Interactive physics sandbox">
+        <canvas id="hero-canvas" aria-hidden="true"></canvas>
+        <p class="hero-hint" aria-live="polite">drag a shape to interrupt</p>
+      </section>
 
-        <section class="projects" aria-labelledby="projects-heading">
-            <h2 id="projects-heading" class="sr-only">Experiments</h2>
-            <div class="card-grid" id="card-grid" role="list"></div>
+      <section class="projects" aria-labelledby="projects-heading">
+        <div class="projects__header">
+          <h2 id="projects-heading" class="projects__title">experiments</h2>
+          <div
+            class="filter-row"
+            id="filter-row"
+            role="group"
+            aria-label="Filter by stack"
+          >
+            <button class="filter-pill filter-pill--active" data-filter="all">
+              all
+            </button>
+            <button class="filter-pill" data-filter="canvas">canvas</button>
+            <button class="filter-pill" data-filter="three">three.js</button>
+            <button class="filter-pill" data-filter="css">css</button>
+          </div>
+        </div>
 
-            <nav class="pagination" aria-label="Project pagination">
-                <button class="pagination__prev" id="page-prev" aria-label="Previous page">previous</button>
-                <span class="pagination__indicator" id="page-indicator" aria-live="polite">1 of 1</span>
-                <button class="pagination__next" id="page-next" aria-label="Next page">next</button>
-            </nav>
-        </section>
+        <div class="card-grid" id="card-grid" role="list"></div>
+
+        <nav class="pagination" aria-label="Project pagination">
+          <button
+            class="pagination__prev"
+            id="page-prev"
+            aria-label="Previous page"
+          >
+            previous
+          </button>
+          <span
+            class="pagination__indicator"
+            id="page-indicator"
+            aria-live="polite"
+            >1 of 1</span
+          >
+          <button
+            class="pagination__next"
+            id="page-next"
+            aria-label="Next page"
+          >
+            next
+          </button>
+        </nav>
+      </section>
     </main>
     <footer class="site-footer">
       <div class="footer-art" aria-hidden="true">
@@ -89,6 +126,6 @@
         </div>
       </div>
     </footer>
-    <script type="module" src="./main.ts"></script>
+    <script type="module" src="./src/landing-page/main.ts"></script>
   </body>
 </html>

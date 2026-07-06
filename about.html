@@ -3,7 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="About the Impractical Series - experiments built for the joy of building." />
+    <meta
+      name="description"
+      content="About the Impractical Series - experiments built for the joy of building."
+    />
     <title>About - Impractical Series</title>
     <link rel="icon" type="image/png" href="/impractical-series/bulb.png" />
     <link rel="stylesheet" href="/style.css" />
@@ -16,7 +19,6 @@
     />
   </head>
   <body>
-
     <header class="site-nav" role="banner">
       <a class="brand" href="/impractical-series/">impractical_</a>
       <nav aria-label="Site navigation">
@@ -25,45 +27,47 @@
           href="/impractical-series/about"
           data-active="true"
           style="--pill-accent: var(--color-green)"
-        >about</a>
+          >about</a
+        >
         <a class="nav-pill" href="/impractical-series/contact">contact</a>
       </nav>
     </header>
 
     <main>
-      <h1 class="page-title">about the series</h1>
-      <p class="page-desc">
-        Impractical Series is a growing collection of generative and interactive
-        experiments - built for the joy of building, not the need to ship.
-      </p>
-
-      <div class="page-section">
-        <p class="page-section__label">why</p>
-        <p class="page-section__body">
-          To play with ideas that don't need a business case - canvas, shaders,
-          physics, procedural geometry, and anything else that seems interesting
-          at 2am.
-        </p>
+      <div class="about-intro">
+        <div class="about-mini-sandbox" aria-hidden="true">
+          <canvas id="mini-canvas"></canvas>
+        </div>
+        <div class="about-intro__text">
+          <h1 class="page-title">about the series</h1>
+          <p class="page-desc">
+            A collection of experimental visual projects. This series tests the
+            boundaries of standard web software, stepping away from traditional
+            interfaces into a space driven entirely by pixels, logic, and play.
+          </p>
+        </div>
       </div>
 
       <div class="page-section">
-        <p class="page-section__label">how</p>
-        <p class="page-section__body">
-          TypeScript first. No frameworks unless the idea demands one.
-          Each experiment ships as a standalone page with its own entry point.
-          Built in public - all the wrong turns included.
+        <p class="page-section__label" style="color: var(--color-green)">
+          Philosophy
         </p>
-      </div>
-
-      <div class="page-section">
-        <p class="page-section__label">who</p>
-        <p class="page-section__body">
-            <a href="https://linkedin.com/in/njokinjeri">
-                Njoki Njeri ~ Creative Technologist & Fullstack Engineer
-            </a>
-        </p>
+        <div class="page-section__content">
+          <p class="page-section__body">
+            Every project starts as a visual question. Instead of building
+            software to solve a business problem or optimize a commercial
+            product, the goal here is to give spontaneous midnight ideas room to
+            grow.
+          </p>
+          <p class="page-section__body" style="margin-top: 1.25rem">
+            It is an intentional space to build simply and see what happens,
+            documenting both the breakthroughs and the messy mistakes along the
+            way.
+          </p>
+        </div>
       </div>
     </main>
+
     <footer class="site-footer">
       <div class="footer-art" aria-hidden="true">
         <canvas id="footer-canvas"></canvas>
@@ -108,10 +112,11 @@
         </div>
       </div>
     </footer>
-    <script type="module" src="/src/landing-page/components/footer-mount.ts"></script>
     <script type="module">
-      import { mountFooter } from '/src/landing-page/components/footer-mount.ts'
-      mountFooter(15)
+      import { mountFooter } from '/src/landing-page/components/footer-mount.ts';
+      import { mountMiniSandbox } from '/src/landing-page/components/mini-sandbox.ts';
+      mountFooter(15);
+      mountMiniSandbox(document.getElementById('mini-canvas'));
     </script>
   </body>
 </html>

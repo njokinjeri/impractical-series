@@ -66,7 +66,7 @@ function heartSvg(color: string): string {
   </svg>`;
 }
 
-export function mountFooter(shapeCount = 4): () => void {
+export function mountFooter(shapeCount = 10): () => void {
   const canvas = document.getElementById(
     'footer-canvas'
   ) as HTMLCanvasElement | null;

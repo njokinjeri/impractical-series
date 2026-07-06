@@ -11,6 +11,16 @@ const contactForm = document.getElementById(
 ) as HTMLFormElement | null;
 
 if (contactForm) {
+  let statusMessage = document.getElementById(
+    'contact-status'
+  ) as HTMLDivElement | null;
+  if (!statusMessage) {
+    statusMessage = document.createElement('div');
+    statusMessage.id = 'contact-status';
+    statusMessage.className = 'form-status';
+    contactForm.appendChild(statusMessage);
+  }
+
   contactForm.addEventListener('submit', async (e: Event) => {
     e.preventDefault();
 
@@ -32,8 +42,12 @@ if (contactForm) {
     const email = emailEL.value.trim();
     const idea = ideaEL.value.trim();
 
+    statusMessage!.textContent = '';
+    statusMessage!.className = 'form-status';
+
     if (!name || !email || !idea) {
-      alert(`Please fill out all fields before sending.`);
+      statusMessage!.textContent = 'please fill out all fields before sending.';
+      statusMessage!.classList.add('form-status--error');
       return;
     }
 
@@ -47,37 +61,37 @@ if (contactForm) {
       const response = await fetch(FORM_ENDPOINT, {
         method: 'POST',
         headers: {
-          ContentType: 'application/json',
+          'Content-Type': 'application/json',
           Accept: 'application/json',
         },
         body: JSON.stringify({ name, email, message: idea }),
       });
 
       if (response.ok) {
-        submitBtn.textContent = 'sent successfully!';
-        submitBtn.style.backgroundColor = 'var(--color-green, #4caf50)';
+        statusMessage!.textContent = 'message sent successfully.';
+        statusMessage!.classList.add('form-status--success');
+
+        submitBtn.textContent = 'sent';
         form.reset();
 
         setTimeout(() => {
           submitBtn.textContent = originalText;
           submitBtn.disabled = false;
           submitBtn.style.opacity = '1';
-          submitBtn.style.backgroundColor = '';
+          statusMessage!.textContent = '';
+          statusMessage!.className = 'form-status';
         }, 4000);
       } else {
         throw new Error('Server responded with an error status.');
       }
     } catch (error) {
       console.error('Submission failed:', error);
-      submitBtn.textContent = 'failed to send';
-      submitBtn.style.backgroundColor = '#f44336';
+      statusMessage!.textContent = 'failed to send message. please try again.';
+      statusMessage!.classList.add('form-status--error');
 
-      setTimeout(() => {
-        submitBtn.textContent = originalText;
-        submitBtn.disabled = false;
-        submitBtn.style.opacity = '1';
-        submitBtn.style.backgroundColor = '';
-      }, 4000);
+      submitBtn.textContent = originalText;
+      submitBtn.disabled = false;
+      submitBtn.style.opacity = '1';
     }
   });
 }

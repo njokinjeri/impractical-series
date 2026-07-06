@@ -103,7 +103,7 @@ export const projects: Project[] = [
 const SITE_BASE = '/impractical-series';
 
 export function getDetailUrl(slug: string): string {
-  return `${SITE_BASE}/projects/${slug}/`;
+  return `${SITE_BASE}/project.html?id=${slug}/`;
 }
 
 export function getPlayUrl(slug: string): string {
