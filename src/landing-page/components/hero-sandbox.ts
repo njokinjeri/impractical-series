@@ -232,15 +232,33 @@ export function mountHeroSandbox(canvas: HTMLCanvasElement): () => void {
     animId = requestAnimationFrame(tick);
   }
 
-  function getCanvasPos(e: MouseEvent): { x: number; y: number } {
+  function getCanvasPos(e: MouseEvent | TouchEvent): { x: number; y: number } {
     const rect = canvas.getBoundingClientRect();
-    return { x: e.clientX - rect.left, y: e.clientY - rect.top };
+    if ('touches' in e && e.touches.length > 0) {
+      return {
+        x: e.touches[0].clientX - rect.left,
+        y: e.touches[0].clientY - rect.top,
+      };
+    } else if ('changedTouches' in e && e.changedTouches.length > 0) {
+      return {
+        x: e.changedTouches[0].clientX - rect.left,
+        y: e.changedTouches[0].clientY - rect.top,
+      };
+    }
+    const mouseEvent = e as MouseEvent;
+    return {
+      x: mouseEvent.clientX - rect.left,
+      y: mouseEvent.clientY - rect.top,
+    };
   }
 
-  function onMouseDown(e: MouseEvent): void {
+  function onStart(e: MouseEvent | TouchEvent): void {
+    if ('touches' in e) e.preventDefault();
     const { x, y } = getCanvasPos(e);
+
     shapes.forEach((s, i) => {
-      if (Math.hypot(x - s.x, y - s.y) < s.r + 8) {
+      const hitRadius = 'touches' in e ? s.r + 16 : s.r + 8;
+      if (Math.hypot(x - s.x, y - s.y) < hitRadius) {
         dragIdx = i;
         dragOffX = x - s.x;
         dragOffY = y - s.y;
@@ -249,8 +267,10 @@ export function mountHeroSandbox(canvas: HTMLCanvasElement): () => void {
     });
   }
 
-  function onMouseMove(e: MouseEvent): void {
+  function onMove(e: MouseEvent | TouchEvent): void {
     if (dragIdx < 0) return;
+    if ('touches' in e) e.preventDefault();
+
     const { x, y } = getCanvasPos(e);
     shapes[dragIdx].x = x - dragOffX;
     shapes[dragIdx].y = y - dragOffY;
@@ -259,24 +279,35 @@ export function mountHeroSandbox(canvas: HTMLCanvasElement): () => void {
     lastInteract = Date.now();
   }
 
-  function onMouseUp(): void {
+  function onEnd(): void {
     dragIdx = -1;
   }
 
   const resizeObserver = new ResizeObserver(resize);
   resizeObserver.observe(canvas.parentElement!);
 
-  canvas.addEventListener('mousedown', onMouseDown);
-  window.addEventListener('mousemove', onMouseMove);
-  window.addEventListener('mouseup', onMouseUp);
+  canvas.addEventListener('mousedown', onStart);
+  window.addEventListener('mousemove', onMove);
+  window.addEventListener('mouseup', onEnd);
+
+  canvas.addEventListener('touchstart', onStart, { passive: false });
+  window.addEventListener('touchmove', onMove, { passive: false });
+  window.addEventListener('touchend', onEnd);
+  window.addEventListener('touchcancel', onEnd);
 
   animId = requestAnimationFrame(tick);
 
   return () => {
     cancelAnimationFrame(animId);
     resizeObserver.disconnect();
-    canvas.removeEventListener('mousedown', onMouseDown);
-    window.removeEventListener('mousemove', onMouseMove);
-    window.removeEventListener('mouseup', onMouseUp);
+
+    canvas.removeEventListener('mousedown', onStart);
+    window.removeEventListener('mousemove', onMove);
+    window.removeEventListener('mouseup', onEnd);
+
+    canvas.removeEventListener('touchstart', onStart);
+    window.removeEventListener('touchmove', onMove);
+    window.removeEventListener('touchend', onEnd);
+    window.removeEventListener('touchcancel', onEnd);
   };
 }
