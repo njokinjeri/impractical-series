@@ -41,6 +41,7 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  -webkit-tap-highlight-color: transparent;
 }
 
 html {
@@ -61,6 +62,26 @@ body {
   display: flex;
   flex-direction: column;
   overflow-x: hidden;
+}
+
+#hero-canvas,
+#footer-canvas,
+.card-thumb-canvas,
+.about-mini-sandbox canvas {
+  touch-action: none; 
+  -webkit-user-select: none; 
+  user-select: none;
+}
+
+.brand,
+.btn,
+.card,
+.nav-pill,
+.nav-back,
+.footer-socials a,
+#contact-form button {
+  -webkit-user-select: none; 
+  user-select: none;         
 }
 
 img,
@@ -143,6 +164,11 @@ main {
   font-weight: 500;
   letter-spacing: 1.5px;
   color: var(--color-text-primary);
+  transition: color 0.2s ease;
+}
+
+.brand:hover {
+  color: var(--color-green);
 }
 
 .site-nav nav {
