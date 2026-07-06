@@ -3,40 +3,42 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" href="/bulb.png" type="image/png">
+    <link rel="icon" href="/bulb.png" type="image/png" />
     <title>Threaded</title>
   </head>
   <body>
     <canvas id="c"></canvas>
     <main>
-		<header>
-			<div class="logo-wrapper">
-				<h1 id="title">THREADED</h1>
-        		<button id="log-btn">// LOG</button>
-			</div>
-				<button id="pause-btn" class="ctrl-btn">// PAUSE</button>
-      	</header>
-		<div>
-			<div id="log-drawer">
-				<div id="log-header">
-					<div id="log-title">// TRANSLATION LOG</div>
-					<button id="log-close">&times;</button>
-				</div>
-				<div id="log-body">
-					<div id="log-binary-row">
-						<div class="log-section-label">HELLO, WORLD! → BINARY (ASCII: same output for every language)</div>
-						<div id="log-binary-table"></div>
-					</div>
-					<div id="log-langs"></div>
-				</div>
-			</div>
-		</div>
-		<section id="translation-bar">
-        	<div id="trans-label">// HELLO, WORLD! &#8594; BINARY</div>
-        	<div id="trans-sequence">
-				<span id="trans-cursor">▮</span>
-      		</div>
-		</section>
+      <header>
+        <div class="logo-wrapper">
+          <h1 id="title">THREADED</h1>
+          <button id="log-btn">// LOG</button>
+        </div>
+        <button id="pause-btn" class="ctrl-btn">// PAUSE</button>
+      </header>
+      <div>
+        <div id="log-drawer">
+          <div id="log-header">
+            <div id="log-title">// TRANSLATION LOG</div>
+            <button id="log-close">&times;</button>
+          </div>
+          <div id="log-body">
+            <div id="log-binary-row">
+              <div class="log-section-label">
+                HELLO, WORLD! → BINARY (ASCII: same output for every language)
+              </div>
+              <div id="log-binary-table"></div>
+            </div>
+            <div id="log-langs"></div>
+          </div>
+        </div>
+      </div>
+      <section id="translation-bar">
+        <div id="trans-label">// HELLO, WORLD! &#8594; BINARY</div>
+        <div id="trans-sequence">
+          <span id="trans-cursor">▮</span>
+        </div>
+      </section>
     </main>
     <script type="module" src="./src/main.ts"></script>
   </body>

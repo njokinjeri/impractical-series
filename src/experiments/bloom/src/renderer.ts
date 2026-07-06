@@ -22,7 +22,6 @@ export function drawBg(): void {
     ctx.fillRect(0, 0, W, H);
 }
 
-
 function colorFor(r: number, dz: number): string {
     const stops = PALETTE[state.flower as FlowerKey][state.variant];
     const n = stops.length;
@@ -90,7 +89,6 @@ export function render(): void {
         ctx.fillRect(cx + x1 * dz - 1, cy + ry * dz - 1, 2, 2);
     }
 }
-
 
 export function initRenderer(canvas: HTMLCanvasElement): void {
     const context = canvas.getContext("2d");

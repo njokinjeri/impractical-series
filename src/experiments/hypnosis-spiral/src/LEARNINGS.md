@@ -1,39 +1,41 @@
 # Hypnosis Spiral
 
 ## What this is?
+
 An interactive canvas-based hypnosis spiral designed to simulate aftereffect.
 
 The spiral continuously rotates while giving the user control over parameters such as:
-- Rotation speed, 
+
+- Rotation speed,
 - Line width
 - Color
 
 With these controls, the viewer is able to experiment with how the visual motion and contrast influence the strength of the illusion.
 
 ## Initial Inspiration
-The idea came from classic “hypnosis spiral” visuals often used in cartoons and movies. 
+
+The idea came from classic “hypnosis spiral” visuals often used in cartoons and movies.
 They are usually presented as a gimmick, but the underlying phenomenon relates to real perceptual effects in human vision.
 
 I wanted to recreate the visual digitally and explore whether the illusion could reproduce the motion aftereffect-the sensation where stationary objects appear to move after staring at a moving pattern for a period of time.
 
 Rather than simply rendering the spiral, I added controls so the viewer can manipulate the parameters and test how different configurations affect the illusion.
 
-
 ## Concept
+
 The project is built around parametric spiral rendered on a canvas.
 
 Key ideas behind the concept:
+
 - Generate a spiral using polar coordinates
 - Animate the spiral through continuous rotation
 - Provide real-time parameter controls that modify the rendering loop
 - Explore perceptual effects produced by repetitive high-contrast motion
 
-
 ## Tools Used
 
 - Canvas API
 - Typescript
-
 
 ## Key concepts encountered
 
@@ -54,7 +56,6 @@ Key ideas behind the concept:
 **CSS transitions on display:none**: `display: none` cannot be animated. Replaced with `max-height` and `opacity` transitions to achieve smooth open/close on the info panel and controls drawer.
 
 **localStorage for persistence**: user settings are serialised to `localStorage` on every input change and merged with defaults on load using a spread pattern (`{ ...defaults, ...loadSettings() }`), so new settings added in future don't break existing saved data.
-
 
 ## What didn't work
 

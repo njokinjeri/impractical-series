@@ -1,4 +1,3 @@
-
 export const FLOWERS = ["jazmin", "lotus", "rose", "dahlia", "lily"] as const;
 
 export type FlowerKey = (typeof FLOWERS)[number];
@@ -11,11 +10,9 @@ export const LABELS: Record<FlowerKey, string> = {
     lily: "Water Lily",
 };
 
-
 export const SPIN_LBL = ["off", "slow", "med", "fast"] as const;
 export const DET_LBL = ["delicate", "fine", "lush"] as const;
 export const GLOW_LBL = ["shaded", "warm", "neon"] as const;
-
 
 export const SPIN_SPD = [0, 0.5, 1.0, 1.5] as const;
 

@@ -1,4 +1,4 @@
-# Penumbra 
+# Penumbra
 
 ## What this is?
 
@@ -13,20 +13,20 @@ The idea came from venetian blinds, more specifically the way light behaves diff
 With that could we actualize that using only the browser's compositing model, without touching a single drawing API. The constraint became the premise.
 
 ## Concept
+
 This project is built around CSS 3D perspective transforms, which are applied to a set of div elements acting as slats.
 
 Key ideas behind the concept:
+
 - Simulate physics depth using `rotateY()`/ `rotateX()` inside a CSS perspective container.
 - Paint chromatic cast light using stacked `radial-gradient` overlay divs composited with `mix-blend-mode:multiply` and `screen`.
 - Animate entirely through a single lerped value written to CSS each frame.
 
-
-
 ## Tools Used
+
 - HTML/CSS
 - Canvas API - for the grain texture only
 - Typescript
-
 
 ## Key Concepts Encountered
 
@@ -35,7 +35,6 @@ Key ideas behind the concept:
 **mix-blend-mode as a compositing engine**: the cast light is four overlay divs with `radial-gradient` backgrounds composited with `multiply` and `screen` blend modes. `multiply` darkens, simulating coloured light landing on a white surface. `screen` lightens, producing the hot bloom at the source edge.
 
 **Exponential lerp as an animation system**: the entire animation is `current += (target - current) * speed`. One number, one operation per frame. Target is set by mouse position and everything visual is derived from that single value.
-
 
 ## What didn't work
 

@@ -12,7 +12,6 @@ import { state } from "./state.js";
 import { build } from "./geometry.js";
 import { drawBg } from "./renderer.js";
 
-
 function getEl<T extends HTMLElement>(id: string): T {
     const el = document.getElementById(id) as T | null;
     if (!el) throw new Error(`Element #${id} not found.`);
@@ -146,7 +145,6 @@ function initDragListeners(canvas: HTMLCanvasElement): void {
     );
 }
 
-
 function initPinchZoom(canvas: HTMLCanvasElement): void {
     let lastPinchDist = 0;
 
@@ -190,7 +188,6 @@ function initPinchZoom(canvas: HTMLCanvasElement): void {
     );
 }
 
-
 function initScrollZoom(canvas: HTMLCanvasElement): void {
     canvas.addEventListener(
         "wheel",
@@ -205,7 +202,6 @@ function initScrollZoom(canvas: HTMLCanvasElement): void {
     );
 }
 
-
 function initResizeListener(canvas: HTMLCanvasElement): void {
     const onResize = (): void => {
         const parent = canvas.parentElement;
@@ -217,7 +213,6 @@ function initResizeListener(canvas: HTMLCanvasElement): void {
     window.addEventListener("resize", onResize);
     onResize();
 }
-
 
 export function initControls(
     canvas: HTMLCanvasElement,

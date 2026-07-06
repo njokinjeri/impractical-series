@@ -1,15 +1,16 @@
 # Parametric Love
 
 ## What this is?
+
 An interactive 3D experiment that explores the intersection of mathematical shapes and fluid dynamics. It features a procedurally generated heart that "fills" with liquid as the user interacts with it, culminating in a particle-based burst effect.
 
-
 ## Initial Inspiration
+
 The primary goal was to challenge the convention of using primitive containers (cubes/cylinders) for liquid simulations. This project aims to see if a complex, non-primitive shape like a heart could be used as a functional container for a clipping-plane-based simulation while maintaining visual accuracy.
 
 ## Concept
 
-The core concept relies on Parametric Geometry manipulation. By taking a standard sphere and applying mathematical offsets to its vertices (x, y, z), we sculpt the heart shape. 
+The core concept relies on Parametric Geometry manipulation. By taking a standard sphere and applying mathematical offsets to its vertices (x, y, z), we sculpt the heart shape.
 
 By animating a clipping plane's constant value with a downward-facing normal (0,−1,0), we create the illusion of a container being filled with a glowing, emissive substance. This requires precise synchronization between the 3D space and the UI overlay.
 

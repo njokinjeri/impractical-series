@@ -2,13 +2,11 @@
 
 ## What this is?
 
-Just grass serves as a real-time interactive field simulation built on HTML canvas. The field reacts to touch and movement, grows wild when left alone, and sways in user-controlled wind. 
-
+Just grass serves as a real-time interactive field simulation built on HTML canvas. The field reacts to touch and movement, grows wild when left alone, and sways in user-controlled wind.
 
 ## Initial Inspiration
 
-Laziness to actually go an touch some grass outside. So I thought how about I grow some of my own on the browser, which proved to be quite fun physics puzzle to solve. 
-
+Laziness to actually go an touch some grass outside. So I thought how about I grow some of my own on the browser, which proved to be quite fun physics puzzle to solve.
 
 ## Concept
 
@@ -21,7 +19,6 @@ The final piece moves naturally between three interactive states:
 - Overgrowth: If you leave the field completely alone for a few seconds, the grass enters a wild state. It rapidly grows past its normal height and a natural background storm kicks in.
 
 - Wind: A toggleable, user-controlled layer. You can dial the strength from a gentle breeze to a heavy storm. The wind doesn't hit everything at once; it is staggered across the screen so it rolls through the field in realistic waves.
-
 
 ## Tools Used
 
@@ -45,12 +42,12 @@ The final piece moves naturally between three interactive states:
 
 - Pre-Baking Colors for Speed: Generating complex HSL color code text strings inside a 60 FPS drawing loop was putting a heavy load on the browser's memory management, causing micro-stutters. Moving the color generation to the constructor completely smoothed out the frame rate.
 
-
 ## What still doesn't work!!!
 
 - There is still a minor bug where if the grass is fully overgrown and you slice through it with your cursor at maximum speed, the blade shapes can briefly tear or stretch unnaturally under the aggressive physics calculation. It is partially fixed, but not completely gone.
 
 ### Considerable mentions
+
 - The grass goes through a quiet phase right after it sprouts where it barely moves. Short blades simply don't have much range to swing through, the taller they get, the more they can move. So the field naturally comes alive as it grows. It looks like something is broken at first but it's actually the physics doing the right thing.
 
 - There is an awkward pause right after you stop interacting before the field settles back into its natural sway. The grass is mid-physics transition, it was being pushed, now it's recovering, and that handoff takes a beat. We reduced it but couldn't fully eliminate it without making the blades feel rubbery during interaction. Still an open problem.

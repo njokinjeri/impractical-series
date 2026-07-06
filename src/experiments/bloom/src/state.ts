@@ -1,9 +1,9 @@
 import { type FlowerKey } from "./constants.js";
 
 export interface Cfg {
-    det: number; 
-    glow: number; 
-    spin: number; 
+    det: number;
+    glow: number;
+    spin: number;
 }
 
 export interface Point {
@@ -23,7 +23,7 @@ export interface AppState {
     drag: boolean;
     lastX: number;
     lastY: number;
-    bloomT: number; 
+    bloomT: number;
     blooming: boolean;
     last: number;
     W: number;

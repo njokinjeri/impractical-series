@@ -1,12 +1,13 @@
 # Astraeus Flow
 
 ## What this is?
-Astreaus Flow represents a real-time visualization of the Genesis Effect - this a speculative physics concept from Star Trek II, that re-imagines rapid planetary creation through expanding waves of transformative energy. 
+
+Astreaus Flow represents a real-time visualization of the Genesis Effect - this a speculative physics concept from Star Trek II, that re-imagines rapid planetary creation through expanding waves of transformative energy.
 
 Our implementation transforms the Genesis Effect into a live physics playground where 15,000 particles exist in a constant tug-of-war between structure and chaos. Users act as the catalyst, using the Energy, Tension, and Drift controls to manipulate how matter scatters, snaps back, and vibrates in real-time.
 
-
 ## Initial Inspiration
+
 The project was born from the "Genesis Effect" from Star Trek II: The Wrath of Khan. I wanted to capture that moment where matter is disrupted and reorganized instantly. The name Astraeus (the Titan god of dusk and stars) was chosen, befittingly so.
 
 ## Concept
@@ -18,7 +19,6 @@ The project is built on the idea of Resilient Geometry, a digital star-system th
 - User Interaction: The user acts as the disruptive force. Using mouse-repulsion math, you temporarily override the blueprint, scattering particles based on distance and speed.
 
 - Flow: We use Simplex Noise to give the particles a pulse. This ensures the starfield never looks static, simulating a living energy field rather than dead pixels.
-
 
 ## Tools Used
 
@@ -38,9 +38,6 @@ The project is built on the idea of Resilient Geometry, a digital star-system th
 
 - State-Driven HUD Mapping: DOM manipulation is expensive. Instead of searching for elements every frame, I mapped our variables to a labelMap object, ensuring the UI only updates when the user actually moves a slider.
 
-
-
 ## What didn't work
 
 The Perfection Trap: I fell into a significant procrastination cycle trying to define what a perfect execution of the Genesis Effect should look like. In my own analysis, I spent more time theorizing about the physics of a terraforming wave than actually writing the code, which delayed the initial progress I could have made.
-

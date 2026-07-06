@@ -4,13 +4,9 @@ import tseslint from 'typescript-eslint';
 export default tseslint.config(
   // 1. Global Ignores (Replaces .eslintignore)
   {
-    ignores: [
-      '**/node_modules/**',
-      '**/dist/**',
-      '**/build/**',
-    ],
+    ignores: ['**/node_modules/**', '**/dist/**', '**/build/**'],
   },
-  
+
   js.configs.recommended,
   ...tseslint.configs.recommended,
   {
@@ -23,7 +19,7 @@ export default tseslint.config(
       'no-unused-vars': 'off',
       '@typescript-eslint/no-unused-vars': [
         'warn',
-        { argsIgnorePattern: '^_' }
+        { argsIgnorePattern: '^_' },
       ],
     },
   }

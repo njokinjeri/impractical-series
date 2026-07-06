@@ -7,7 +7,7 @@
   --panel-bg: rgba(0, 0, 0, 0.72);
   --panel-border: rgba(0, 255, 136, 0.18);
 
-  --font-mono: "JetBrains Mono", monospace;
+  --font-mono: 'JetBrains Mono', monospace;
 
   --spacing-xs: 6px;
   --spacing-sm: 14px;
@@ -83,11 +83,8 @@ canvas {
 }
 
 #control-panel.collapsed {
-  transform: translateX(
-    calc(100% - var(--panel-handle-width))
-  );
+  transform: translateX(calc(100% - var(--panel-handle-width)));
 }
-
 
 #collapse-btn {
   position: absolute;
@@ -120,7 +117,6 @@ canvas {
   transform: scale(0.96);
 }
 
-
 #control-panel h2 {
   font-size: 14px;
   letter-spacing: 3px;
@@ -136,7 +132,6 @@ canvas {
   background: var(--neon);
   opacity: 0.9;
 }
-
 
 .control-group {
   display: flex;
@@ -161,21 +156,20 @@ canvas {
   opacity: 0.9;
 }
 
-
-input[type="range"] {
+input[type='range'] {
   width: 100%;
   appearance: none;
   background: transparent;
   cursor: pointer;
 }
 
-input[type="range"]::-webkit-slider-runnable-track {
+input[type='range']::-webkit-slider-runnable-track {
   height: 4px;
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.12);
 }
 
-input[type="range"]::-webkit-slider-thumb {
+input[type='range']::-webkit-slider-thumb {
   appearance: none;
   width: 14px;
   height: 14px;
@@ -185,19 +179,18 @@ input[type="range"]::-webkit-slider-thumb {
   border: none;
 }
 
-input[type="range"]::-moz-range-track {
+input[type='range']::-moz-range-track {
   height: 4px;
   background: rgba(255, 255, 255, 0.12);
 }
 
-input[type="range"]::-moz-range-thumb {
+input[type='range']::-moz-range-thumb {
   width: 14px;
   height: 14px;
   border: none;
   border-radius: 50%;
   background: var(--neon);
 }
-
 
 #control-panel.collapsed .control-group,
 #control-panel.collapsed .monitor-line {
@@ -258,14 +251,13 @@ input[type="range"]::-moz-range-thumb {
   padding: 10px 16px;
   border-radius: 999px;
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(255,255,255,0.06);
+  border: 1px solid rgba(255, 255, 255, 0.06);
   pointer-events: none;
   white-space: nowrap;
   max-width: calc(100vw - 40px);
   overflow: hidden;
   text-overflow: ellipsis;
 }
-
 
 #control-panel::-webkit-scrollbar {
   width: 6px;
@@ -276,7 +268,6 @@ input[type="range"]::-moz-range-thumb {
 
   border-radius: 999px;
 }
-
 
 @media (max-width: 768px) {
   :root {

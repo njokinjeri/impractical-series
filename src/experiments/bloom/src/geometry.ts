@@ -7,7 +7,6 @@ function add(P: Point[], x: number, y: number, z: number, r: number): void {
     P.push({ x, y, z, r });
 }
 
-
 function buildJazmin(b: number, m: number): Point[] {
     const P: Point[] = [];
     const c = 7,
