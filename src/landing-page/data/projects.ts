@@ -33,7 +33,7 @@ export const projects: Project[] = [
     index: 1,
     title: 'Threaded',
     description:
-      'Threads of source code from 16 languages converge into the same binary.',
+      'A visual simulation showing how 16 different programming languages flow, converge, and collapse into the exact same binary machine code.',
     stack: ['Canvas 2D', 'TypeScript'],
     accent: 'blue',
   },
@@ -42,7 +42,7 @@ export const projects: Project[] = [
     index: 2,
     title: 'Hypnosis Spiral',
     description:
-      'Interactive parametric spiral exploring perceptual motion aftereffects.',
+      'An interactive canvas-based optical illusion designed to simulate and test motion aftereffects through continuous rotation.',
     stack: ['Canvas 2D', 'TypeScript'],
     accent: 'blue',
   },
@@ -51,7 +51,7 @@ export const projects: Project[] = [
     index: 3,
     title: 'Penumbra',
     description:
-      'Interactive blind simulation with cursor-driven tilt and cast light.',
+      'A 3D window blind simulation using CSS transforms and gradient blend modes to cast dynamic, colored light leaks across rotating slats.',
     stack: ['HTML', 'CSS', 'TypeScript'],
     accent: 'green',
   },
@@ -60,7 +60,7 @@ export const projects: Project[] = [
     index: 4,
     title: 'Parametric Love',
     description:
-      'Procedural vertex sculpting and interactive fluid clipping simulation.',
+      'A 3D math and fluid simulation featuring an interactive heart mesh that fills with liquid before triggering a particle-based explosion.',
     stack: ['Three.js', 'TypeScript', 'GLSL'],
     accent: 'amber',
   },
@@ -69,7 +69,7 @@ export const projects: Project[] = [
     index: 5,
     title: 'Archivist Vault',
     description:
-      'A 3D library lock using procedural books and physical logic gates.',
+      'A 3D digital lock experiment where you navigate a library layout to find and tilt three specific hidden books in sequence to open a secret vault.',
     stack: ['CSS 3D', 'TypeScript'],
     accent: 'green',
   },
@@ -78,7 +78,7 @@ export const projects: Project[] = [
     index: 6,
     title: 'Astraeus Flow',
     description:
-      'The Genesis Effect: 15,000 particles reacting to disruption through resilient geometry.',
+      'A real-time particle playground where 15,000 points exist in a constant tug-of-war between structure and chaos based on user interaction.',
     stack: ['Three.js', 'TypeScript', 'Simplex Noise'],
     accent: 'amber',
   },
@@ -86,7 +86,8 @@ export const projects: Project[] = [
     slug: 'just-grass',
     index: 7,
     title: 'Just Grass',
-    description: 'A reactive procedural grassland.',
+    description:
+      'An interactive canvas grassland that reacts to touch, grows wild when left untouched, and sways naturally under custom wind forces.',
     stack: ['Canvas 2D', 'TypeScript', 'Physics'],
     accent: 'blue',
   },
@@ -94,7 +95,8 @@ export const projects: Project[] = [
     slug: 'bloom',
     index: 8,
     title: 'Bloom',
-    description: 'Parametric flowers blooming in 3D space.',
+    description:
+      'A 3D mathematical renderer that generates and animates five flower species as glowing point clouds using parametric surface equations.',
     stack: ['Canvas 2D', 'TypeScript', 'Parametric Math'],
     accent: 'blue',
   },
