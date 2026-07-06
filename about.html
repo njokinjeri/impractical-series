@@ -5,9 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="Impractical Series: a growing collection of generative and interactive experiments built for the joy of building."
+      content="About the Impractical Series - experiments built for the joy of building."
     />
-    <link rel="bulb icon" type="image/png" href="/impractical-series/bulb.png" />
+    <title>About - Impractical Series</title>
+    <link rel="icon" type="image/png" href="/impractical-series/bulb.png" />
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
@@ -15,77 +16,61 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     />
-    <title>Impractical Series</title>
-    <script type="module" crossorigin src="/impractical-series/assets/main-BcXQ18kb.js"></script>
+    <script type="module" crossorigin src="/impractical-series/assets/about-Dyv2NdHf.js"></script>
     <link rel="modulepreload" crossorigin href="/impractical-series/assets/modulepreload-polyfill-B5Qt9EMX.js">
     <link rel="modulepreload" crossorigin href="/impractical-series/assets/footer-mount-BjPsgH-9.js">
-    <link rel="modulepreload" crossorigin href="/impractical-series/assets/projects-BSTU5Vh6.js">
     <link rel="stylesheet" crossorigin href="/impractical-series/assets/footer-mount-qzUqAZPv.css">
   </head>
   <body>
-    <header class="site-nav">
-      <a
-        class="brand"
-        href="/impractical-series/"
-        aria-label="Impractical Series"
-      >
-        impractical_
-      </a>
+    <header class="site-nav" role="banner">
+      <a class="brand" href="/impractical-series/">impractical_</a>
       <nav aria-label="Site navigation">
-        <a class="nav-pill" href="/impractical-series/about">about</a>
+        <a
+          class="nav-pill"
+          href="/impractical-series/about"
+          data-active="true"
+          style="--pill-accent: var(--color-green)"
+          >about</a
+        >
         <a class="nav-pill" href="/impractical-series/contact">contact</a>
       </nav>
     </header>
+
     <main>
-      <section class="hero" aria-label="Interactive physics sandbox">
-        <canvas id="hero-canvas" aria-hidden="true"></canvas>
-        <p class="hero-hint" aria-live="polite">drag a shape to interrupt</p>
-      </section>
-
-      <section class="projects" aria-labelledby="projects-heading">
-        <div class="projects__header">
-          <h2 id="projects-heading" class="projects__title">experiments</h2>
-          <div
-            class="filter-row"
-            id="filter-row"
-            role="group"
-            aria-label="Filter by stack"
-          >
-            <button class="filter-pill filter-pill--active" data-filter="all">
-              all
-            </button>
-            <button class="filter-pill" data-filter="canvas">canvas</button>
-            <button class="filter-pill" data-filter="three">three.js</button>
-            <button class="filter-pill" data-filter="css">css</button>
-          </div>
+      <div class="about-intro">
+        <div class="about-mini-sandbox" aria-hidden="true">
+          <canvas id="mini-canvas"></canvas>
         </div>
+        <div class="about-intro__text">
+          <h1 class="page-title">about the series</h1>
+          <p class="page-desc">
+            A collection of experimental visual projects. This series tests the
+            boundaries of standard web software, stepping away from traditional
+            interfaces into a space driven entirely by pixels, logic, and play.
+          </p>
+        </div>
+      </div>
 
-        <div class="card-grid" id="card-grid" role="list"></div>
-
-        <nav class="pagination" aria-label="Project pagination">
-          <button
-            class="pagination__prev"
-            id="page-prev"
-            aria-label="Previous page"
-          >
-            previous
-          </button>
-          <span
-            class="pagination__indicator"
-            id="page-indicator"
-            aria-live="polite"
-            >1 of 1</span
-          >
-          <button
-            class="pagination__next"
-            id="page-next"
-            aria-label="Next page"
-          >
-            next
-          </button>
-        </nav>
-      </section>
+      <div class="page-section">
+        <p class="page-section__label" style="color: var(--color-green)">
+          Philosophy
+        </p>
+        <div class="page-section__content">
+          <p class="page-section__body">
+            Every project starts as a visual question. Instead of building
+            software to solve a business problem or optimize a commercial
+            product, the goal here is to give spontaneous midnight ideas room to
+            grow.
+          </p>
+          <p class="page-section__body" style="margin-top: 1.25rem">
+            It is an intentional space to build simply and see what happens,
+            documenting both the breakthroughs and the messy mistakes along the
+            way.
+          </p>
+        </div>
+      </div>
     </main>
+
     <footer class="site-footer">
       <div class="footer-art" aria-hidden="true">
         <canvas id="footer-canvas"></canvas>
