@@ -6,6 +6,8 @@ export type StackTag =
   | 'TypeScript'
   | 'Three.js'
   | 'GLSL'
+  | 'WebGPU'
+  | 'TSL'
   | 'Simplex Noise'
   | 'Physics'
   | 'Parametric Math';
@@ -99,6 +101,15 @@ export const projects: Project[] = [
       'A 3D mathematical renderer that generates and animates five flower species as glowing point clouds using parametric surface equations.',
     stack: ['Canvas 2D', 'TypeScript', 'Parametric Math'],
     accent: 'blue',
+  },
+  {
+    slug: 'refractal',
+    index: 9,
+    title: 'Refractal',
+    description:
+      'An interactive glass transmission canvas that warps complex topological surfaces using custom TSL wave displacement shader graphs.',
+    stack: ['Three.js', 'WebGPU', 'TSL', 'TypeScript'],
+    accent: 'amber',
   },
 ];
 
