@@ -16,12 +16,11 @@ async function bootstrap() {
   const currentMesh = new THREE.Mesh(geometries.knot, material);
   scene.add(currentMesh);
 
-  // Dedicated pointer tracking module
   initPointerTracking(uniforms);
 
   const params: RefractalParams = {
     shape: 'knot',
-    displacementScale: 0.12,
+    displacementScale: 0,
     frequency: 8.0,
     speed: 2.5,
     mouseInfluence: 0.3,

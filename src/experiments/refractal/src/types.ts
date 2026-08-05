@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import * as THREE from 'three/webgpu';
 
-export type ShapeType = 'knot' | 'blob' | 'torus';
+export type ShapeType = 'knot' | 'blob' | 'torus' | 'trefoil' | 'lissajous';
 
 export interface RefractalParams {
   shape: ShapeType;

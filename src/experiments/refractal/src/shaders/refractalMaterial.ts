@@ -17,7 +17,7 @@ export function createRefractalMaterial(): {
   material: THREE.MeshPhysicalNodeMaterial; 
   uniforms: ShaderUniforms 
 } {
-  const uDisplacementScale = uniform(0.12);
+  const uDisplacementScale = uniform(0.0);
   const uFrequency = uniform(8.0);
   const uSpeed = uniform(2.5);
   const uMouseInfluence = uniform(0.3);

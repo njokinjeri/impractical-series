@@ -12,16 +12,18 @@ export function setupControls(
 
   gui
     .add(params, 'shape', {
-      Knot: 'knot',
-      Blob: 'blob',
-      Torus: 'torus',
+      'Knot': 'knot',
+      'Blob Cluster': 'blob',
+      'Torus': 'torus',
+      'Trefoil': 'trefoil',
+      'Lissajous': 'lissajous',
     })
     .name('Topology')
     .onChange(onShapeChange);
 
   const waveFolder = gui.addFolder('TSL Wave Math');
   waveFolder
-    .add(params, 'displacementScale', 0.0, 0.4, 0.01)
+    .add(params, 'displacementScale', 0.0, 0.25, 0.01)
     .name('Scale')
     .onChange((v: number) => (uniforms.uDisplacementScale.value = v));
   waveFolder
