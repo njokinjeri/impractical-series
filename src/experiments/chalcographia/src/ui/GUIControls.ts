@@ -4,7 +4,7 @@ import { EngravingMaterialTSL } from '../shaders/EngravingMaterialTSL';
 import { RenderLoop } from '../core/RenderLoop';
 
 export class GUIControls {
-  private gui: GUI;
+  private gui: GUI | null = null;
   private config: AppConfig;
   private materialTSL: EngravingMaterialTSL;
   private renderLoop: RenderLoop;
@@ -21,11 +21,18 @@ export class GUIControls {
     this.renderLoop = renderLoop;
     this.onGeometryRebuild = onGeometryRebuild;
 
-    this.gui = new GUI({ title: 'Chalcographia Settings' });
+    this.initGUI();
+  }
+
+  private async initGUI(): Promise<void> {
+    const { default: GUIClass } = await import('lil-gui');
+    this.gui = new GUIClass({ title: 'Chalcographia Settings' });
     this.setupFolders();
   }
 
   private setupFolders(): void {
+    if (!this.gui) return;
+
     const geoFolder = this.gui.addFolder('Geometry');
 
     geoFolder
