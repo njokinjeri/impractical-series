@@ -44,7 +44,13 @@ export class Engine {
   }
 
   public async init(): Promise<void> {
-    await this.renderer.init();
+    try {
+      await this.renderer.init();
+    }
+    catch (e) 
+    {
+      console.warn('WebGPU not supported on this browser. Falling back to webGL2 backend.', e)
+    }
   }
 
   private onWindowResize(): void {
