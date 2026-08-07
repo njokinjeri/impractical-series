@@ -6,6 +6,7 @@ export type StackTag =
   | 'TypeScript'
   | 'Three.js'
   | 'GLSL'
+  | 'WebGL'
   | 'WebGPU'
   | 'TSL'
   | 'Simplex Noise'
@@ -109,6 +110,15 @@ export const projects: Project[] = [
     description:
       'An interactive glass transmission canvas that warps complex topological surfaces using custom TSL wave displacement shader graphs.',
     stack: ['Three.js', 'WebGPU', 'TSL', 'TypeScript'],
+    accent: 'amber',
+  },
+  {
+    slug: 'chalcographia',
+    index: 10,
+    title: 'Chalcographia',
+    description:
+      'A classical printmaking shader experiment that translates copperplate cross-hatching into real-time screen-space lines over stellated 3D polyhedra.',
+    stack: ['Three.js', 'WebGL', 'GLSL', 'TypeScript'],
     accent: 'amber',
   },
 ];
