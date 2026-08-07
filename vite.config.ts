@@ -6,6 +6,11 @@ const __dirname = fileURLToPath(new URL('.', import.meta.url));
 
 export default defineConfig({
   base: '/impractical-series/',
+
+  optimizeDeps: {
+    include: ['three/webgpu', 'lil-gui'],
+  },
+
   build: {
     rollupOptions: {
       input: {
@@ -34,7 +39,20 @@ export default defineConfig({
         grass: resolve(__dirname, 'src/experiments/just-grass/index.html'),
         bloom: resolve(__dirname, 'src/experiments/bloom/index.html'),
         refractal: resolve(__dirname, 'src/experiments/refractal/index.html'),
-        chalcopgraphia: resolve(__dirname, 'src/experiments/chalcographia/index.html'),
+        chalcopgraphia: resolve(
+          __dirname,
+          'src/experiments/chalcographia/index.html'
+        ),
+      },
+      output: {
+        manualChunks(id) {
+          if (
+            id.includes('node_modules/three') ||
+            id.includes('node_modules/lil-gui')
+          ) {
+            return 'vendor-three';
+          }
+        },
       },
     },
   },
