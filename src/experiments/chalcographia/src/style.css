@@ -4,7 +4,7 @@
   
   --color-paper: #e8e2d5;
   --color-ink: #2b261f;
-  --color-ink-muted: #6b5e4c;
+  --color-ink-muted: #463c2e;
 }
 
 * {
@@ -76,7 +76,7 @@ nav h1 span {
 .lil-gui {
   --background-color: rgba(235, 228, 212, 0.88);
   --text-color: var(--color-ink);
-  --title-background-color: rgba(215, 205, 185, 0.95);
+  --title-background-color: rgba(26, 25, 23, 0.95);
   --widget-color: rgba(200, 190, 170, 0.6);
   --hover-color: rgba(180, 168, 145, 0.8);
   --focus-color: var(--color-ink);
