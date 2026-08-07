@@ -16,6 +16,9 @@ export default defineConfig({
   },
 
   build: {
+    modulePreload: {
+      polyfill: true,
+    },
     rollupOptions: {
       input: {
         main: resolve(__dirname, 'index.html'),
@@ -47,16 +50,6 @@ export default defineConfig({
           __dirname,
           'src/experiments/chalcographia/index.html'
         ),
-      },
-      output: {
-        manualChunks(id) {
-          if (
-            id.includes('node_modules/three') ||
-            id.includes('node_modules/lil-gui')
-          ) {
-            return 'vendor-three';
-          }
-        },
       },
     },
   },
