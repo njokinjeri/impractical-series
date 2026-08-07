@@ -7,7 +7,11 @@ import { EngravingMaterialTSL } from './shaders/EngravingMaterialTSL';
 import { GUIControls } from './ui/GUIControls';
 import { InkCursor } from './ui/InkCursor';
 
+import parchmentUrl from './assets/parchment-paper.jpg';
+
 async function bootstrap() {
+  document.body.style.backgroundImage = `url(${parchmentUrl})`;
+  
   const config: AppConfig = { ...DEFAULT_CONFIG };
 
   const engine = new Engine('webgl-canvas');

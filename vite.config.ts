@@ -7,6 +7,10 @@ const __dirname = fileURLToPath(new URL('.', import.meta.url));
 export default defineConfig({
   base: '/impractical-series/',
 
+  esbuild: {
+    keepNames: true,
+  },
+
   optimizeDeps: {
     include: ['three/webgpu', 'lil-gui'],
   },
