@@ -7,7 +7,6 @@ import {
   vec3,
   sin,
   float,
-  color,
   mix,
   smoothstep,
   clamp,
@@ -61,7 +60,7 @@ export class EngravingMaterialTSL {
 
     this.material.colorNode = mix(
       this.uPaperColor,
-      color(this.uInkColor),
+      this.uInkColor,
       inkCoverage
     );
   }

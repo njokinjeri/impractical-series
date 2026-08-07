@@ -12,6 +12,7 @@ export default defineConfig({
   },
 
   build: {
+    target: 'esnext',
     modulePreload: {
       polyfill: true,
     },
@@ -53,7 +54,7 @@ export default defineConfig({
             return 'lil-gui-vendor';
           }
           if (id.includes('node_modules/three')) {
-            return 'three-core';
+            return 'three-vendor';
           }
         },
       },
