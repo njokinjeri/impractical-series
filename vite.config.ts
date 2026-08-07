@@ -52,6 +52,9 @@ export default defineConfig({
           if (id.includes('node_modules/lil-gui')) {
             return 'lil-gui-vendor';
           }
+          if (id.includes('node_modules/three')) {
+            return 'three-core';
+          }
         },
       },
     },
