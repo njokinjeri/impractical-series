@@ -6,6 +6,7 @@ export interface AppConfig {
   frameInset: number; 
   hatchFrequency: number;
   inkColor: string;
+  paperColor: '#f4eee1',
 }
 
 export const DEFAULT_CONFIG: AppConfig = {
@@ -14,4 +15,5 @@ export const DEFAULT_CONFIG: AppConfig = {
   frameInset: 0.3,
   hatchFrequency: 90.0,
   inkColor: '#2b261f',
+  paperColor: '#f4eee1',
 };

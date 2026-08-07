@@ -1,34 +1,39 @@
-import * as THREE from 'three/webgpu';
-import { DEFAULT_CONFIG, type AppConfig } from './config/constants';
+import * as THREE from 'three';
 import { Engine } from './core/Engine';
 import { RenderLoop } from './core/RenderLoop';
-import { StellationGenerator } from './geometry/StellationGenerator';
-import { EngravingMaterialTSL } from './shaders/EngravingMaterialTSL';
-import { GUIControls } from './ui/GUIControls';
+import { EngravingMaterial } from './shaders/EngravingMaterial';
 import { InkCursor } from './ui/InkCursor';
-
+import { GUIControls } from './ui/GUIControls';
+import { DEFAULT_CONFIG } from './config/constants';
+import {
+  StellationGenerator,
+  type BaseSolidType,
+} from './geometry/StellationGenerator';
 import parchmentUrl from './assets/parchment-paper.jpg';
-
 async function bootstrap() {
   document.body.style.backgroundImage = `url(${parchmentUrl})`;
-  
-  const config: AppConfig = { ...DEFAULT_CONFIG };
+  document.body.style.backgroundSize = 'cover';
+  document.body.style.backgroundPosition = 'center';
+
+  const config = { ...DEFAULT_CONFIG };
 
   const engine = new Engine('webgl-canvas');
   await engine.init();
 
+  const engravingMat = new EngravingMaterial();
   const renderLoop = new RenderLoop(engine);
-  const materialTSL = new EngravingMaterialTSL();
 
-  const buildGeometry = () => {
-    return StellationGenerator.createGeometry(
-      config.activeGeometry,
+  const buildGeometryFromConfig = () =>
+    StellationGenerator.createGeometry(
+      config.activeGeometry as BaseSolidType,
       config.stellationFactor,
       config.frameInset
     );
-  };
 
-  const currentMesh = new THREE.Mesh(buildGeometry(), materialTSL.material);
+  const currentMesh = new THREE.Mesh(
+    buildGeometryFromConfig(),
+    engravingMat.material
+  );
   engine.scene.add(currentMesh);
 
   const inkCursor = new InkCursor(() => {
@@ -47,12 +52,12 @@ async function bootstrap() {
 
   const rebuildMesh = () => {
     const oldGeo = currentMesh.geometry;
-    currentMesh.geometry = buildGeometry();
+    currentMesh.geometry = buildGeometryFromConfig();
     oldGeo.dispose();
     renderLoop.requestFrame();
   };
 
-  new GUIControls(config, materialTSL, renderLoop, rebuildMesh);
+  new GUIControls(config, engravingMat, renderLoop, rebuildMesh);
 
   renderLoop.start();
 }

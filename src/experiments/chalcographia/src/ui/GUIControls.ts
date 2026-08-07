@@ -1,23 +1,24 @@
-import type GUI from 'lil-gui'; 
+import type GUI from 'lil-gui';
+import * as THREE from 'three';
 import type { AppConfig } from '../config/constants';
-import { EngravingMaterialTSL } from '../shaders/EngravingMaterialTSL';
+import { EngravingMaterial } from '../shaders/EngravingMaterial';
 import { RenderLoop } from '../core/RenderLoop';
 
 export class GUIControls {
   private gui: GUI | null = null;
   private config: AppConfig;
-  private materialTSL: EngravingMaterialTSL;
+  private engravingMat: EngravingMaterial;
   private renderLoop: RenderLoop;
   private onGeometryRebuild: () => void;
 
   constructor(
     config: AppConfig,
-    materialTSL: EngravingMaterialTSL,
+    engravingMat: EngravingMaterial,
     renderLoop: RenderLoop,
     onGeometryRebuild: () => void
   ) {
     this.config = config;
-    this.materialTSL = materialTSL;
+    this.engravingMat = engravingMat;
     this.renderLoop = renderLoop;
     this.onGeometryRebuild = onGeometryRebuild;
 
@@ -26,7 +27,7 @@ export class GUIControls {
 
   private async initGUI(): Promise<void> {
     const { default: GUIClass } = await import('lil-gui');
-    this.gui = new GUIClass({ title: 'Chalcographia Settings' });
+    this.gui = new GUIClass({ title: 'Chalcographia' });
     this.setupFolders();
   }
 
@@ -62,7 +63,7 @@ export class GUIControls {
       .add(this.config, 'hatchFrequency', 50.0, 180.0, 1.0)
       .name('Line Density')
       .onChange((val: number) => {
-        this.materialTSL.uHatchFrequency.value = val;
+        this.engravingMat.uniforms.uHatchFrequency.value = val;
         this.renderLoop.requestFrame();
       });
 
@@ -70,7 +71,15 @@ export class GUIControls {
       .addColor(this.config, 'inkColor')
       .name('Ink Color')
       .onChange((val: string) => {
-        this.materialTSL.uInkColor.value.set(val);
+        (this.engravingMat.uniforms.uInkColor.value as THREE.Color).set(val);
+        this.renderLoop.requestFrame();
+      });
+
+    hatchFolder
+      .addColor(this.config, 'paperColor')
+      .name('Paper Color')
+      .onChange((val: string) => {
+        (this.engravingMat.uniforms.uPaperColor.value as THREE.Color).set(val);
         this.renderLoop.requestFrame();
       });
   }
