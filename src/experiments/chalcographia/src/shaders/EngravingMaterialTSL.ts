@@ -14,13 +14,17 @@ import {
 } from 'three/tsl';
 
 export class EngravingMaterialTSL {
-  public material: THREE.MeshBasicNodeMaterial;
+  public material!: THREE.MeshBasicNodeMaterial;
 
   public uHatchFrequency = uniform(110.0);
   public uInkColor = uniform(new THREE.Color('#2b261f'));
   public uPaperColor = uniform(new THREE.Color('#f4eee1'));
 
   constructor() {
+    this.buildMaterial();
+  }
+
+  private buildMaterial(): void {
     this.material = new THREE.MeshBasicNodeMaterial();
     this.material.side = THREE.DoubleSide;
     this.material.depthWrite = true;
@@ -45,6 +49,7 @@ export class EngravingMaterialTSL {
       .sub(positionLocal.z)
       .mul(this.uHatchFrequency);
     const crossWave = sin(crossCoord).mul(0.5).add(0.5);
+
     const shadowThreshold = float(0.75).sub(NdotL);
     const shadowMask = smoothstep(
       shadowThreshold.sub(0.05),

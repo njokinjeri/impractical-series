@@ -46,7 +46,7 @@ export default defineConfig({
         grass: resolve(__dirname, 'src/experiments/just-grass/index.html'),
         bloom: resolve(__dirname, 'src/experiments/bloom/index.html'),
         refractal: resolve(__dirname, 'src/experiments/refractal/index.html'),
-        chalcopgraphia: resolve(
+        chalcographia: resolve(
           __dirname,
           'src/experiments/chalcographia/index.html'
         ),
