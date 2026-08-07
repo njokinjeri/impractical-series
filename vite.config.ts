@@ -12,6 +12,9 @@ export default defineConfig({
   },
 
   build: {
+    modulePreload: {
+      polyfill: true,
+    },
     rollupOptions: {
       input: {
         main: resolve(__dirname, 'index.html'),

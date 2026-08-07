@@ -1,4 +1,4 @@
-import GUI from 'lil-gui';
+import type GUI from 'lil-gui'; 
 import type { AppConfig } from '../config/constants';
 import { EngravingMaterialTSL } from '../shaders/EngravingMaterialTSL';
 import { RenderLoop } from '../core/RenderLoop';
