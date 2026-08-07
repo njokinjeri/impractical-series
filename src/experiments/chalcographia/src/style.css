@@ -18,6 +18,7 @@ html, body {
   height: 100%;
   overflow: hidden;
   background-color: var(--color-paper);
+  background-image: url('./assets/parchment-paper.jpg');
   background-repeat: repeat;
   background-position: center center;
   background-size: cover;

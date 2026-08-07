@@ -9,11 +9,8 @@ import {
   StellationGenerator,
   type BaseSolidType,
 } from './geometry/StellationGenerator';
-import parchmentUrl from './assets/parchment-paper.jpg';
+
 async function bootstrap() {
-  document.body.style.backgroundImage = `url(${parchmentUrl})`;
-  document.body.style.backgroundSize = 'cover';
-  document.body.style.backgroundPosition = 'center';
 
   const config = { ...DEFAULT_CONFIG };
 
