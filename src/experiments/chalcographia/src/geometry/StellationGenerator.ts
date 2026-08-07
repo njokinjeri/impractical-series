@@ -1,6 +1,7 @@
 import * as THREE from 'three/webgpu';
 
-export type BaseSolidType = 'tetrahedron' | 'cube' | 'octahedron' | 'dodecahedron' | 'icosahedron';
+export type BaseSolidType =
+  'tetrahedron' | 'cube' | 'octahedron' | 'dodecahedron' | 'icosahedron';
 
 export class StellationGenerator {
   public static createGeometry(
@@ -29,7 +30,6 @@ export class StellationGenerator {
         break;
     }
 
-    // Ensure non-indexed geometry without throwing warnings or operating on raw indexed buffers
     const nonIndexed = baseGeo.index ? baseGeo.toNonIndexed() : baseGeo.clone();
     const posAttr = nonIndexed.attributes.position;
     const triangleCount = posAttr.count / 3;
@@ -45,7 +45,6 @@ export class StellationGenerator {
     const vC = new THREE.Vector3();
     const triNormal = new THREE.Vector3();
 
-    // Group coplanar triangles into true polygonal faces
     for (let i = 0; i < triangleCount; i++) {
       vA.fromBufferAttribute(posAttr, i * 3);
       vB.fromBufferAttribute(posAttr, i * 3 + 1);
@@ -55,18 +54,19 @@ export class StellationGenerator {
       const e2 = vC.clone().sub(vA);
       triNormal.crossVectors(e1, e2);
 
-      // Guard against zero-length vectors causing NaN on normalize
       if (triNormal.lengthSq() < 1e-10) continue;
       triNormal.normalize();
 
-      let match = faceGroups.find(g => g.normal.distanceTo(triNormal) < 0.05);
+      let match = faceGroups.find((g) => g.normal.distanceTo(triNormal) < 0.05);
       if (!match) {
         match = { normal: triNormal.clone(), vertices: [] };
         faceGroups.push(match);
       }
 
-      [vA, vB, vC].forEach(v => {
-        if (!match!.vertices.some(existing => existing.distanceTo(v) < 0.001)) {
+      [vA, vB, vC].forEach((v) => {
+        if (
+          !match!.vertices.some((existing) => existing.distanceTo(v) < 0.001)
+        ) {
           match!.vertices.push(v.clone());
         }
       });
@@ -74,30 +74,42 @@ export class StellationGenerator {
 
     const positions: number[] = [];
 
-    const pushTri = (p1: THREE.Vector3, p2: THREE.Vector3, p3: THREE.Vector3) => {
+    const pushTri = (
+      p1: THREE.Vector3,
+      p2: THREE.Vector3,
+      p3: THREE.Vector3
+    ) => {
       if (
-        Number.isNaN(p1.x) || Number.isNaN(p1.y) || Number.isNaN(p1.z) ||
-        Number.isNaN(p2.x) || Number.isNaN(p2.y) || Number.isNaN(p2.z) ||
-        Number.isNaN(p3.x) || Number.isNaN(p3.y) || Number.isNaN(p3.z)
-      ) return;
+        Number.isNaN(p1.x) ||
+        Number.isNaN(p1.y) ||
+        Number.isNaN(p1.z) ||
+        Number.isNaN(p2.x) ||
+        Number.isNaN(p2.y) ||
+        Number.isNaN(p2.z) ||
+        Number.isNaN(p3.x) ||
+        Number.isNaN(p3.y) ||
+        Number.isNaN(p3.z)
+      )
+        return;
 
-      positions.push(
-        p1.x, p1.y, p1.z,
-        p2.x, p2.y, p2.z,
-        p3.x, p3.y, p3.z
-      );
+      positions.push(p1.x, p1.y, p1.z, p2.x, p2.y, p2.z, p3.x, p3.y, p3.z);
     };
 
-    const pushQuad = (p1: THREE.Vector3, p2: THREE.Vector3, p3: THREE.Vector3, p4: THREE.Vector3) => {
+    const pushQuad = (
+      p1: THREE.Vector3,
+      p2: THREE.Vector3,
+      p3: THREE.Vector3,
+      p4: THREE.Vector3
+    ) => {
       pushTri(p1, p2, p3);
       pushTri(p1, p3, p4);
     };
 
-    faceGroups.forEach(group => {
+    faceGroups.forEach((group) => {
       if (group.vertices.length < 3) return;
 
       const centroid = new THREE.Vector3();
-      group.vertices.forEach(v => centroid.add(v));
+      group.vertices.forEach((v) => centroid.add(v));
       centroid.divideScalar(group.vertices.length);
 
       const basisX = new THREE.Vector3();
@@ -108,14 +120,13 @@ export class StellationGenerator {
       } else {
         basisX.set(1, 0, 0);
       }
-      
+
       basisY.crossVectors(group.normal, basisX);
       if (basisY.lengthSq() > 1e-10) basisY.normalize();
-      
+
       basisX.crossVectors(basisY, group.normal);
       if (basisX.lengthSq() > 1e-10) basisX.normalize();
 
-      // Radial sort around face center
       group.vertices.sort((a, b) => {
         const dirA = a.clone().sub(centroid);
         const dirB = b.clone().sub(centroid);
@@ -124,16 +135,19 @@ export class StellationGenerator {
         return angleA - angleB;
       });
 
-      const apex = centroid.clone().addScaledVector(group.normal, stellationFactor * 1.2);
+      const apex = centroid
+        .clone()
+        .addScaledVector(group.normal, stellationFactor * 1.2);
       const n = group.vertices.length;
 
       const insetRatio = Math.min(Math.max(strutThickness, 0.0), 0.48);
       const innerVertices: THREE.Vector3[] = [];
       for (let i = 0; i < n; i++) {
-        innerVertices.push(group.vertices[i].clone().lerp(centroid, insetRatio));
+        innerVertices.push(
+          group.vertices[i].clone().lerp(centroid, insetRatio)
+        );
       }
 
-      // Solid faceted pyramid with frame bevel
       for (let i = 0; i < n; i++) {
         const curr = group.vertices[i];
         const next = group.vertices[(i + 1) % n];
@@ -148,7 +162,10 @@ export class StellationGenerator {
     });
 
     const geometry = new THREE.BufferGeometry();
-    geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+    geometry.setAttribute(
+      'position',
+      new THREE.Float32BufferAttribute(positions, 3)
+    );
     geometry.computeVertexNormals();
     geometry.computeBoundingSphere();
 
