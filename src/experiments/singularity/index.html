@@ -5,9 +5,26 @@
     <link rel="icon" href="/bulb.png" type="image/png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Singularity ~ Impractical Series </title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Geist:ital,wght@0,100..900;1,100..900&family=Space+Grotesk:wght@300..700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="preload" as="image" href="./src/assets/parchment-paper.jpg" />
+    <link rel="stylesheet" href="./src/style.css" />
   </head>
   <body>
-    <div id="canvas"></div>
-    <script type="module" src="/src/main.ts"></script>
+    <header>
+      <nav>
+        <h1>Singularity</h1>
+      </nav>
+      <p class="description">
+        A GPU vector sandbox that continuously morphs into infinite spatial geometry
+        across infinite hallway, vortex, and gravitational singularity modes.
+      </p>
+    </header>
+    <canvas id="canvas"></canvas>
+    <script type="module" src="./src/main.ts"></script>
   </body>
 </html>
