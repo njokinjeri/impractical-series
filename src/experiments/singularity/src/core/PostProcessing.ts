@@ -10,13 +10,23 @@ export class PostProcessingPipeline {
   private bloomPass: UnrealBloomPass;
   private afterimagePass: AfterimagePass;
 
-  constructor(renderer: THREE.WebGLRenderer, scene: THREE.Scene, camera: THREE.PerspectiveCamera, settings: EngineSettings) {
+  constructor(
+    renderer: THREE.WebGLRenderer,
+    scene: THREE.Scene,
+    camera: THREE.PerspectiveCamera,
+    settings: EngineSettings
+  ) {
     const width = window.innerWidth;
     const height = window.innerHeight;
 
     const renderScene = new RenderPass(scene, camera);
 
-    this.bloomPass = new UnrealBloomPass(new THREE.Vector2(width, height), settings.bloom, 0.4, 0.2);
+    this.bloomPass = new UnrealBloomPass(
+      new THREE.Vector2(width, height),
+      settings.bloom,
+      0.4,
+      0.2
+    );
     this.bloomPass.threshold = 0.002;
 
     this.afterimagePass = new AfterimagePass();

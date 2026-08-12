@@ -11,7 +11,7 @@ export class Engine {
   public settings: EngineSettings;
 
   public mouse = new THREE.Vector2(0, 0);
-  
+
   private lastTime = performance.now();
   private accumulatedTime = 0;
   private onUpdateCallback?: (delta: number, accumulatedTime: number) => void;
@@ -33,7 +33,12 @@ export class Engine {
     this.renderer.outputColorSpace = THREE.SRGBColorSpace;
     document.body.appendChild(this.renderer.domElement);
 
-    this.postProcessing = new PostProcessingPipeline(this.renderer, this.scene, this.camera, this.settings);
+    this.postProcessing = new PostProcessingPipeline(
+      this.renderer,
+      this.scene,
+      this.camera,
+      this.settings
+    );
 
     this.initEventListeners();
   }
@@ -42,7 +47,9 @@ export class Engine {
     this.fog.density = rawDensity * 0.25;
   }
 
-  public onUpdate(callback: (delta: number, accumulatedTime: number) => void): void {
+  public onUpdate(
+    callback: (delta: number, accumulatedTime: number) => void
+  ): void {
     this.onUpdateCallback = callback;
   }
 
