@@ -30,8 +30,12 @@ export class CameraController {
     });
   }
 
-  public update(delta: number, accumulatedTime: number, settings: TunnelSettings, engine: Engine): void {
-    // ✅ Match full type string literals: 'Torsional Vortex' and 'Infinite Grid Corridor'
+  public update(
+    delta: number,
+    accumulatedTime: number,
+    settings: TunnelSettings,
+    engine: Engine
+  ): void {
     if (settings.architecture === 'Vortex') {
       if (settings.perspective === 'External Chase') {
         this.externalChase.update(delta, settings, engine, this.mouse);
@@ -41,7 +45,10 @@ export class CameraController {
     } else if (settings.architecture === 'Grid') {
       const camera = engine.camera;
       if (settings.perspective === 'External Chase') {
-        camera.position.lerp(new THREE.Vector3(settings.chaseDistance, settings.chaseHeight, 40), 0.1);
+        camera.position.lerp(
+          new THREE.Vector3(settings.chaseDistance, settings.chaseHeight, 40),
+          0.1
+        );
         camera.lookAt(0, 0, -40);
         camera.rotation.z = 0;
         engine.setFogDensity(settings.chaseFog);
@@ -52,12 +59,16 @@ export class CameraController {
         engine.setFogDensity(settings.insideFog);
       }
     } else {
-      // 'Curved Wormhole' fallback
       this.updateConduitCamera(delta, accumulatedTime, settings, engine);
     }
   }
 
-  private updateConduitCamera(delta: number, accumulatedTime: number, settings: TunnelSettings, engine: Engine): void {
+  private updateConduitCamera(
+    delta: number,
+    accumulatedTime: number,
+    settings: TunnelSettings,
+    engine: Engine
+  ): void {
     const camera = engine.camera;
     const looptime = 10 * 1000;
     const p = (accumulatedTime % looptime) / looptime;
@@ -68,8 +79,12 @@ export class CameraController {
     const i1 = (i0 + 1) % this.FRAME_SAMPLES;
     const alpha = exactIndex - Math.floor(exactIndex);
 
-    const binormal = this.targetUp.lerpVectors(this.frames.binormals[i0], this.frames.binormals[i1], alpha).normalize();
-    const tangent = this.targetPos.lerpVectors(this.frames.tangents[i0], this.frames.tangents[i1], alpha).normalize();
+    const binormal = this.targetUp
+      .lerpVectors(this.frames.binormals[i0], this.frames.binormals[i1], alpha)
+      .normalize();
+    const tangent = this.targetPos
+      .lerpVectors(this.frames.tangents[i0], this.frames.tangents[i1], alpha)
+      .normalize();
 
     this.insideCamPos.copy(pos);
     this.previewCamPos
@@ -78,20 +93,44 @@ export class CameraController {
       .addScaledVector(binormal, settings.chaseHeight);
 
     const targetBlend = settings.perspective === 'External Chase' ? 1.0 : 0.0;
-    this.blendFactor = THREE.MathUtils.lerp(this.blendFactor, targetBlend, delta * 4.0);
+    this.blendFactor = THREE.MathUtils.lerp(
+      this.blendFactor,
+      targetBlend,
+      delta * 4.0
+    );
 
-    const targetFog = THREE.MathUtils.lerp(settings.insideFog, settings.chaseFog, this.blendFactor);
-    this.currentFogDensity = THREE.MathUtils.lerp(this.currentFogDensity, targetFog, delta * 4.0);
+    const targetFog = THREE.MathUtils.lerp(
+      settings.insideFog,
+      settings.chaseFog,
+      this.blendFactor
+    );
+    this.currentFogDensity = THREE.MathUtils.lerp(
+      this.currentFogDensity,
+      targetFog,
+      delta * 4.0
+    );
     engine.setFogDensity(this.currentFogDensity);
 
-    this.activeCamPos.lerpVectors(this.insideCamPos, this.previewCamPos, this.blendFactor);
+    this.activeCamPos.lerpVectors(
+      this.insideCamPos,
+      this.previewCamPos,
+      this.blendFactor
+    );
     camera.position.lerp(this.activeCamPos, 0.15);
 
-    const idealUp = this.targetUp.lerpVectors(binormal, new THREE.Vector3(0, 1, 0), this.blendFactor);
+    const idealUp = this.targetUp.lerpVectors(
+      binormal,
+      new THREE.Vector3(0, 1, 0),
+      this.blendFactor
+    );
     this.currentUp.lerp(idealUp, 1 - Math.exp(-12 * delta));
     camera.up.copy(this.currentUp);
 
-    const lookAheadOffset = THREE.MathUtils.lerp(0.02, settings.lookAhead, this.blendFactor);
+    const lookAheadOffset = THREE.MathUtils.lerp(
+      0.02,
+      settings.lookAhead,
+      this.blendFactor
+    );
     const lookAheadP = (p + lookAheadOffset) % 1.0;
     this.lookAtPos.copy(wormholeSpline.getPointAt(lookAheadP));
     camera.lookAt(this.lookAtPos);

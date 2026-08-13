@@ -1,4 +1,3 @@
-// src/graphics/camera/ExternalChase.ts
 import * as THREE from 'three';
 import type { TunnelSettings } from '../../config/settings';
 import { Engine } from '../../core/Engine';
