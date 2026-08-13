@@ -121,6 +121,15 @@ export const projects: Project[] = [
     stack: ['Three.js', 'WebGL', 'GLSL', 'TypeScript'],
     accent: 'amber',
   },
+  {
+    slug: 'singularity',
+    index: 11,
+    title: 'Singularity',
+    description:
+      'A WebGL vector sandbox that dynamically morphs across infinite hallway, vortex, and continuous gravitational singularity modes.',
+    stack: ['Three.js', 'WebGL', 'TypeScript'],
+    accent: 'amber',
+  },
 ];
 
 const SITE_BASE = '/impractical-series';
