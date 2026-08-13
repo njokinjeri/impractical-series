@@ -47,6 +47,10 @@ export default defineConfig({
           __dirname,
           'src/experiments/chalcographia/index.html'
         ),
+        singularity: resolve(
+          __dirname,
+          'src/experiments/singularity/index.html'
+        ),
       },
       output: {
         manualChunks(id) {
