@@ -1,15 +1,22 @@
 import * as THREE from 'three';
 import { BaseArchitecture } from './BaseArchitecture';
 
-export class VortexArchitecture extends BaseArchitecture {
-  protected buildGeometry(): THREE.BufferGeometry {
+export class Vortex extends BaseArchitecture {
+  public buildGeometry(): THREE.BufferGeometry {
     const height = 60;
     const radialSegments = 48;
     const heightSegments = 80;
     const neckRadius = 1.8;
     const flareFactor = 0.08;
 
-    const cylGeo = new THREE.CylinderGeometry(1, 1, height, radialSegments, heightSegments, true);
+    const cylGeo = new THREE.CylinderGeometry(
+      1,
+      1,
+      height,
+      radialSegments,
+      heightSegments,
+      true
+    );
     const posAttr = cylGeo.attributes.position;
     const vertex = new THREE.Vector3();
 
@@ -17,8 +24,8 @@ export class VortexArchitecture extends BaseArchitecture {
       vertex.fromBufferAttribute(posAttr, i);
       const y = vertex.y;
       const radius = neckRadius + flareFactor * Math.pow(y, 2);
-
       const angle = (y / height) * Math.PI * 2.5;
+
       const cosA = Math.cos(angle);
       const sinA = Math.sin(angle);
 
@@ -36,16 +43,20 @@ export class VortexArchitecture extends BaseArchitecture {
     return cylGeo;
   }
 
-  public override update(delta: number, _accumulatedTime: number, isPaused: boolean): void {
-    if (!isPaused && this.group) {
-      const rotSpeed = delta * 0.3;
-      this.group.rotation.y += rotSpeed;
-    }
+  public update(
+    delta: number,
+    _accumulatedTime: number,
+    isPaused: boolean
+  ): void {
+    this.lines.position.set(0, 0, 0);
+    this.particles.position.set(0, 0, 0);
+
+    const rotSpeed = isPaused ? 0 : delta * 0.3;
+    this.lines.rotation.y += rotSpeed;
+    this.particles.rotation.y += rotSpeed;
   }
 
   public static getRadiusAt(y: number): number {
-    const neckRadius = 1.8;
-    const flareFactor = 0.08;
-    return neckRadius + flareFactor * Math.pow(y, 2);
+    return 1.8 + 0.08 * Math.pow(y, 2);
   }
 }
