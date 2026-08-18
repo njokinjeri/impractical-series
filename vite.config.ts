@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite';
 import { resolve } from 'path';
 import { fileURLToPath } from 'url';
+import vitePluginString from 'vite-plugin-string'
 
 const __dirname = fileURLToPath(new URL('.', import.meta.url));
 
@@ -10,6 +11,12 @@ export default defineConfig({
   esbuild: {
     keepNames: true,
   },
+
+  plugins: [
+    vitePluginString({
+      include: '**/*glsl'
+    })
+  ],
 
   build: {
     target: 'esnext',
