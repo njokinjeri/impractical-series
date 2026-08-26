@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vinyl ~ WebGPU Audio Studio</title>
+    <meta
+      name="description"
+      content="An interactive 3D vinyl record web application featuring custom anisotropic shaders, audio reactivity, and frosted vinyl editions."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./src/style.css">
+  </head>
+  <body>
+    <div id="webgl-container"></div>
+    <aside id="ui-panel" aria-label="Studio Controls">
+      <header class="panel-header">
+        <div>
+          <h1>Vinyl</h1>
+          <p class="panel-subtitle">Anisotropic 3D Audio Visualizer</p>
+        </div>
+        <button
+          class="btn"
+          id="collapse-btn"
+          aria-expanded="true"
+          aria-controls="panel-content"
+          style="padding: 2px 8px; font-size: 0.7rem;"
+        >_</button>
+      </header>
+      <div id="panel-content">
+        <section class="control-section">
+          <h2 class="section-title">Vinyl Edition</h2>
+          <div class="edition-grid">
+            <button
+              type="button"
+              class="btn edition-btn active"
+              data-type="0"
+              data-color="#111115"
+            >
+              Frosted Ice
+            </button>
+            <button 
+              type="button" 
+              class="btn edition-btn" 
+              data-type="1" 
+              data-color="#2a2e3d"
+            >
+              Mercury
+            </button>
+            <button 
+              type="button" 
+              class="btn edition-btn" 
+              data-type="2" 
+              data-color="#0a1c3a"
+            >
+              Cobalt
+            </button>
+            <button 
+              type="button" 
+              class="btn edition-btn" 
+              data-type="3" 
+              data-color="#050505"
+            >
+              Onyx
+            </button>
+          </div>
+        </section>
+
+        <hr class="divider" />
+        <section class="control-section">
+          <h2 class="section-title">Audio Source</h2>
+          <div class="controls-row" style="margin-bottom: 8px;">
+            <button type="button" class="btn" id="play-btn">Play Audio</button>
+          </div>
+          <div class="file-upload-wrapper">
+            <label class="file-upload-btn" for="file-input">Upload MP3 / Audio File</label>
+            <input type="file" id="file-input" accept="audio/*" />
+          </div>
+          <p id="audio-status" style="margin-top: 6px;">Default Synthetic Audio Engine</p>
+        </section>
+
+        <hr class="divider" />
+        <section class="control-section slider-container">
+          <div class="slider-row">
+            <label for="speed-slider" class="slider-label">Rotation Speed</label>
+            <span class="slider-value" id="speed-val">1.0x</span>
+          </div>
+          <input
+            type="range"
+            id="speed-slider"
+            min="0"
+            max="3"
+            step="0.1"
+            value="1.0"
+          />
+        </section>
+      </div>
+    </aside>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
