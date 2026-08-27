@@ -66,6 +66,8 @@ export class SceneManager {
     controls.maxDistance = 15;
     controls.target.set(0, 0, 0);
     controls.update();
+
+    controls.enableRotate = true;
     
     return controls;
   }
