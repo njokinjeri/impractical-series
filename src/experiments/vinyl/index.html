@@ -14,7 +14,7 @@
       href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="./src/style.css">
+    <link rel="stylesheet" href="./src/style.css" />
   </head>
   <body>
     <div id="webgl-container"></div>
@@ -29,8 +29,10 @@
           id="collapse-btn"
           aria-expanded="true"
           aria-controls="panel-content"
-          style="padding: 2px 8px; font-size: 0.7rem;"
-        >_</button>
+          title="Toggle panel"
+        >
+          −
+        </button>
       </header>
       <div id="panel-content">
         <section class="control-section">
@@ -44,50 +46,75 @@
             >
               Frosted Ice
             </button>
-            <button 
-              type="button" 
-              class="btn edition-btn" 
-              data-type="1" 
+            <button
+              type="button"
+              class="btn edition-btn"
+              data-type="1"
               data-color="#2a2e3d"
             >
-              Mercury
+              Liquid Mercury
             </button>
-            <button 
-              type="button" 
-              class="btn edition-btn" 
-              data-type="2" 
+            <button
+              type="button"
+              class="btn edition-btn"
+              data-type="2"
               data-color="#0a1c3a"
             >
-              Cobalt
+              Deep Cobalt
             </button>
-            <button 
-              type="button" 
-              class="btn edition-btn" 
-              data-type="3" 
+            <button
+              type="button"
+              class="btn edition-btn"
+              data-type="3"
               data-color="#050505"
             >
-              Onyx
+              Dark Onyx
+            </button>
+          </div>
+        </section>
+
+        <section class="control-section">
+          <h2 class="section-title">Rotation Mode</h2>
+          <div
+            class="edition-grid"
+            style="grid-template-columns: repeat(2, 1fr)"
+          >
+            <button
+              type="button"
+              class="btn mode-btn active"
+              data-mode="record-player"
+            >
+              Spinning
+            </button>
+            <button type="button" class="btn mode-btn" data-mode="free-rotate">
+              Free Rotate
             </button>
           </div>
         </section>
 
         <hr class="divider" />
+
         <section class="control-section">
-          <h2 class="section-title">Audio Source</h2>
-          <div class="controls-row" style="margin-bottom: 8px;">
-            <button type="button" class="btn" id="play-btn">Play Audio</button>
+          <h2 class="section-title">Audio</h2>
+          <div class="controls-row" style="margin-bottom: 8px">
+            <button type="button" class="btn" id="play-btn">Play</button>
           </div>
           <div class="file-upload-wrapper">
-            <label class="file-upload-btn" for="file-input">Upload MP3 / Audio File</label>
+            <label class="file-upload-btn" for="file-input"
+              >Upload MP3 / Audio File</label
+            >
             <input type="file" id="file-input" accept="audio/*" />
           </div>
-          <p id="audio-status" style="margin-top: 6px;">Default Synthetic Audio Engine</p>
+          <p id="audio-status" style="margin-top: 6px">Loading...</p>
         </section>
 
         <hr class="divider" />
+
         <section class="control-section slider-container">
           <div class="slider-row">
-            <label for="speed-slider" class="slider-label">Rotation Speed</label>
+            <label for="speed-slider" class="slider-label"
+              >Rotation Speed</label
+            >
             <span class="slider-value" id="speed-val">1.0x</span>
           </div>
           <input
