@@ -11,7 +11,8 @@ export type StackTag =
   | 'TSL'
   | 'Simplex Noise'
   | 'Physics'
-  | 'Parametric Math';
+  | 'Parametric Math'
+  | 'Web Audio API';
 
 export type AccentColor = 'green' | 'blue' | 'amber';
 
@@ -128,6 +129,15 @@ export const projects: Project[] = [
     description:
       'A WebGL vector sandbox that dynamically morphs across infinite hallway, vortex, and continuous gravitational singularity modes.',
     stack: ['Three.js', 'WebGL', 'TypeScript'],
+    accent: 'amber',
+  },
+  {
+    slug: 'vinyl',
+    index: 12,
+    title: 'Aniso Vinyl',
+    description:
+      'A 3D vinyl record player with physical drag-to-spin interaction and audio-reactive motion. Features four unique material editions with custom anisotropic shaders and MP3 playback.',
+    stack: ['Three.js', 'Web Audio API', 'GLSL', 'TypeScript'],
     accent: 'amber',
   },
 ];

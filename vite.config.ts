@@ -58,6 +58,10 @@ export default defineConfig({
           __dirname,
           'src/experiments/singularity/index.html'
         ),
+        vinyl: resolve(
+          __dirname,
+          'src/experiments/vinyl/index.html'
+        )
       },
       output: {
         manualChunks(id) {
