@@ -36,10 +36,17 @@ class AnisoApp {
 
   private async loadDefaultTrack(): Promise<void> {
     try {
-      const baseUrl = import.meta.env.BASE_URL; 
+      const baseUrl = import.meta.env.BASE_URL;
       const response = await fetch(`${baseUrl}I_Love_You_Baby.mp3`);
+
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const contentType = response.headers.get('content-type');
+
+      if (!contentType?.startsWith('audio/')) {
+        throw new Error(`Expected audio but received ${contentType}`);
       }
 
       const arrayBuffer = await response.arrayBuffer();
