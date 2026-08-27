@@ -134,7 +134,7 @@ export const projects: Project[] = [
   {
     slug: 'vinyl',
     index: 12,
-    title: 'Aniso Vinyl',
+    title: 'Vinyl',
     description:
       'A 3D vinyl record player with physical drag-to-spin interaction and audio-reactive motion. Features four unique material editions with custom anisotropic shaders and MP3 playback.',
     stack: ['Three.js', 'Web Audio API', 'GLSL', 'TypeScript'],
