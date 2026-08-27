@@ -25,23 +25,30 @@ class AnisoApp {
     this.loadDefaultTrack();
     this.animate();
 
-    document.addEventListener('click', () => {
-      this.audioManager.resume();
-    }, { once: true });
+    document.addEventListener(
+      'click',
+      () => {
+        this.audioManager.resume();
+      },
+      { once: true }
+    );
   }
 
   private async loadDefaultTrack(): Promise<void> {
     try {
-      const response = await fetch('/I_Love_You_Baby.mp3');
-      
+      const baseUrl = import.meta.env.BASE_URL; 
+      const response = await fetch(`${baseUrl}I_Love_You_Baby.mp3`);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-      
+
       const arrayBuffer = await response.arrayBuffer();
-      
-      await this.audioManager.loadAudioFromBuffer(arrayBuffer, 'Paul Anka - I Love You Baby');
-      
+
+      await this.audioManager.loadAudioFromBuffer(
+        arrayBuffer,
+        'Paul Anka - I Love You Baby'
+      );
+
       try {
         await this.audioManager.resume();
         this.audioManager.playFile();
@@ -87,7 +94,7 @@ class AnisoApp {
 
     if (this.audioManager.isPlaying) {
       const metrics = this.audioManager.audioMetrics;
-      const spinSpeed = 0.35 + (metrics.mids * 0.45);
+      const spinSpeed = 0.35 + metrics.mids * 0.45;
       this.vinylRecord.updateRotation(spinSpeed, this.audioManager.delta);
     }
 
