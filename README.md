@@ -2,24 +2,39 @@
 
 **Live Site:** https://njokinjeri.github.io/impractical-series/
 
-This is a collection of intentionally non-essential builds.
+A growing collection of intentionally non-essential creative technology projects.
 
-Each project starts with a vague idea and evolves through experimentation.
-I aim to preserve the original visual or conceptual intent I enthusiastically had as much as possible; regardless the project does offer room to pivot only when reality ... well pushes back.
+Each project begins with an idea, question, visual curiosity, or technical challenge and develops through experimentation.
+
+The series has no fixed format or difficulty level. Some projects are small explorations; others become complex systems involving graphics programming, procedural generation, simulation, interaction, audio, mathematics, or real-time rendering.
+
+The goal is simple: build things that are interesting enough to find out how they work.
 
 ## Philosophy
 
-- Each project is a visual question. The code is the answer, or part of one.
+- Each project starts with curiosity. Sometimes there is a clear technical question. Sometimes there is only a visual idea.
 
-- Every project includes a `LEARNINGS.md` documenting the concept, process, and what it opened up. Each build serves two things simultaneously: technical growth, and the freedom to test ideas that feel premature, impractical, or _not yet reachable_ at the time they're built.
+- The code is part of the exploration. Building is how the idea gets tested, challenged, and reshaped.
 
-- Projects are deliberately unplanned. There is no roadmap. Curiosity paves the way.
+- Complexity is allowed to grow. Projects are not constrained to remain small experiments if the idea demands something more ambitious.
 
-### Why "Impractical"?
+- Technical growth happens through making. Each build creates an opportunity to explore unfamiliar systems, techniques, and constraints.
 
-Because not everything worth building needs a reason beyond _"I wondered what would happen if…"_
+- There is no roadmap. The direction of the series is driven by curiosity, experimentation, and whatever feels worth building next.
 
-And what's the point of wondering when you can just dive right in.
+## Why "Impractical"?
+
+Because not everything worth building needs a practical purpose.
+
+Sometimes the reason is simply:
+
+What would happen if I tried this?
+
+The series is a space for following that question without needing to justify the result as a product, feature, startup, or solution.
+
+Some projects may fail. Some may become unexpectedly complicated. Some may lead nowhere.
+
+That's part of the point.
 
 ## Projects
 
