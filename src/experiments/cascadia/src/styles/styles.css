@@ -20,6 +20,10 @@ body {
   transition: background-color var(--transition-slow);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 #webgl-canvas {
@@ -33,6 +37,12 @@ body {
   -webkit-backface-visibility: hidden;
   transform: translateZ(0);
   -webkit-transform: translateZ(0);
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
+  outline: none;
+  border: none;
   position: fixed;
   top: 0;
   left: 0;
@@ -69,4 +79,11 @@ body {
 
 ::-webkit-scrollbar-thumb:hover {
   background: var(--color-text-muted);
+}
+
+button,
+select,
+input,
+label {
+  -webkit-tap-highlight-color: transparent;
 }
