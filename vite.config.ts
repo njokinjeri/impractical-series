@@ -21,7 +21,7 @@ export default defineConfig({
   resolve: {
     alias: {
       'cannon-es': resolve(__dirname, 'node_modules/cannon-es/dist/cannon-es.js'),
-      'three': resolve(__dirname, 'node_modules/three/build/three.module.js'),
+      'three': resolve(__dirname, 'node_modules/three'),  // ← Fixed
       'three/addons/': resolve(__dirname, 'node_modules/three/examples/jsm/'),
     },
   },
