@@ -21,8 +21,10 @@ export default defineConfig({
   resolve: {
     alias: {
       'cannon-es': resolve(__dirname, 'node_modules/cannon-es/dist/cannon-es.js'),
-      'three': resolve(__dirname, 'node_modules/three'),  // ← Fixed
+      'three': resolve(__dirname, 'node_modules/three'),
       'three/addons/': resolve(__dirname, 'node_modules/three/examples/jsm/'),
+      // Fallback: three/webgpu doesn't exist in this version
+      'three/webgpu': resolve(__dirname, 'node_modules/three'),
     },
   },
 
