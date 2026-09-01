@@ -551,11 +551,6 @@ input[type='range']::-moz-range-thumb {
   opacity: 1;
 }
 
-.notification-toast .icon {
-  font-size: 24px;
-  margin-bottom: 4px;
-}
-
 .notification-toast .title {
   font-weight: 600;
 }

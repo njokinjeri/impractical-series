@@ -56,10 +56,6 @@ export class DominoChain {
     const clampedGap = Math.max(minGap, Math.min(gap, maxGap));
     const totalSpacing = p.d + clampedGap;
 
-    console.log(
-      `Building ${this.count} dominoes on ${this.pathType} with spacing: ${totalSpacing.toFixed(3)}`
-    );
-
     this.buildArcLengthTable(this.pathType, this.count, totalSpacing);
 
     for (let i = 0; i < this.count; i++) {
