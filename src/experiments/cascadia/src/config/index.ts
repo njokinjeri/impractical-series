@@ -2,7 +2,7 @@ import type { AppConfig } from '../utils/types';
 
 export const DEFAULT_CONFIG: AppConfig = {
   theme: 'pastel',
-  pathType: 'line',
+  pathType: 'circle',
   count: 100,
   cameraMode: 'follow',
   soundEnabled: true,
