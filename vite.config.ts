@@ -1,7 +1,7 @@
 import { defineConfig } from 'vite';
 import { resolve } from 'path';
 import { fileURLToPath } from 'url';
-import vitePluginString from 'vite-plugin-string';
+import vitePluginString from 'vite-plugin-string'
 
 const __dirname = fileURLToPath(new URL('.', import.meta.url));
 
@@ -14,23 +14,9 @@ export default defineConfig({
 
   plugins: [
     vitePluginString({
-      include: '**/*glsl',
-    }),
+      include: '**/*glsl'
+    })
   ],
-
-  resolve: {
-    alias: {
-      'cannon-es': resolve(__dirname, 'node_modules/cannon-es/dist/cannon-es.js'),
-      'three': resolve(__dirname, 'node_modules/three'),
-      'three/addons/': resolve(__dirname, 'node_modules/three/examples/jsm/'),
-      // Fallback: three/webgpu doesn't exist in this version
-      'three/webgpu': resolve(__dirname, 'node_modules/three'),
-    },
-  },
-
-  optimizeDeps: {
-    include: ['cannon-es', 'three'],
-  },
 
   build: {
     target: 'esnext',
@@ -79,18 +65,13 @@ export default defineConfig({
         cascadia: resolve(
           __dirname,
           'src/experiments/cascadia/index.html'
-        ),
+        )
+        
       },
       output: {
         manualChunks(id) {
           if (id.includes('node_modules/lil-gui')) {
             return 'lil-gui-vendor';
-          }
-          if (id.includes('node_modules/cannon-es')) {
-            return 'cannon-es-vendor';
-          }
-          if (id.includes('node_modules/three')) {
-            return 'three-vendor';
           }
         },
       },
