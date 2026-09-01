@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <meta
+      name="description"
+      content="Cascadia - A physics-based domino simulation engine with real-time feedback, spatial audio, and interactive controls."
+    />
+    <meta
+      name="keywords"
+      content="domino, physics, simulation, threejs, cannonjs, chain reaction, interactive"
+    />
+    <meta name="author" content="Cascadia Physics" />
+    <meta property="og:title" content="Cascadia - Domino Physics Engine" />
+    <meta
+      property="og:description"
+      content="Interactive domino physics simulation with real-time feedback and spatial audio."
+    />
+    <meta property="og:type" content="website" />
+    <title>Cascadia ~ Domino Physics Engine</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+
+
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+          "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/",
+          "cannon-es": "https://unpkg.com/cannon-es@0.20.0/dist/cannon-es.js"
+        }
+      }
+    </script>
+    <script type="module" crossorigin src="/impractical-series/assets/cascadia-BPhqFx3i.js"></script>
+    <link rel="modulepreload" crossorigin href="/impractical-series/assets/modulepreload-polyfill-BdX5DvLD.js">
+    <link rel="modulepreload" crossorigin href="/impractical-series/assets/three.module-DPmXMrLF.js">
+    <link rel="modulepreload" crossorigin href="/impractical-series/assets/OrbitControls-0ThInJ-g.js">
+    <link rel="stylesheet" crossorigin href="/impractical-series/assets/cascadia-B6AZK_5c.css">
+  </head>
+  <body>
+    <canvas
+      id="webgl-canvas"
+      aria-label="3D Domino Physics Simulation"
+    ></canvas>
+
+    <div class="hud" role="application" aria-label="Domino Physics Controls">
+      <header class="header">
+        <section class="title-block" aria-label="Project Title">
+          <h1>Cascadia</h1>
+          <div class="project-description">
+            <p>
+              A physics-based domino simulation. 
+            </p>
+            <span class="read-more">Read less</span>
+          </div>
+        </section>
+
+        <section class="metrics-panel" aria-label="Domino Statistics">
+          <div class="metric-item">
+            <span class="metric-label">Total</span>
+            <span class="metric-value" id="val-total" aria-live="polite"
+              >0</span
+            >
+          </div>
+          <div class="metric-item">
+            <span class="metric-label">Fallen</span>
+            <span class="metric-value" id="val-fallen" aria-live="polite"
+              >0</span
+            >
+          </div>
+          <div class="metric-item">
+            <span class="metric-label">Standing</span>
+            <span class="metric-value" id="val-standing" aria-live="polite"
+              >0</span
+            >
+          </div>
+          <div class="metric-item">
+            <span class="metric-label">Success Rate</span>
+            <span class="metric-value" id="val-rate" aria-live="polite"
+              >0%</span
+            >
+          </div>
+        </section>
+      </header>
+
+      <aside
+        class="controls-panel"
+        id="controlsPanel"
+        aria-label="Simulation Controls"
+      >
+        <div
+          class="controls-header"
+          aria-expanded="true"
+          aria-controls="controlsContent"
+        >
+          <h3>⚙️ Controls</h3>
+          <span id="toggleIcon" aria-hidden="true">−</span>
+        </div>
+
+        <div class="controls-content" id="controlsContent" role="group">
+          <div class="control-group">
+            <label class="sound-toggle">
+              <input
+                type="checkbox"
+                id="chk-sound"
+                checked
+                aria-label="Toggle sound effects"
+              />
+              <span>Sound Effects</span>
+            </label>
+          </div>
+
+          <div class="control-group">
+            <label for="select-theme">Visual Style</label>
+            <select id="select-theme" aria-label="Select visual aesthetic">
+              <option value="blueprint">Blueprint</option>
+              <option value="obsidian">Obsidian</option>
+              <option value="pastel">Pastel</option>
+            </select>
+          </div>
+
+          <div class="control-group">
+            <label for="select-path">Domino Path</label>
+            <select
+              id="select-path"
+              aria-label="Select domino arrangement path"
+            >
+              <option value="line" selected>Straight Line</option>
+              <option value="figure8">Figure-8</option>
+              <option value="wave">Sine Wave</option>
+              <option value="circle">Circular Loop</option>
+            </select>
+          </div>
+
+          <div class="control-group">
+            <label for="range-count">
+              Domino Count
+              <span id="lbl-count" aria-live="polite">100</span>
+            </label>
+            <input
+              type="range"
+              id="range-count"
+              min="20"
+              max="100"
+              step="5"
+              value="100"
+              aria-label="Number of dominoes"
+            />
+          </div>
+          <div class="control-group">
+            <label class="toggle-label">
+              <span>Camera Follow</span>
+              <label class="switch">
+                <input type="checkbox" id="chk-follow" checked />
+                <span class="slider"></span>
+              </label>
+            </label>
+          </div>
+
+          <div class="control-group">
+            <label for="select-camera">Camera View</label>
+            <select id="select-camera" aria-label="Select camera mode">
+              <option value="follow">Wave Follow</option>
+              <option value="top">Top Down</option>
+              <option value="free">Free Orbit</option>
+            </select>
+          </div>
+
+          <div class="button-grid" role="group" aria-label="Simulation actions">
+            <button class="btn btn-trigger" id="btn-push">
+              Tip Lead Domino
+            </button>
+            <button class="btn" id="btn-preview">Preview Path</button>
+            <button class="btn" id="btn-reset">Reset Chain</button>
+          </div>
+        </div>
+      </aside>
+
+      <div class="hint-toast" role="status" aria-live="polite">
+        Click any domino to trigger the cascade
+      </div>
+    </div>
+
+  </body>
+</html>
