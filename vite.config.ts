@@ -61,7 +61,12 @@ export default defineConfig({
         vinyl: resolve(
           __dirname,
           'src/experiments/vinyl/index.html'
+        ),
+        cascadia: resolve(
+          __dirname,
+          'src/experiments/cascadia/index.html'
         )
+        
       },
       output: {
         manualChunks(id) {
