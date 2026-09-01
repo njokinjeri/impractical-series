@@ -140,6 +140,15 @@ export const projects: Project[] = [
     stack: ['Three.js', 'Web Audio API', 'GLSL', 'TypeScript'],
     accent: 'amber',
   },
+  {
+    slug: 'cascadia',
+    index: 13,
+    title: 'Cascadia',
+    description:
+      'A physics-based domino simulation where you build, tip, and trigger cascading chain reactions across multiple paths with spatial audio feedback.',
+    stack: ['Three.js', 'Physics', 'TypeScript'],
+    accent: 'blue',
+  },
 ];
 
 const SITE_BASE = '/impractical-series';
