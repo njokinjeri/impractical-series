@@ -1,7 +1,14 @@
 import * as THREE from 'three';
 import * as CANNON from 'cannon-es';
-import type { Theme, DominoProfile } from '../utils/types';
+import type { Theme } from '../utils/types';
 import { PASTEL_COLORS } from '../config';
+
+interface DominoProfile {
+  w: number;
+  h: number;
+  d: number;
+  mass: number;
+}
 
 interface DominoChainOptions {
   profile: DominoProfile;
@@ -77,23 +84,19 @@ export class DominoChain {
       scene.add(mesh);
       this.meshes.push(mesh);
 
-      // In the build method, replace the body creation with this:
       const shape = new CANNON.Box(new CANNON.Vec3(p.w / 2, p.h / 2, p.d / 2));
       const body = new CANNON.Body({
         mass: p.mass,
         position: new CANNON.Vec3(pos.x, pos.y + p.h / 2, pos.z),
         quaternion: new CANNON.Quaternion(quat.x, quat.y, quat.z, quat.w),
-        linearDamping: 0.15, // ← FIXED: Higher damping
-        angularDamping: 0.15, // ← FIXED: Higher damping
+        linearDamping: 0.15,
+        angularDamping: 0.15,
         material: new CANNON.Material('domino'),
       });
 
       body.addShape(shape);
-      body.ccdSpeedThreshold = 0.5; // ← Increased
-      body.ccdSphereRadius = p.d * 0.5;
       body.quaternion.normalize();
 
-      // Start sleeping to prevent initial jitter
       body.sleepState = CANNON.Body.SLEEPING;
 
       world.addBody(body);
@@ -124,7 +127,6 @@ export class DominoChain {
         break;
       }
       case 'pastel': {
-        // FIX: Clean color cycling
         const colorIndex = index % PASTEL_COLORS.length;
         const pastelHex = PASTEL_COLORS[colorIndex];
         const mat = new THREE.MeshStandardMaterial({
@@ -170,20 +172,18 @@ export class DominoChain {
     return mesh;
   }
 
-  // FIX: Method to rebuild colors without rebuilding the entire chain
   rebuildColors(): void {
     for (let i = 0; i < this.meshes.length; i++) {
       const mesh = this.meshes[i];
       if (this.theme === 'pastel') {
         const colorIndex = i % PASTEL_COLORS.length;
         const pastelHex = PASTEL_COLORS[colorIndex];
-        // Handle both array and single material
         const materials = Array.isArray(mesh.material)
           ? mesh.material
           : [mesh.material];
         for (const mat of materials) {
           if (mat && 'color' in mat) {
-            mat.color.setHex(pastelHex);
+            (mat as THREE.MeshStandardMaterial).color.setHex(pastelHex);
           }
         }
       }
@@ -302,7 +302,6 @@ export class DominoChain {
       const body = this.bodies[i];
       const mesh = this.meshes[i];
 
-      // Only clamp extreme velocities
       if (body.angularVelocity.length() > maxAngularVelocity) {
         body.angularVelocity.scale(
           maxAngularVelocity / body.angularVelocity.length(),
@@ -330,7 +329,6 @@ export class DominoChain {
         fallenCount++;
         onFall(i);
 
-        // Gentle damping - allow physics to settle naturally
         body.linearDamping = 0.5;
         body.angularDamping = 0.5;
       }
