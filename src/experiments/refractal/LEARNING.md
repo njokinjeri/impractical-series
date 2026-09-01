@@ -1,3 +1,0 @@
-# Refractals
-
-...in progress
