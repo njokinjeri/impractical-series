@@ -14,7 +14,7 @@
     "vite": "^8.2.0"
   },
   "dependencies": {
-    "lil-gui": "^0.21.0",
+    "cannon-es": "^0.20.0",
     "three": "^0.185.1"
   }
 }
