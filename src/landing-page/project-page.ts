@@ -17,7 +17,6 @@ function redirectHome(): void {
 }
 
 function renderProject(project: Project): void {
-  const index = String(project.index).padStart(2, '0');
   const playUrl = getPlayUrl(project.slug);
   const sourceUrl = getSourceUrl(project.slug);
   const accent = ACCENT_HEX[project.accent];
@@ -44,7 +43,6 @@ function renderProject(project: Project): void {
       </div>
 
       <div class="detail-meta">
-        <p class="detail-index" aria-label="Experiment number">${index}</p>
         <h1 class="page-title">${project.title}</h1>
         <p class="page-desc">${project.description}</p>
 

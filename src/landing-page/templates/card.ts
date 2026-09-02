@@ -87,7 +87,6 @@ export function drawCardThumb(
 export function renderCard(project: Project): string {
   const playUrl = getPlayUrl(project.slug);
   const sourceUrl = getSourceUrl(project.slug);
-  const index = String(project.index).padStart(2, '0');
 
   return `
     <article
@@ -109,7 +108,6 @@ export function renderCard(project: Project): string {
         </div>
 
         <div class="card__body">
-          <p class="card__index" aria-hidden="true">${index}</p>
           <p class="card__title">${project.title}</p>
           <p class="card__desc">${project.description}</p>
         </div>
