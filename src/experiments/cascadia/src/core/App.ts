@@ -30,6 +30,7 @@ export class App {
   private isWaveActive: boolean = false;
   private hasSwitchedToFree: boolean = false;
   private lastCheckedIndex: number = -1;
+  private cascadeCheckTimer: number | null = null;
 
   private raycaster: THREE.Raycaster = new THREE.Raycaster();
   private mouse: THREE.Vector2 = new THREE.Vector2();
@@ -43,10 +44,7 @@ export class App {
     
     this.renderer = new Renderer();
     this.physics = new PhysicsWorld();
-    this.cameraController = new CameraController(
-      this.renderer.getCamera(),
-      this.renderer.getCanvas()
-    );
+    this.cameraController = new CameraController(this.renderer.getCamera(), this.renderer.getCanvas());
     
     this.ui.bindEvents(this);
     this.setupInteraction();
@@ -122,6 +120,11 @@ export class App {
       this.dominoChain = null;
     }
 
+    if (this.cascadeCheckTimer !== null) {
+      window.clearTimeout(this.cascadeCheckTimer);
+      this.cascadeCheckTimer = null;
+    }
+
     this.renderer.updateTheme(this.config.theme);
     this.ui.updateTheme(this.config.theme);
 
@@ -141,14 +144,9 @@ export class App {
     this.isPreviewingPath = false;
     this.lastFallenIndex = -1;
     this.cameraShakeTrauma = 0;
-    
     this.isWaveActive = false;
-    this.waveDirection = 0;
-    this.isTwoDirectional = false;
     this.hasSwitchedToFree = false;
-    this.firstFallenIndex = -1;
     this.lastCheckedIndex = -1;
-    this.ignoreFollow = false;
 
     this.cameraController.setIgnoreFollow(false);
     this.cameraController.unlock();
@@ -164,14 +162,9 @@ export class App {
 
     this.audio.init();
     this.isTriggered = true;
-    
     this.isWaveActive = true;
-    this.waveDirection = 0;
-    this.isTwoDirectional = false;
     this.hasSwitchedToFree = false;
-    this.firstFallenIndex = -1;
     this.lastCheckedIndex = -1;
-    this.ignoreFollow = false;
 
     this.cameraController.setIgnoreFollow(false);
     
@@ -204,6 +197,34 @@ export class App {
 
     body.wakeUp();
     body.applyImpulse(pushImpulse, pushPoint);
+
+    this.startCascadeCheckTimer();
+  }
+
+  private startCascadeCheckTimer(): void {
+    if (this.cascadeCheckTimer !== null) {
+      window.clearTimeout(this.cascadeCheckTimer);
+    }
+
+    this.cascadeCheckTimer = window.setTimeout(() => {
+      this.runForceCheck();
+      this.cascadeCheckTimer = null;
+    }, 3000);
+  }
+
+  private runForceCheck(): void {
+    if (!this.dominoChain) return;
+    
+    const total = this.dominoChain.getCount();
+    const fallen = this.dominoChain.getFallenCount();
+    
+    if (fallen < total) {
+      const newlyFallen = this.dominoChain.forceCheckFallen();
+      if (newlyFallen > 0) {
+        const updatedFallen = this.dominoChain.getFallenCount();
+        this.ui.updateMetrics(total, updatedFallen);
+      }
+    }
   }
 
   private checkTwoDirectionalFalling(index: number): void {
@@ -211,39 +232,32 @@ export class App {
     if (this.hasSwitchedToFree) return;
     
     const total = this.dominoChain.getCount();
-    if (total < 15) return;
-    
-    if (index - this.lastCheckedIndex < 3) return;
+    if (total < 10) return;
+    if (index - this.lastCheckedIndex < 2) return;
     this.lastCheckedIndex = index;
     
-    let minFallen = total;
-    let maxFallen = -1;
-    let fallenCount = 0;
-    
+    let startIdx = -1;
     for (let i = 0; i < total; i++) {
       if (this.dominoChain.hasFallen[i]) {
-        if (i < minFallen) minFallen = i;
-        if (i > maxFallen) maxFallen = i;
-        fallenCount++;
+        startIdx = i;
+        break;
       }
     }
     
-    if (fallenCount < 8) return;
-    
-    const middle = Math.floor((minFallen + maxFallen) / 2);
+    if (startIdx === -1) return;
     
     let leftCount = 0;
     let rightCount = 0;
     
-    for (let i = minFallen; i <= maxFallen; i++) {
+    for (let i = 0; i < total; i++) {
       if (this.dominoChain.hasFallen[i]) {
-        if (i < middle) leftCount++;
-        else if (i > middle) rightCount++;
+        if (i < startIdx) leftCount++;
+        else if (i > startIdx) rightCount++;
       }
     }
     
-    if (leftCount >= 3 && rightCount >= 3) {
-      this.isTwoDirectional = true;
+    if (leftCount >= 2 && rightCount >= 2) {
+      this.hasSwitchedToFree = true;
       this.switchToFreeOrbit();
     }
   }
@@ -258,41 +272,15 @@ export class App {
       cameraSelect.value = 'free';
     }
     this.cameraController.setupView('free');
-    
-    this.ignoreFollow = true;
     this.cameraController.setIgnoreFollow(true);
-    
     this.config.followEnabled = false;
+    
     const followToggle = document.getElementById('chk-follow') as HTMLInputElement;
     if (followToggle) {
       followToggle.checked = false;
     }
     
-    this.showTwoDirectionNotification();
-  }
-
-  private showTwoDirectionNotification(): void {
-    const notification = document.createElement('div');
-    notification.className = 'notification-toast';
-    notification.innerHTML = `
-      <div class="title">Two-Directional Cascade Detected</div>
-      <div class="subtitle">Camera switched to Free Orbit for better viewing</div>
-    `;
-    
-    document.body.appendChild(notification);
-    
-    requestAnimationFrame(() => {
-      notification.classList.add('visible');
-    });
-    
-    setTimeout(() => {
-      notification.classList.remove('visible');
-      setTimeout(() => {
-        if (notification.parentNode) {
-          notification.parentNode.removeChild(notification);
-        }
-      }, 500);
-    }, 4000);
+    this.ui.showTwoDirectionNotification();
   }
 
   handleDominoFall(index: number): void {
@@ -335,7 +323,6 @@ export class App {
     
     this.isPreviewingPath = true;
     this.previewProgress = 0;
-    
     this._previousCameraMode = this.config.cameraMode;
     
     this.config.cameraMode = 'follow';
@@ -359,13 +346,12 @@ export class App {
     this.previewProgress = 0;
     
     if (this._previousCameraMode) {
-      this._previousCameraMode = this.config.cameraMode;
+      this.config.cameraMode = this._previousCameraMode;
       const cameraSelect = document.getElementById('select-camera') as HTMLSelectElement;
       if (cameraSelect) {
         cameraSelect.value = this._previousCameraMode;
       }
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      this.cameraController.setupView(this._previousCameraMode as any);
+      this.cameraController.setupView(this._previousCameraMode);
     }
     
     const previewBtn = document.getElementById('btn-preview');
@@ -392,12 +378,25 @@ export class App {
     this.physics.step();
 
     if (this.dominoChain) {
+      const total = this.dominoChain.getCount();
       const fallen = this.dominoChain.updatePositions(
         (index: number) => this.handleDominoFall(index)
       );
 
       if (this.isTriggered && fallen > 0) {
         this.ui.updateMetrics(this.config.count, fallen);
+      }
+
+      if (this.isTriggered) {
+        const currentFallen = this.dominoChain.getFallenCount();
+        
+        if (currentFallen >= total - 2 && currentFallen < total) {
+          const newlyFallen = this.dominoChain.forceCheckFallen();
+          if (newlyFallen > 0) {
+            const updatedFallen = this.dominoChain.getFallenCount();
+            this.ui.updateMetrics(total, updatedFallen);
+          }
+        }
       }
     }
 
@@ -433,6 +432,10 @@ export class App {
     }
     if (this.dominoChain) {
       this.dominoChain.dispose();
+    }
+    if (this.cascadeCheckTimer !== null) {
+      window.clearTimeout(this.cascadeCheckTimer);
+      this.cascadeCheckTimer = null;
     }
     this.physics.dispose();
     this.renderer.dispose();

@@ -6,7 +6,6 @@ import type { CameraMode } from '../utils/types';
 export class CameraController {
   private camera: THREE.PerspectiveCamera;
   private controls: OrbitControls;
-  
   private minDistance: number = 2;
   private maxDistance: number = 60;
   private isLocked: boolean = false;
@@ -20,17 +19,14 @@ export class CameraController {
     this.controls = new OrbitControls(this.camera, canvas);
     this.controls.enableDamping = true;
     this.controls.target.set(0, 1, 0);
-    
     this.controls.minDistance = this.minDistance;
     this.controls.maxDistance = this.maxDistance;
     this.controls.maxPolarAngle = Math.PI / 2.1;
-
     this.camera.position.set(0, 16, 22);
     this.controls.update();
 
     this.controls.addEventListener('start', () => {
       this.userInteracted = true;
-      
       if (this.userInteractTimeout !== null) {
         window.clearTimeout(this.userInteractTimeout);
         this.userInteractTimeout = null;
@@ -54,12 +50,10 @@ export class CameraController {
 
   setupView(mode: CameraMode): void {
     this.userInteracted = false;
-    
     if (this.userInteractTimeout !== null) {
       window.clearTimeout(this.userInteractTimeout);
       this.userInteractTimeout = null;
     }
-    
     if (mode === 'top') {
       this.camera.position.set(0, 32, 1);
       this.controls.target.set(0, 0, 0);
@@ -83,6 +77,12 @@ export class CameraController {
     followEnabled: boolean
   ): void {
     if (this.ignoreFollow) {
+      if (shakeTrauma > 0) {
+        const shakeAmount = Math.pow(shakeTrauma, 2) * 0.12;
+        this.camera.position.x += (Math.random() - 0.5) * shakeAmount;
+        this.camera.position.y += (Math.random() - 0.5) * shakeAmount;
+        this.camera.position.z += (Math.random() - 0.5) * shakeAmount;
+      }
       this.controls.update();
       return;
     }
@@ -97,22 +97,13 @@ export class CameraController {
 
     if (shouldFollow) {
       const target = dominoChain.meshesList[lastFallenIndex].position;
-      const idealPos = new THREE.Vector3(
-        target.x + 4, 
-        target.y + 3.2, 
-        target.z + 5
-      );
-      
+      const idealPos = new THREE.Vector3(target.x + 4, target.y + 3.2, target.z + 5);
       this.camera.position.lerp(idealPos, this.followSmoothness);
       this.controls.target.lerp(target, this.followSmoothness);
-    }
-    else if (isPreviewing && dominoChain && dominoChain.meshesList.length > 0) {
+    } else if (isPreviewing && dominoChain && dominoChain.meshesList.length > 0) {
       const idx = Math.floor(previewProgress * (dominoChain.meshesList.length - 1));
       const target = dominoChain.meshesList[idx].position;
-      this.camera.position.lerp(
-        new THREE.Vector3(target.x + 3, target.y + 2.5, target.z + 4),
-        0.04
-      );
+      this.camera.position.lerp(new THREE.Vector3(target.x + 3, target.y + 2.5, target.z + 4), 0.04);
       this.controls.target.lerp(target, 0.04);
     }
 

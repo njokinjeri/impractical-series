@@ -14,6 +14,8 @@ export class UIManager {
   private confetti: Confetti | null = null;
   private previousRate: number = 0;
   private celebrationTriggered: boolean = false;
+  private isComplete: boolean = false;
+  private isPushed: boolean = false;
 
   constructor() {
     this.setupToggleHandlers();
@@ -41,6 +43,8 @@ export class UIManager {
           this.enablePushButton();
           this.resetCelebrationState();
           this.stopConfetti();
+          this.isComplete = false;
+          this.isPushed = false;
         }
       });
     }
@@ -138,6 +142,8 @@ export class UIManager {
         this.resetCelebrationState();
         this.stopConfetti();
         this.hideResetButton();
+        this.isComplete = false;
+        this.isPushed = false;
       });
     }
 
@@ -151,6 +157,8 @@ export class UIManager {
         this.resetCelebrationState();
         this.stopConfetti();
         this.hideResetButton();
+        this.isComplete = false;
+        this.isPushed = false;
       });
     }
 
@@ -210,17 +218,21 @@ export class UIManager {
         this.resetCelebrationState();
         this.stopConfetti();
         this.hideResetButton();
+        this.isComplete = false;
+        this.isPushed = false;
       });
     }
 
     this.pushButton = document.getElementById('btn-push') as HTMLButtonElement;
     if (this.pushButton) {
       this.pushButton.addEventListener('click', () => {
+        if (this.isComplete || this.pushButton?.disabled || this.isPushed) return;
+
         app.pushDominoAtIndex(0);
         this.disablePushButton();
+        this.isPushed = true;
         this.resetCelebrationState();
         this.stopConfetti();
-        this.hideResetButton();
       });
     }
 
@@ -239,6 +251,8 @@ export class UIManager {
         this.resetCelebrationState();
         this.stopConfetti();
         this.hideResetButton();
+        this.isComplete = false;
+        this.isPushed = false;
       });
     }
   }
@@ -286,15 +300,30 @@ export class UIManager {
     if (standingEl) standingEl.textContent = standing.toString();
     if (rateEl) rateEl.textContent = `${rate}%`;
 
-    if (fallen === total && total > 0 && !this.celebrationTriggered) {
+    if (standing === 0 && total > 0 && !this.celebrationTriggered) {
+      const app = (window as any).app;
+      if (app && app.dominoChain) {
+        const newlyFallen = app.dominoChain.forceCheckFallen();
+        if (newlyFallen > 0) {
+          const updatedFallen = app.dominoChain.getFallenCount();
+          const updatedStanding = total - updatedFallen;
+          if (updatedStanding > 0) {
+            if (standingEl) standingEl.textContent = updatedStanding.toString();
+            return;
+          }
+        }
+      }
+
       this.celebrationTriggered = true;
+      this.isComplete = true;
       this.triggerCelebration();
       this.showResetButton();
+      this.disablePushButton();
     }
 
     this.previousRate = rate;
 
-    if (fallen >= total && total > 0) {
+    if (!this.isComplete && !this.isPushed && standing > 0 && total > 0) {
       this.enablePushButton();
     }
   }
