@@ -97,6 +97,7 @@ export class UIManager {
         app.rebuild();
         this.enablePushButton();
         this.resetCelebrationState();
+        this.stopConfetti();
       });
     }
 
@@ -110,6 +111,7 @@ export class UIManager {
         app.rebuild();
         this.enablePushButton();
         this.resetCelebrationState();
+        this.stopConfetti(); 
       });
     }
 
@@ -179,6 +181,7 @@ export class UIManager {
         app.rebuild();
         this.enablePushButton();
         this.resetCelebrationState();
+        this.stopConfetti(); 
       });
     }
 
@@ -188,6 +191,7 @@ export class UIManager {
         app.pushDominoAtIndex(0);
         this.disablePushButton();
         this.resetCelebrationState();
+        this.stopConfetti();
       });
     }
 
@@ -204,11 +208,14 @@ export class UIManager {
         app.rebuild();
         this.enablePushButton();
         this.resetCelebrationState();
-        if (this.confetti) {
-          this.confetti.dispose();
-          this.confetti = new Confetti();
-        }
+        this.stopConfetti(); 
       });
+    }
+  }
+
+  private stopConfetti(): void {
+    if (this.confetti) {
+      this.confetti.stop();
     }
   }
 
