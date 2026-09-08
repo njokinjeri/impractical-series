@@ -26,8 +26,6 @@ export default defineConfig({
     rollupOptions: {
       input: {
         main: resolve(__dirname, 'index.html'),
-        about: resolve(__dirname, 'about.html'),
-        contact: resolve(__dirname, 'contact.html'),
         project: resolve(__dirname, 'project.html'),
         threaded: resolve(__dirname, 'src/experiments/threaded/index.html'),
         hypnosis: resolve(
