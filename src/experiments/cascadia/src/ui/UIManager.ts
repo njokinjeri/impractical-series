@@ -10,13 +10,17 @@ export class UIManager {
   };
 
   private pushButton: HTMLButtonElement | null = null;
+  private resetButton: HTMLButtonElement | null = null;
   private confetti: Confetti | null = null;
   private previousRate: number = 0;
   private celebrationTriggered: boolean = false;
+  private isComplete: boolean = false;
+  private isPushed: boolean = false;
 
   constructor() {
     this.setupToggleHandlers();
     this.confetti = new Confetti();
+    this.setupResetButton();
   }
 
   private setupToggleHandlers(): void {
@@ -25,6 +29,49 @@ export class UIManager {
       header.addEventListener('click', () => {
         this.toggleControls();
       });
+    }
+  }
+
+  private setupResetButton(): void {
+    this.resetButton = document.getElementById('btn-reset-central') as HTMLButtonElement;
+    if (this.resetButton) {
+      this.resetButton.addEventListener('click', () => {
+        const app = (window as any).app;
+        if (app) {
+          app.rebuild();
+          this.hideResetButton();
+          this.enablePushButton();
+          this.resetCelebrationState();
+          this.stopConfetti();
+          this.isComplete = false;
+          this.isPushed = false;
+        }
+      });
+    }
+  }
+
+  private showResetButton(): void {
+    if (this.resetButton) {
+      this.resetButton.style.display = 'flex';
+      void this.resetButton.offsetWidth;
+      this.resetButton.classList.add('visible');
+    }
+  }
+
+  private hideResetButton(): void {
+    if (this.resetButton) {
+      this.resetButton.classList.remove('visible');
+      setTimeout(() => {
+        if (this.resetButton) {
+          this.resetButton.style.display = 'none';
+        }
+      }, 400);
+    }
+  }
+
+  private stopConfetti(): void {
+    if (this.confetti) {
+      this.confetti.stop();
     }
   }
 
@@ -55,9 +102,9 @@ export class UIManager {
     const notification = document.createElement('div');
     notification.className = 'notification-toast';
     notification.innerHTML = `
-    <div class="title">Two-Directional Cascade Detected</div>
-    <div class="subtitle">Camera switched to Free Orbit for better viewing</div>
-  `;
+      <div class="title">Two-Directional Cascade Detected</div>
+      <div class="subtitle">Camera switched to Free Orbit for better viewing</div>
+    `;
 
     document.body.appendChild(notification);
 
@@ -76,9 +123,7 @@ export class UIManager {
   }
 
   bindEvents(app: App): void {
-    const soundCheckbox = document.getElementById(
-      'chk-sound'
-    ) as HTMLInputElement;
+    const soundCheckbox = document.getElementById('chk-sound') as HTMLInputElement;
     if (soundCheckbox) {
       soundCheckbox.addEventListener('change', (e) => {
         const checked = (e.target as HTMLInputElement).checked;
@@ -87,9 +132,7 @@ export class UIManager {
       });
     }
 
-    const themeSelect = document.getElementById(
-      'select-theme'
-    ) as HTMLSelectElement;
+    const themeSelect = document.getElementById('select-theme') as HTMLSelectElement;
     if (themeSelect) {
       themeSelect.addEventListener('change', (e) => {
         const value = (e.target as HTMLSelectElement).value;
@@ -98,12 +141,13 @@ export class UIManager {
         this.enablePushButton();
         this.resetCelebrationState();
         this.stopConfetti();
+        this.hideResetButton();
+        this.isComplete = false;
+        this.isPushed = false;
       });
     }
 
-    const pathSelect = document.getElementById(
-      'select-path'
-    ) as HTMLSelectElement;
+    const pathSelect = document.getElementById('select-path') as HTMLSelectElement;
     if (pathSelect) {
       pathSelect.addEventListener('change', (e) => {
         const value = (e.target as HTMLSelectElement).value;
@@ -111,31 +155,28 @@ export class UIManager {
         app.rebuild();
         this.enablePushButton();
         this.resetCelebrationState();
-        this.stopConfetti(); 
+        this.stopConfetti();
+        this.hideResetButton();
+        this.isComplete = false;
+        this.isPushed = false;
       });
     }
 
-    const followToggle = document.getElementById(
-      'chk-follow'
-    ) as HTMLInputElement;
+    const followToggle = document.getElementById('chk-follow') as HTMLInputElement;
     if (followToggle) {
       followToggle.addEventListener('change', (e) => {
         const checked = (e.target as HTMLInputElement).checked;
         app.setConfig('followEnabled', checked);
         if (!checked) {
           app.setConfig('cameraMode', 'free');
-          const cameraSelect = document.getElementById(
-            'select-camera'
-          ) as HTMLSelectElement;
+          const cameraSelect = document.getElementById('select-camera') as HTMLSelectElement;
           if (cameraSelect) {
             cameraSelect.value = 'free';
           }
           app.updateCamera();
         } else {
           app.setConfig('cameraMode', 'follow');
-          const cameraSelect = document.getElementById(
-            'select-camera'
-          ) as HTMLSelectElement;
+          const cameraSelect = document.getElementById('select-camera') as HTMLSelectElement;
           if (cameraSelect) {
             cameraSelect.value = 'follow';
           }
@@ -144,17 +185,13 @@ export class UIManager {
       });
     }
 
-    const cameraSelect = document.getElementById(
-      'select-camera'
-    ) as HTMLSelectElement;
+    const cameraSelect = document.getElementById('select-camera') as HTMLSelectElement;
     if (cameraSelect) {
       cameraSelect.addEventListener('change', (e) => {
         const value = (e.target as HTMLSelectElement).value;
         app.setConfig('cameraMode', value);
 
-        const followToggle = document.getElementById(
-          'chk-follow'
-        ) as HTMLInputElement;
+        const followToggle = document.getElementById('chk-follow') as HTMLInputElement;
         if (followToggle) {
           if (value === 'follow') {
             followToggle.checked = true;
@@ -169,9 +206,7 @@ export class UIManager {
       });
     }
 
-    const countSlider = document.getElementById(
-      'range-count'
-    ) as HTMLInputElement;
+    const countSlider = document.getElementById('range-count') as HTMLInputElement;
     const countLabel = document.getElementById('lbl-count');
     if (countSlider && countLabel) {
       countSlider.addEventListener('input', (e) => {
@@ -181,15 +216,21 @@ export class UIManager {
         app.rebuild();
         this.enablePushButton();
         this.resetCelebrationState();
-        this.stopConfetti(); 
+        this.stopConfetti();
+        this.hideResetButton();
+        this.isComplete = false;
+        this.isPushed = false;
       });
     }
 
     this.pushButton = document.getElementById('btn-push') as HTMLButtonElement;
     if (this.pushButton) {
       this.pushButton.addEventListener('click', () => {
+        if (this.isComplete || this.pushButton?.disabled || this.isPushed) return;
+
         app.pushDominoAtIndex(0);
         this.disablePushButton();
+        this.isPushed = true;
         this.resetCelebrationState();
         this.stopConfetti();
       });
@@ -208,14 +249,11 @@ export class UIManager {
         app.rebuild();
         this.enablePushButton();
         this.resetCelebrationState();
-        this.stopConfetti(); 
+        this.stopConfetti();
+        this.hideResetButton();
+        this.isComplete = false;
+        this.isPushed = false;
       });
-    }
-  }
-
-  private stopConfetti(): void {
-    if (this.confetti) {
-      this.confetti.stop();
     }
   }
 
@@ -242,9 +280,7 @@ export class UIManager {
 
   updateTheme(theme: string): void {
     document.body.setAttribute('data-theme', theme);
-    const themeSelect = document.getElementById(
-      'select-theme'
-    ) as HTMLSelectElement;
+    const themeSelect = document.getElementById('select-theme') as HTMLSelectElement;
     if (themeSelect) {
       themeSelect.value = theme;
     }
@@ -264,14 +300,30 @@ export class UIManager {
     if (standingEl) standingEl.textContent = standing.toString();
     if (rateEl) rateEl.textContent = `${rate}%`;
 
-    if (fallen === total && total > 0 && !this.celebrationTriggered) {
+    if (standing === 0 && total > 0 && !this.celebrationTriggered) {
+      const app = (window as any).app;
+      if (app && app.dominoChain) {
+        const newlyFallen = app.dominoChain.forceCheckFallen();
+        if (newlyFallen > 0) {
+          const updatedFallen = app.dominoChain.getFallenCount();
+          const updatedStanding = total - updatedFallen;
+          if (updatedStanding > 0) {
+            if (standingEl) standingEl.textContent = updatedStanding.toString();
+            return;
+          }
+        }
+      }
+
       this.celebrationTriggered = true;
+      this.isComplete = true;
       this.triggerCelebration();
+      this.showResetButton();
+      this.disablePushButton();
     }
 
     this.previousRate = rate;
 
-    if (fallen >= total && total > 0) {
+    if (!this.isComplete && !this.isPushed && standing > 0 && total > 0) {
       this.enablePushButton();
     }
   }

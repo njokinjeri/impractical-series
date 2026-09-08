@@ -24,7 +24,6 @@ export class DominoChain {
   private spacingRatio: number;
   private pathType: string;
   private theme: Theme;
-
   private meshes: THREE.Mesh[] = [];
   private bodies: CANNON.Body[] = [];
   public hasFallen: boolean[] = [];
@@ -49,7 +48,6 @@ export class DominoChain {
     this.arcTable = [];
 
     const p = this.profile;
-
     const gap = p.h * this.spacingRatio;
     const minGap = p.d * 0.1;
     const maxGap = p.d * 1.5;
@@ -60,18 +58,10 @@ export class DominoChain {
 
     for (let i = 0; i < this.count; i++) {
       const t = i / Math.max(this.count - 1, 1);
-      const { pos, tangent } = this.sampleBoundedPath(
-        t,
-        this.pathType,
-        this.count,
-        totalSpacing
-      );
+      const { pos, tangent } = this.sampleBoundedPath(t, this.pathType, this.count, totalSpacing);
 
       const angle = Math.atan2(tangent.x, tangent.z);
-      const quat = new THREE.Quaternion().setFromAxisAngle(
-        new THREE.Vector3(0, 1, 0),
-        angle
-      );
+      const quat = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0, 1, 0), angle);
 
       const mesh = this.createDominoMesh(i);
       mesh.position.set(pos.x, pos.y + p.h / 2, pos.z);
@@ -92,8 +82,9 @@ export class DominoChain {
 
       body.addShape(shape);
       body.quaternion.normalize();
-
       body.sleepState = CANNON.Body.SLEEPING;
+      body.velocity.set(0, 0, 0);
+      body.angularVelocity.set(0, 0, 0);
 
       world.addBody(body);
       this.bodies.push(body);
@@ -112,11 +103,7 @@ export class DominoChain {
 
     switch (this.theme) {
       case 'blueprint': {
-        const mat = new THREE.MeshStandardMaterial({
-          color: 0xf4f1ea,
-          roughness: 0.9,
-          metalness: 0,
-        });
+        const mat = new THREE.MeshStandardMaterial({ color: 0xf4f1ea, roughness: 0.9, metalness: 0 });
         const lineMat = new THREE.LineBasicMaterial({ color: 0x1a1a1a });
         mesh = new THREE.Mesh(boxGeo, mat);
         mesh.add(new THREE.LineSegments(edgesGeo, lineMat));
@@ -125,16 +112,8 @@ export class DominoChain {
       case 'pastel': {
         const colorIndex = index % PASTEL_COLORS.length;
         const pastelHex = PASTEL_COLORS[colorIndex];
-        const mat = new THREE.MeshStandardMaterial({
-          color: pastelHex,
-          roughness: 0.4,
-          metalness: 0.1,
-        });
-        const lineMat = new THREE.LineBasicMaterial({
-          color: 0x3a3a46,
-          transparent: true,
-          opacity: 0.8,
-        });
+        const mat = new THREE.MeshStandardMaterial({ color: pastelHex, roughness: 0.4, metalness: 0.1 });
+        const lineMat = new THREE.LineBasicMaterial({ color: 0x3a3a46, transparent: true, opacity: 0.8 });
         mesh = new THREE.Mesh(boxGeo, mat);
         mesh.add(new THREE.LineSegments(edgesGeo, lineMat));
         break;
@@ -148,11 +127,7 @@ export class DominoChain {
           clearcoat: 1.0,
           clearcoatRoughness: 0.1,
         });
-        const capMat = new THREE.MeshStandardMaterial({
-          color: 0xffffff,
-          roughness: 0.2,
-          metalness: 0.1,
-        });
+        const capMat = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.2, metalness: 0.1 });
 
         mesh = new THREE.Mesh(boxGeo, bodyMat);
         const cap = new THREE.Mesh(capGeo, capMat);
@@ -174,9 +149,7 @@ export class DominoChain {
       if (this.theme === 'pastel') {
         const colorIndex = i % PASTEL_COLORS.length;
         const pastelHex = PASTEL_COLORS[colorIndex];
-        const materials = Array.isArray(mesh.material)
-          ? mesh.material
-          : [mesh.material];
+        const materials = Array.isArray(mesh.material) ? mesh.material : [mesh.material];
         for (const mat of materials) {
           if (mat && 'color' in mat) {
             (mat as THREE.MeshStandardMaterial).color.setHex(pastelHex);
@@ -186,11 +159,7 @@ export class DominoChain {
     }
   }
 
-  private buildArcLengthTable(
-    pathType: string,
-    count: number,
-    spacing: number
-  ): void {
+  private buildArcLengthTable(pathType: string, count: number, spacing: number): void {
     const samples = 3000;
     this.arcTable = [{ u: 0, len: 0 }];
     let prev = this.getRawPoint(0, pathType, count, spacing);
@@ -204,12 +173,7 @@ export class DominoChain {
     }
   }
 
-  private getRawPoint(
-    u: number,
-    type: string,
-    count: number,
-    spacing: number
-  ): THREE.Vector3 {
+  private getRawPoint(u: number, type: string, count: number, spacing: number): THREE.Vector3 {
     const arcLength = count * spacing;
     const pt = new THREE.Vector3();
 
@@ -218,10 +182,8 @@ export class DominoChain {
         const t = u * Math.PI * 2;
         const scale = Math.min(arcLength / 2.6, 16);
         const a = scale * 0.9;
-
         const x = Math.cos(t) * a;
         const z = Math.sin(2 * t) * a * 0.8;
-
         pt.set(x, 0, z);
         break;
       }
@@ -229,12 +191,7 @@ export class DominoChain {
         const totalLength = Math.min(arcLength, 60);
         const amplitude = Math.min(totalLength * 0.15, 8);
         const cycles = 3;
-
-        pt.set(
-          (u - 0.5) * totalLength,
-          0,
-          Math.sin(u * Math.PI * 2 * cycles) * amplitude
-        );
+        pt.set((u - 0.5) * totalLength, 0, Math.sin(u * Math.PI * 2 * cycles) * amplitude);
         break;
       }
       case 'circle': {
@@ -254,12 +211,7 @@ export class DominoChain {
     return pt;
   }
 
-  private sampleBoundedPath(
-    t: number,
-    type: string,
-    count: number,
-    spacing: number
-  ): { pos: THREE.Vector3; tangent: THREE.Vector3 } {
+  private sampleBoundedPath(t: number, type: string, count: number, spacing: number): { pos: THREE.Vector3; tangent: THREE.Vector3 } {
     if (this.arcTable.length === 0) {
       this.buildArcLengthTable(type, count, spacing);
     }
@@ -268,17 +220,13 @@ export class DominoChain {
     const targetLen = t * totalLen;
 
     let i = 0;
-    while (
-      i < this.arcTable.length - 1 &&
-      this.arcTable[i + 1].len < targetLen
-    ) {
+    while (i < this.arcTable.length - 1 && this.arcTable[i + 1].len < targetLen) {
       i++;
     }
 
     const seg = this.arcTable[i + 1].len - this.arcTable[i].len;
     const frac = seg > 0.0001 ? (targetLen - this.arcTable[i].len) / seg : 0;
-    const u =
-      this.arcTable[i].u + frac * (this.arcTable[i + 1].u - this.arcTable[i].u);
+    const u = this.arcTable[i].u + frac * (this.arcTable[i + 1].u - this.arcTable[i].u);
 
     const p1 = this.getRawPoint(u, type, count, spacing);
     const p2 = this.getRawPoint(Math.min(u + 0.001, 1.0), type, count, spacing);
@@ -290,7 +238,6 @@ export class DominoChain {
   updatePositions(onFall: (index: number) => void): number {
     let fallenCount = 0;
     const up = new CANNON.Vec3(0, 1, 0);
-
     const maxAngularVelocity = 30.0;
     const maxVelocity = 20.0;
 
@@ -299,17 +246,11 @@ export class DominoChain {
       const mesh = this.meshes[i];
 
       if (body.angularVelocity.length() > maxAngularVelocity) {
-        body.angularVelocity.scale(
-          maxAngularVelocity / body.angularVelocity.length(),
-          body.angularVelocity
-        );
+        body.angularVelocity.scale(maxAngularVelocity / body.angularVelocity.length(), body.angularVelocity);
       }
 
       if (body.velocity.length() > maxVelocity) {
-        body.velocity.scale(
-          maxVelocity / body.velocity.length(),
-          body.velocity
-        );
+        body.velocity.scale(maxVelocity / body.velocity.length(), body.velocity);
       }
 
       mesh.position.copy(body.position);
@@ -320,11 +261,15 @@ export class DominoChain {
       const angle = Math.acos(Math.min(1, Math.max(-1, dotProduct)));
       const degrees = angle * (180 / Math.PI);
 
-      if (degrees > 8 && !this.hasFallen[i]) {
+      const halfHeight = this.profile.h / 2;
+      const yPos = body.position.y;
+      const isOnGround = yPos < halfHeight * 0.3;
+      const isTilted = degrees > 8;
+
+      if ((isTilted || isOnGround) && !this.hasFallen[i]) {
         this.hasFallen[i] = true;
         fallenCount++;
         onFall(i);
-
         body.linearDamping = 0.5;
         body.angularDamping = 0.5;
       }
@@ -335,6 +280,39 @@ export class DominoChain {
     }
 
     return fallenCount;
+  }
+
+  forceCheckFallen(): number {
+    let newlyFallen = 0;
+
+    for (let i = 0; i < this.bodies.length; i++) {
+      if (this.hasFallen[i]) continue;
+
+      const body = this.bodies[i];
+      const up = new CANNON.Vec3(0, 1, 0);
+      const bodyUp = body.quaternion.vmult(up);
+      const dot = up.dot(bodyUp);
+      const angle = Math.acos(Math.min(1, Math.max(-1, dot)));
+      const degrees = angle * (180 / Math.PI);
+
+      const halfHeight = this.profile.h / 2;
+      const yPos = body.position.y;
+      const isOnGround = yPos < halfHeight * 0.3;
+      const isHorizontal = Math.abs(bodyUp.y) < 0.3;
+      const isTilted = degrees > 8;
+
+      if (isTilted || isOnGround || isHorizontal) {
+        this.hasFallen[i] = true;
+        newlyFallen++;
+        body.linearDamping = 0.99;
+        body.angularDamping = 0.99;
+        body.velocity.set(0, 0, 0);
+        body.angularVelocity.set(0, 0, 0);
+        body.sleepState = CANNON.Body.SLEEPING;
+      }
+    }
+
+    return newlyFallen;
   }
 
   getBody(index: number): CANNON.Body | null {

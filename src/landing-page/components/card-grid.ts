@@ -1,5 +1,5 @@
 import { projects, ACCENT_HEX, type Project } from '../data/projects';
-import { renderCard, drawCardThumb } from '../templates/card';
+import { renderCard } from '../templates/card';
 import { paginate } from '../lib/paginate';
 
 const PER_PAGE = 6;
@@ -64,24 +64,7 @@ function render(page: number): void {
 
   grid.innerHTML = result.items.map(renderCard).join('');
 
-  requestAnimationFrame(() => {
-    requestAnimationFrame(() => {
-      document
-        .querySelectorAll<HTMLCanvasElement>('.card-thumb-canvas')
-        .forEach((canvas) => {
-          const project = projects.find((p) => p.slug === canvas.dataset.slug);
-          if (!project) return;
-
-          drawCardThumb(canvas, project);
-
-          const observer = new ResizeObserver(() =>
-            drawCardThumb(canvas, project)
-          );
-          observer.observe(canvas.parentElement!);
-        });
-      wireCards();
-    });
-  });
+  wireCards();
 
   prevBtn.disabled = !result.hasPrev;
   nextBtn.disabled = !result.hasNext;

@@ -1,299 +1,368 @@
-interface Shape {
-  type: 'circle' | 'square' | 'triangle';
-  x: number;
-  y: number;
-  vx: number;
-  vy: number;
-  r: number;
-  color: string;
-  phase: number;
-}
-
-const COLOR_CIRCLE = '#33D17A';
-const COLOR_SQUARE = '#3FA0E0';
-const COLOR_TRIANGLE = '#E8A33D';
-const IDLE_THRESHOLD = 1200;
-const CHAOS_INTERVAL = 2800;
-const CLUSTER_FORCE = 0.022;
-const CLUSTER_RADIUS = 160;
-const CHAOS_SPEED = 7.5;
-const DAMPING = 0.96;
-const DRIFT_AMPLITUDE = 0.06;
-const SHADOW_BLUR = 9;
+import * as THREE from 'three';
 
 export function mountHeroSandbox(canvas: HTMLCanvasElement): () => void {
-  const ctx = canvas.getContext('2d')!;
-  const dpr = window.devicePixelRatio || 1;
-  let W = 0;
-  let H = 0;
-  let animId = 0;
+  const parent = canvas.parentElement!;
+
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 1000);
+  camera.position.set(0, 0, 32);
+
+  const renderer = new THREE.WebGLRenderer({
+    canvas,
+    antialias: true,
+    alpha: true,
+    powerPreference: 'high-performance',
+  });
+
+  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  renderer.toneMappingExposure = 1.35;
 
   function resize(): void {
-    const rect = canvas.parentElement!.getBoundingClientRect();
-    W = rect.width;
-    H = rect.height;
-    canvas.width = W * dpr;
-    canvas.height = H * dpr;
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    const width = canvas.clientWidth || parent.clientWidth;
+    const height = canvas.clientHeight || parent.clientHeight;
+
+    if (width === 0 || height === 0) return;
+
+    const pixelRatio = Math.min(window.devicePixelRatio || 1, 2);
+
+    renderer.setPixelRatio(pixelRatio);
+    renderer.setSize(width, height, false);
+
+    renderer.setViewport(0, 0, width, height);
+
+    camera.aspect = width / height;
+    camera.updateProjectionMatrix();
   }
 
   resize();
 
-  const shapes: Shape[] = [
-    ...Array.from({ length: 3 }, (_, i) => ({
-      type: 'circle' as const,
-      x: Math.random() * W,
-      y: Math.random() * H * 0.6,
-      vx: 0,
-      vy: 0,
-      r: 10,
-      color: COLOR_CIRCLE,
-      phase: i * 2.1,
-    })),
-    ...Array.from({ length: 3 }, (_, i) => ({
-      type: 'square' as const,
-      x: Math.random() * W,
-      y: Math.random() * H * 0.6,
-      vx: 0,
-      vy: 0,
-      r: 9,
-      color: COLOR_SQUARE,
-      phase: i * 1.7 + 1,
-    })),
-    {
-      type: 'triangle',
-      x: W / 2,
-      y: H / 2,
-      vx: 0,
-      vy: 0,
-      r: 12,
-      color: COLOR_TRIANGLE,
-      phase: 0,
-    },
-  ];
+  const ambientLight = new THREE.AmbientLight(0x1a202c, 1.2);
+  scene.add(ambientLight);
 
-  const triIdx = shapes.findIndex((s) => s.type === 'triangle');
-  const trail: Array<{ x: number; y: number }> = [];
+  const keyLight = new THREE.DirectionalLight(0xffffff, 4.0);
+  keyLight.position.set(20, 30, 25);
+  scene.add(keyLight);
 
-  let dragIdx = -1;
-  let dragOffX = 0;
-  let dragOffY = 0;
-  let lastInteract = Date.now();
-  let lastChaos = Date.now();
-  let frame = 0;
+  const rimLight = new THREE.DirectionalLight(0x38bdf8, 3.2); 
+  rimLight.position.set(-25, -20, -15);
+  scene.add(rimLight);
 
-  function drawShape(s: Shape): void {
-    ctx.save();
-    ctx.strokeStyle = s.color;
-    ctx.lineWidth = 1.3;
-    ctx.shadowColor = s.color;
-    ctx.shadowBlur = SHADOW_BLUR;
+  const warmFill = new THREE.DirectionalLight(0xffb07c, 1.8); 
+  warmFill.position.set(-15, 20, 15);
+  scene.add(warmFill);
 
-    switch (s.type) {
-      case 'circle':
-        ctx.beginPath();
-        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-        ctx.stroke();
-        break;
+  const INSTANCE_COUNT = 180;
+  const TUBE_RADIUS = 0.16;
+  const TUBE_LENGTH = 1.0;
+  const tubeGeometry = new THREE.CylinderGeometry(TUBE_RADIUS, TUBE_RADIUS, TUBE_LENGTH, 12, 1);
+  tubeGeometry.rotateX(Math.PI / 2); 
 
-      case 'square': {
-        ctx.beginPath();
-        const sr = s.r * 0.95;
-        if (ctx.roundRect) {
-          ctx.roundRect(s.x - sr, s.y - sr, sr * 2, sr * 2, 4);
-        } else {
-          ctx.rect(s.x - sr, s.y - sr, sr * 2, sr * 2);
-        }
-        ctx.stroke();
-        break;
-      }
+  const darkChromeMaterial = new THREE.MeshPhysicalMaterial({
+    color: new THREE.Color(0x111622),
+    metalness: 0.96,
+    roughness: 0.18,
+    clearcoat: 0.6,
+    clearcoatRoughness: 0.12,
+    reflectivity: 0.95,
+  });
 
-      case 'triangle':
-        ctx.beginPath();
-        ctx.moveTo(s.x, s.y - s.r);
-        ctx.lineTo(s.x + s.r * 0.95, s.y + s.r * 0.8);
-        ctx.lineTo(s.x - s.r * 0.95, s.y + s.r * 0.8);
-        ctx.closePath();
-        ctx.stroke();
-        break;
-    }
+  const instancedTubes = new THREE.InstancedMesh(tubeGeometry, darkChromeMaterial, INSTANCE_COUNT);
+  instancedTubes.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
+  scene.add(instancedTubes);
 
-    ctx.restore();
+  interface TubeTransform {
+    position: THREE.Vector3;
+    rotation: THREE.Euler;
+    scale: THREE.Vector3;
   }
 
-  function tick(): void {
-    frame++;
-    const now = Date.now();
-    const idle = now - lastInteract > IDLE_THRESHOLD;
+  function createTubeBetween(p1: THREE.Vector3, p2: THREE.Vector3, radiusScale = 1.0): TubeTransform {
+    const midPoint = new THREE.Vector3().addVectors(p1, p2).multiplyScalar(0.5);
+    const length = p1.distanceTo(p2);
 
-    shapes.forEach((s, i) => {
-      if (i === dragIdx) return;
+    const orientation = new THREE.Matrix4();
+    orientation.lookAt(p1, p2, new THREE.Vector3(0, 1, 0));
+    const rotation = new THREE.Euler().setFromRotationMatrix(orientation);
 
-      s.x += Math.sin(frame * 0.02 + s.phase) * DRIFT_AMPLITUDE;
-      s.y += Math.cos(frame * 0.025 + s.phase) * DRIFT_AMPLITUDE;
-
-      if (idle && i !== triIdx) {
-        shapes.forEach((o, j) => {
-          if (i === j || o.type !== s.type) return;
-          const dx = o.x - s.x;
-          const dy = o.y - s.y;
-          const d = Math.hypot(dx, dy) || 1;
-          if (d > s.r + o.r + 4 && d < CLUSTER_RADIUS) {
-            s.vx += (dx / d) * CLUSTER_FORCE;
-            s.vy += (dy / d) * CLUSTER_FORCE;
-          }
-        });
-      }
-
-      s.vx *= DAMPING;
-      s.vy *= DAMPING;
-      s.x += s.vx;
-      s.y += s.vy;
-
-      if (s.x < s.r) {
-        s.x = s.r;
-        s.vx *= -0.5;
-      }
-      if (s.x > W - s.r) {
-        s.x = W - s.r;
-        s.vx *= -0.5;
-      }
-      if (s.y < s.r) {
-        s.y = s.r;
-        s.vy *= -0.5;
-      }
-      if (s.y > H - s.r) {
-        s.y = H - s.r;
-        s.vy *= -0.5;
-      }
-    });
-
-    if (idle && now - lastChaos > CHAOS_INTERVAL) {
-      lastChaos = now;
-      const candidates = shapes.filter((_, i) => i !== triIdx);
-      const target = candidates[Math.floor(Math.random() * candidates.length)];
-      const tri = shapes[triIdx];
-      const dx = target.x - tri.x;
-      const dy = target.y - tri.y;
-      const d = Math.hypot(dx, dy) || 1;
-      tri.vx = (dx / d) * CHAOS_SPEED;
-      tri.vy = (dy / d) * CHAOS_SPEED;
-    }
-
-    for (let i = 0; i < shapes.length; i++) {
-      for (let j = i + 1; j < shapes.length; j++) {
-        const a = shapes[i];
-        const b = shapes[j];
-        const dx = a.x - b.x;
-        const dy = a.y - b.y;
-        const d = Math.hypot(dx, dy);
-        const minD = a.r + b.r;
-
-        if (d < minD && d > 0) {
-          const nx = dx / d;
-          const ny = dy / d;
-          const overlap = (minD - d) / 2;
-          const isChaos = a.type === 'triangle' || b.type === 'triangle';
-          const push = isChaos ? overlap + 3 : overlap;
-          const impulse = isChaos ? 1.3 : 0.15;
-
-          if (i !== dragIdx) {
-            a.x += nx * push;
-            a.vx += nx * impulse;
-            a.vy += ny * impulse * 0.3;
-          }
-          if (j !== dragIdx) {
-            b.x -= nx * push;
-            b.vx -= nx * impulse;
-            b.vy -= ny * impulse * 0.3;
-          }
-        }
-      }
-    }
-
-    trail.push({ x: shapes[triIdx].x, y: shapes[triIdx].y });
-    if (trail.length > 6) trail.shift();
-
-    ctx.clearRect(0, 0, W, H);
-
-    trail.forEach((pt, i) => {
-      const alpha = (i / trail.length) * 0.35;
-      ctx.save();
-      ctx.globalAlpha = alpha;
-      ctx.fillStyle = COLOR_TRIANGLE;
-      ctx.beginPath();
-      ctx.arc(pt.x, pt.y, 3, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.restore();
-    });
-
-    shapes.forEach(drawShape);
-
-    animId = requestAnimationFrame(tick);
-  }
-
-  function getCanvasPos(e: MouseEvent | TouchEvent): { x: number; y: number } {
-    const rect = canvas.getBoundingClientRect();
-    if ('touches' in e && e.touches.length > 0) {
-      return {
-        x: e.touches[0].clientX - rect.left,
-        y: e.touches[0].clientY - rect.top,
-      };
-    } else if ('changedTouches' in e && e.changedTouches.length > 0) {
-      return {
-        x: e.changedTouches[0].clientX - rect.left,
-        y: e.changedTouches[0].clientY - rect.top,
-      };
-    }
-    const mouseEvent = e as MouseEvent;
     return {
-      x: mouseEvent.clientX - rect.left,
-      y: mouseEvent.clientY - rect.top,
+      position: midPoint,
+      rotation,
+      scale: new THREE.Vector3(radiusScale, radiusScale, length),
     };
   }
 
-  function onStart(e: MouseEvent | TouchEvent): void {
-    if ('touches' in e) e.preventDefault();
-    const { x, y } = getCanvasPos(e);
+  function genHypercubeState(): TubeTransform[] {
+    const transforms: TubeTransform[] = [];
+    const baseSize = 11.0;
 
-    shapes.forEach((s, i) => {
-      const hitRadius = 'touches' in e ? s.r + 16 : s.r + 8;
-      if (Math.hypot(x - s.x, y - s.y) < hitRadius) {
-        dragIdx = i;
-        dragOffX = x - s.x;
-        dragOffY = y - s.y;
-        lastInteract = Date.now();
+    for (let i = 0; i < INSTANCE_COUNT; i++) {
+      const layerIndex = Math.floor(i / 4);
+      const layerFrac = layerIndex / (INSTANCE_COUNT / 4);
+      const scaleFactor = 1.0 - layerFrac * 0.75;
+      const twistAngle = layerFrac * Math.PI * 0.55;
+
+      const corner = i % 4;
+      const size = baseSize * scaleFactor;
+      let p1 = new THREE.Vector3(), p2 = new THREE.Vector3();
+
+      if (corner === 0) { p1.set(-size, -size, 0); p2.set(size, -size, 0); }
+      else if (corner === 1) { p1.set(size, -size, 0); p2.set(size, size, 0); }
+      else if (corner === 2) { p1.set(size, size, 0); p2.set(-size, size, 0); }
+      else { p1.set(-size, size, 0); p2.set(-size, -size, 0); }
+
+      const zDepth = (layerFrac - 0.5) * 10;
+      p1.z = zDepth;
+      p2.z = zDepth;
+
+      const rotationAxis = new THREE.Vector3(1, 1, 0.2).normalize();
+      p1.applyAxisAngle(rotationAxis, twistAngle);
+      p2.applyAxisAngle(rotationAxis, twistAngle);
+
+      transforms.push(createTubeBetween(p1, p2, 1.0));
+    }
+    return transforms;
+  }
+
+  function genTurbineRingState(): TubeTransform[] {
+    const transforms: TubeTransform[] = [];
+    const ringRadius = 8.5;
+    const innerRadius = 3.2;
+    const ringSegments = 120;
+    const bladeCount = 60;
+
+    for (let i = 0; i < ringSegments; i++) {
+      const a1 = (i / ringSegments) * Math.PI * 2;
+      const a2 = ((i + 1) / ringSegments) * Math.PI * 2;
+
+      const p1 = new THREE.Vector3(Math.cos(a1) * ringRadius, Math.sin(a1) * ringRadius, Math.sin(a1 * 3) * 0.6);
+      const p2 = new THREE.Vector3(Math.cos(a2) * ringRadius, Math.sin(a2) * ringRadius, Math.sin(a2 * 3) * 0.6);
+
+      transforms.push(createTubeBetween(p1, p2, 1.25));
+    }
+
+    for (let i = 0; i < bladeCount; i++) {
+      const angle = (i / bladeCount) * Math.PI * 2;
+      const zOffset = (i % 2 === 0 ? 1 : -1) * 0.8;
+
+      const p1 = new THREE.Vector3(Math.cos(angle) * innerRadius, Math.sin(angle) * innerRadius, zOffset);
+      const p2 = new THREE.Vector3(
+        Math.cos(angle + 0.35) * (ringRadius * 0.95),
+        Math.sin(angle + 0.35) * (ringRadius * 0.95),
+        -zOffset
+      );
+
+      transforms.push(createTubeBetween(p1, p2, 1.0));
+    }
+
+    while (transforms.length < INSTANCE_COUNT) {
+      transforms.push(transforms[transforms.length - 1]);
+    }
+    return transforms;
+  }
+
+  function genGyroscopeState(): TubeTransform[] {
+    const transforms: TubeTransform[] = [];
+    const rings = [
+      { radius: 9.0, axis: new THREE.Vector3(1, 0, 0), count: 60 },
+      { radius: 7.2, axis: new THREE.Vector3(0, 1, 0), count: 60 },
+      { radius: 5.4, axis: new THREE.Vector3(0, 0, 1), count: 60 },
+    ];
+
+    rings.forEach((ring) => {
+      for (let i = 0; i < ring.count; i++) {
+        const a1 = (i / ring.count) * Math.PI * 2;
+        const a2 = ((i + 1) / ring.count) * Math.PI * 2;
+
+        let p1 = new THREE.Vector3(Math.cos(a1) * ring.radius, Math.sin(a1) * ring.radius, 0);
+        let p2 = new THREE.Vector3(Math.cos(a2) * ring.radius, Math.sin(a2) * ring.radius, 0);
+
+        if (ring.axis.x === 1) {
+          p1.applyAxisAngle(new THREE.Vector3(0, 1, 0), Math.PI / 2);
+          p2.applyAxisAngle(new THREE.Vector3(0, 1, 0), Math.PI / 2);
+        } else if (ring.axis.y === 1) {
+          p1.applyAxisAngle(new THREE.Vector3(1, 0, 0), Math.PI / 2);
+          p2.applyAxisAngle(new THREE.Vector3(1, 0, 0), Math.PI / 2);
+        }
+
+        transforms.push(createTubeBetween(p1, p2, 1.15));
       }
     });
+
+    while (transforms.length < INSTANCE_COUNT) {
+      transforms.push(transforms[transforms.length - 1]);
+    }
+    return transforms;
   }
 
-  function onMove(e: MouseEvent | TouchEvent): void {
-    if (dragIdx < 0) return;
-    if ('touches' in e) e.preventDefault();
+  function genStarburstState(): TubeTransform[] {
+    const transforms: TubeTransform[] = [];
+    const pointsNum = 6;
 
-    const { x, y } = getCanvasPos(e);
-    shapes[dragIdx].x = x - dragOffX;
-    shapes[dragIdx].y = y - dragOffY;
-    shapes[dragIdx].vx = 0;
-    shapes[dragIdx].vy = 0;
-    lastInteract = Date.now();
+    for (let i = 0; i < INSTANCE_COUNT; i++) {
+      const arm = i % pointsNum;
+      const armAngle = (arm * Math.PI * 2) / pointsNum;
+      const layer = Math.floor(i / pointsNum) / (INSTANCE_COUNT / pointsNum);
+
+      const length = 13.0 * (1.0 - layer * 0.55);
+      const spread = (layer - 0.5) * 3.5;
+
+      const dir = new THREE.Vector3(Math.cos(armAngle), Math.sin(armAngle), 0);
+      const perp = new THREE.Vector3(-Math.sin(armAngle), Math.cos(armAngle), 0);
+
+      const p1 = new THREE.Vector3(0, 0, spread);
+      const p2 = dir.clone().multiplyScalar(length).add(perp.clone().multiplyScalar(spread * 0.8));
+
+      transforms.push(createTubeBetween(p1, p2, 1.0));
+    }
+    return transforms;
   }
 
-  function onEnd(): void {
-    dragIdx = -1;
+  const shapeStates = [
+    genHypercubeState(),
+    genTurbineRingState(),
+    genGyroscopeState(),
+    genStarburstState(),
+  ];
+
+  let isDragging = false;
+  let previousPointerPos = { x: 0, y: 0 };
+  const targetRotation = new THREE.Euler(0, 0, 0);
+  const currentRotation = new THREE.Euler(0, 0, 0);
+
+  const raycaster = new THREE.Raycaster();
+  const mouse = new THREE.Vector2(-1000, -1000);
+  const touchWorldPos = new THREE.Vector3(-1000, -1000, 0);
+
+  function getPointerPos(e: MouseEvent | TouchEvent) {
+    if ('touches' in e && e.touches.length > 0) {
+      return { x: e.touches[0].clientX, y: e.touches[0].clientY };
+    } else if ('clientX' in e) {
+      return { x: (e as MouseEvent).clientX, y: (e as MouseEvent).clientY };
+    }
+    return { x: 0, y: 0 };
+  }
+
+  function updateHoverRay(clientX: number, clientY: number) {
+    const rect = canvas.getBoundingClientRect();
+    mouse.x = ((clientX - rect.left) / rect.width) * 2 - 1;
+    mouse.y = -((clientY - rect.top) / rect.height) * 2 + 1;
+
+    raycaster.setFromCamera(mouse, camera);
+    const planeZ = new THREE.Plane(new THREE.Vector3(0, 0, 1), 0);
+    raycaster.ray.intersectPlane(planeZ, touchWorldPos);
+  }
+
+  function handlePointerDown(e: MouseEvent | TouchEvent) {
+    isDragging = true;
+    previousPointerPos = getPointerPos(e);
+  }
+
+  function handlePointerMove(e: MouseEvent | TouchEvent) {
+    const pos = getPointerPos(e);
+    updateHoverRay(pos.x, pos.y);
+
+    if (isDragging) {
+      const deltaX = pos.x - previousPointerPos.x;
+      const deltaY = pos.y - previousPointerPos.y;
+
+      targetRotation.y += deltaX * 0.008;
+      targetRotation.x += deltaY * 0.008;
+
+      previousPointerPos = pos;
+    }
+  }
+
+  function handlePointerUp() {
+    isDragging = false;
+    touchWorldPos.set(-1000, -1000, 0);
+  }
+
+  let animId = 0;
+  const startTime = performance.now();
+
+  const MORPH_DURATION = 4.2;
+  const TRANSITION_TIME = 1.8;
+
+  const dummy = new THREE.Object3D();
+  const dummyQuatA = new THREE.Quaternion();
+  const dummyQuatB = new THREE.Quaternion();
+
+  function tick(): void {
+    animId = requestAnimationFrame(tick);
+
+    const currentTime = performance.now();
+    const elapsedTime = (currentTime - startTime) * 0.001; // Seconds
+
+    currentRotation.x += (targetRotation.x - currentRotation.x) * 0.08;
+    currentRotation.y += (targetRotation.y - currentRotation.y) * 0.08;
+
+    instancedTubes.rotation.x = currentRotation.x + Math.sin(elapsedTime * 0.08) * 0.16;
+    instancedTubes.rotation.y = currentRotation.y + elapsedTime * 0.12;
+
+    const totalCycle = MORPH_DURATION * shapeStates.length;
+    const cycleTime = elapsedTime % totalCycle;
+
+    const currentShapeIdx = Math.floor(cycleTime / MORPH_DURATION);
+    const nextShapeIdx = (currentShapeIdx + 1) % shapeStates.length;
+
+    const timeInCurrent = cycleTime % MORPH_DURATION;
+    const morphFactor = THREE.MathUtils.smoothstep(
+      timeInCurrent,
+      MORPH_DURATION - TRANSITION_TIME,
+      MORPH_DURATION
+    );
+
+    const stateA = shapeStates[currentShapeIdx];
+    const stateB = shapeStates[nextShapeIdx];
+
+    const localTouch = touchWorldPos.clone();
+    instancedTubes.worldToLocal(localTouch);
+
+    const explosionRadius = 6.0;
+
+    for (let i = 0; i < INSTANCE_COUNT; i++) {
+      const transformA = stateA[i];
+      const transformB = stateB[i];
+
+      const targetPos = new THREE.Vector3().lerpVectors(transformA.position, transformB.position, morphFactor);
+
+      dummyQuatA.setFromEuler(transformA.rotation);
+      dummyQuatB.setFromEuler(transformB.rotation);
+      const targetQuat = dummyQuatA.clone().slerp(dummyQuatB, morphFactor);
+
+      const targetScale = new THREE.Vector3().lerpVectors(transformA.scale, transformB.scale, morphFactor);
+
+      const dist = targetPos.distanceTo(localTouch);
+      if (dist < explosionRadius) {
+        const force = (1.0 - dist / explosionRadius) * 2.8;
+        const pushDir = new THREE.Vector3().subVectors(targetPos, localTouch).normalize();
+        targetPos.add(pushDir.multiplyScalar(force));
+      }
+
+      dummy.position.copy(targetPos);
+      dummy.quaternion.copy(targetQuat);
+      dummy.scale.copy(targetScale);
+      dummy.updateMatrix();
+
+      instancedTubes.setMatrixAt(i, dummy.matrix);
+    }
+
+    instancedTubes.instanceMatrix.needsUpdate = true;
+    renderer.render(scene, camera);
   }
 
   const resizeObserver = new ResizeObserver(resize);
-  resizeObserver.observe(canvas.parentElement!);
+  resizeObserver.observe(parent);
 
-  canvas.addEventListener('mousedown', onStart);
-  window.addEventListener('mousemove', onMove);
-  window.addEventListener('mouseup', onEnd);
+  window.addEventListener('resize', resize);
 
-  canvas.addEventListener('touchstart', onStart, { passive: false });
-  window.addEventListener('touchmove', onMove, { passive: false });
-  window.addEventListener('touchend', onEnd);
-  window.addEventListener('touchcancel', onEnd);
+  window.addEventListener('mousedown', handlePointerDown);
+  window.addEventListener('mousemove', handlePointerMove);
+  window.addEventListener('mouseup', handlePointerUp);
+
+  canvas.addEventListener('touchstart', handlePointerDown, { passive: true });
+  canvas.addEventListener('touchmove', handlePointerMove, { passive: true });
+  canvas.addEventListener('touchend', handlePointerUp);
 
   animId = requestAnimationFrame(tick);
 
@@ -301,13 +370,18 @@ export function mountHeroSandbox(canvas: HTMLCanvasElement): () => void {
     cancelAnimationFrame(animId);
     resizeObserver.disconnect();
 
-    canvas.removeEventListener('mousedown', onStart);
-    window.removeEventListener('mousemove', onMove);
-    window.removeEventListener('mouseup', onEnd);
+    window.removeEventListener('resize', resize);
 
-    canvas.removeEventListener('touchstart', onStart);
-    window.removeEventListener('touchmove', onMove);
-    window.removeEventListener('touchend', onEnd);
-    window.removeEventListener('touchcancel', onEnd);
+    window.removeEventListener('mousedown', handlePointerDown);
+    window.removeEventListener('mousemove', handlePointerMove);
+    window.removeEventListener('mouseup', handlePointerUp);
+
+    canvas.removeEventListener('touchstart', handlePointerDown);
+    canvas.removeEventListener('touchmove', handlePointerMove);
+    canvas.removeEventListener('touchend', handlePointerUp);
+
+    tubeGeometry.dispose();
+    darkChromeMaterial.dispose();
+    renderer.dispose();
   };
 }

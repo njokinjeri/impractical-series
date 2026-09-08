@@ -1,5 +1,6 @@
 import {
   projects,
+  getPreviewUrl,
   ACCENT_HEX,
   getPlayUrl,
   getSourceUrl,
@@ -17,7 +18,7 @@ function redirectHome(): void {
 }
 
 function renderProject(project: Project): void {
-  const index = String(project.index).padStart(2, '0');
+  const previewUrl = getPreviewUrl(project.slug);
   const playUrl = getPlayUrl(project.slug);
   const sourceUrl = getSourceUrl(project.slug);
   const accent = ACCENT_HEX[project.accent];
@@ -39,12 +40,20 @@ function renderProject(project: Project): void {
       ></div>
 
         <div class="detail-card__front">
-          <canvas id="detail-preview" aria-label="${project.title} generative preview"></canvas>
+          <video
+            class="card-thumb-video"
+            src="${previewUrl}"
+            autoplay
+            muted
+            loop
+            playsinline
+            preload="metadata"
+            aria-hidden="true"
+          ></video>        
         </div>
       </div>
 
       <div class="detail-meta">
-        <p class="detail-index" aria-label="Experiment number">${index}</p>
         <h1 class="page-title">${project.title}</h1>
         <p class="page-desc">${project.description}</p>
 
@@ -59,7 +68,7 @@ function renderProject(project: Project): void {
             href="${playUrl}"
             target="_blank"
             rel="noopener noreferrer"
-          >Live</a>
+          >View</a>
           <a
             class="btn btn--ghost"
             href="${sourceUrl}"

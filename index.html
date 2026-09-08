@@ -27,17 +27,33 @@
       >
         impractical_
       </a>
-      <nav aria-label="Site navigation">
-        <a class="nav-pill" href="/impractical-series/about">about</a>
-        <a class="nav-pill" href="/impractical-series/contact">contact</a>
-      </nav>
+      <a
+        class="nav-github"
+        href="https://github.com/njokinjeri/impractical-series"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Github repository"
+      >
+        <i class="fa-brands fa-github"></i>
+      </a>
     </header>
     <main>
-      <section class="hero" aria-label="Interactive physics sandbox">
-        <canvas id="hero-canvas" aria-hidden="true"></canvas>
-        <p class="hero-hint" aria-live="polite">drag a shape to interrupt</p>
+      <section
+        class="hero"
+        aria-label="Impractical Series hero and interactive physics sandbox"
+      >
+        <div class="hero-container">
+          <div class="hero-content">
+            <h1 class="hero-title">Curiosity, rendered in code.</h1>
+            <p class="hero-description">
+             Experiments in real-time graphics, WebGPU shaders, and physical simulations.
+            </p>
+          </div>
+          <div class="hero-canvas-wrapper">
+            <canvas id="hero-canvas" aria-hidden="true"></canvas>
+          </div>
+        </div>
       </section>
-
       <section class="projects" aria-labelledby="projects-heading">
         <div class="projects__header">
           <h2 id="projects-heading" class="projects__title">experiments</h2>
