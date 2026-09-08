@@ -2,13 +2,13 @@
 
 **Live Site:** https://njokinjeri.github.io/impractical-series/
 
-A growing collection of creative technology experiments—built to answer one simple question: *What would happen if I tried this?*
+A growing collection of creative technology experiments, built to answer one simple question: *What would happen if I tried this?*
 
 Without the constraints of building a product or solving a business problem, these projects explore graphics programming, procedural generation, simulations, audio, and mathematical visualizers. 
 
 ## The Core Philosophy
 
-- **Curiosity-Driven:** No roadmaps or product specifications—direction is guided purely by technical and visual interest.
+- **Curiosity-Driven:** No roadmaps or product specifications, direction is guided purely by technical and visual interest.
 - **Unconstrained Scope:** Experiments range from lightweight 2D canvas scripts to complex WebGL/WebGPU shader architectures.
 - **Hands-On Sandbox:** A dedicated space for testing unfamiliar systems, low-level math, and real-time interactive pipelines.
 
