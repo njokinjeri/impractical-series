@@ -2,39 +2,15 @@
 
 **Live Site:** https://njokinjeri.github.io/impractical-series/
 
-A growing collection of intentionally non-essential creative technology projects.
+A growing collection of creative technology experiments—built to answer one simple question: *What would happen if I tried this?*
 
-Each project begins with an idea, question, visual curiosity, or technical challenge and develops through experimentation.
+Without the constraints of building a product or solving a business problem, these projects explore graphics programming, procedural generation, simulations, audio, and mathematical visualizers. 
 
-The series has no fixed format or difficulty level. Some projects are small explorations; others become complex systems involving graphics programming, procedural generation, simulation, interaction, audio, mathematics, or real-time rendering.
+## The Core Philosophy
 
-The goal is simple: build things that are interesting enough to find out how they work.
-
-## Philosophy
-
-- Each project starts with curiosity. Sometimes there is a clear technical question. Sometimes there is only a visual idea.
-
-- The code is part of the exploration. Building is how the idea gets tested, challenged, and reshaped.
-
-- Complexity is allowed to grow. Projects are not constrained to remain small experiments if the idea demands something more ambitious.
-
-- Technical growth happens through making. Each build creates an opportunity to explore unfamiliar systems, techniques, and constraints.
-
-- There is no roadmap. The direction of the series is driven by curiosity, experimentation, and whatever feels worth building next.
-
-## Why "Impractical"?
-
-Because not everything worth building needs a practical purpose.
-
-Sometimes the reason is simply:
-
-What would happen if I tried this?
-
-The series is a space for following that question without needing to justify the result as a product, feature, startup, or solution.
-
-Some projects may fail. Some may become unexpectedly complicated. Some may lead nowhere.
-
-That's part of the point.
+- **Curiosity-Driven:** No roadmaps or product specifications—direction is guided purely by technical and visual interest.
+- **Unconstrained Scope:** Experiments range from lightweight 2D canvas scripts to complex WebGL/WebGPU shader architectures.
+- **Hands-On Sandbox:** A dedicated space for testing unfamiliar systems, low-level math, and real-time interactive pipelines.
 
 ## Projects
 
