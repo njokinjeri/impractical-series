@@ -30,7 +30,8 @@ export const ACCENT_HEX: Record<AccentColor, string> = {
   amber: '#E8A33D',
 };
 
-// Projects array ordered latest to oldest
+const R2_PUBLIC_URL = 'https://pub-8402fa6a331e4ef2816e36e19bc1431e.r2.dev'
+
 export const projects: Project[] = [
   {
     slug: 'cascadia',
@@ -141,7 +142,7 @@ export const projects: Project[] = [
 const SITE_BASE = '/impractical-series';
 
 export function getPreviewUrl(slug: string): string {
-  return `/impractical-series/previews/${slug}.webm`;
+  return `${R2_PUBLIC_URL}/previews/${slug}.webm`;
 }
 
 export function getDetailUrl(slug: string): string {
