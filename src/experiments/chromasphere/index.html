@@ -2,13 +2,25 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" href="/bulb.png" type="image/png" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Chromasphere ~ </title>
+    <meta name="description" content="Audio-reactive 3D glass orb visualization with custom GLSL shaders and real-time dispersion">
+    <title>Chromasphere ~ Acoustic Glass Visualizer </title>
+    <link rel="icon" href="/bulb.png" type="image/png" />
+    <link rel="stylesheet" href="./src/style.css">
   </head>
   <body>
-    <div id="app"></div>
+    <main id="app" aria-label="Interactive 3D Glass Orb Visualizer"></main>
+    <header class="hud-overlay">
+      <h1 class="brand-title">Chromasphere</h1>
+      <p class="brand-subtitle">Audio-Reactive Dispersion</p>
+    </header>
+    <section class="audio-controls" aria-label="Audio Controls">
+      <label for="audio-upload" class="custom-file-upload">
+        <span>Upload Audio</span>
+        <input type="file" id="audio-upload" accept="accept/*" />
+      </label>
+      <button id="play-pause-btn" type="button" aria-label="Toggle Playback">Play Track</button>
+    </section>
     <script type="module" src="./src/main.ts"></script>
   </body>
 </html>

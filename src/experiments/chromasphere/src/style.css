@@ -1,0 +1,5 @@
+@import '../../../design-system/fonts.css';
+
+:root {
+  font-family: var(--font-body);
+}
