@@ -1,4 +1,4 @@
-import { mountHeroSandbox } from './components/hero-sandbox';
+import { mountHeroSandbox } from './components/hero';
 import { mountCardGrid } from './components/card-grid';
 import { mountFooter } from './components/footer-mount';
 
