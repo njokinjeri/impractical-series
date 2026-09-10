@@ -19,6 +19,14 @@
   margin: 0;
   padding: 0;
   user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+button,
+label,
+input {
+  -webkit-touch-callout: none;
+  user-select: none;
 }
 
 body,
