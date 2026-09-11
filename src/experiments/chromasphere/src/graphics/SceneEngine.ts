@@ -13,28 +13,34 @@ import type {
 
 export const PALETTES: Palette[] = [
   {
-    primary: new THREE.Color('#f472b6'),
-    secondary: new THREE.Color('#fb923c'),
+    dark: new THREE.Color('#2a0a1a'),
+    mid: new THREE.Color('#f472b6'),
+    pastel: new THREE.Color('#fb923c'),
   },
   {
-    primary: new THREE.Color('#38bdf8'),
-    secondary: new THREE.Color('#818cf8'),
+    dark: new THREE.Color('#0a1526'),
+    mid: new THREE.Color('#38bdf8'),
+    pastel: new THREE.Color('#818cf8'),
   },
   {
-    primary: new THREE.Color('#c084fc'),
-    secondary: new THREE.Color('#38bdf8'),
+    dark: new THREE.Color('#1a0a2e'),
+    mid: new THREE.Color('#c084fc'),
+    pastel: new THREE.Color('#38bdf8'),
   },
   {
-    primary: new THREE.Color('#34d399'),
-    secondary: new THREE.Color('#fbbf24'),
+    dark: new THREE.Color('#0a241a'),
+    mid: new THREE.Color('#34d399'),
+    pastel: new THREE.Color('#fbbf24'),
   },
   {
-    primary: new THREE.Color('#a855f7'),
-    secondary: new THREE.Color('#06b6d4'),
+    dark: new THREE.Color('#1a0a2e'),
+    mid: new THREE.Color('#a855f7'),
+    pastel: new THREE.Color('#06b6d4'),
   },
   {
-    primary: new THREE.Color('#f43f5e'),
-    secondary: new THREE.Color('#f59e0b'),
+    dark: new THREE.Color('#2e0a0a'),
+    mid: new THREE.Color('#f43f5e'),
+    pastel: new THREE.Color('#f59e0b'),
   },
 ];
 
@@ -98,7 +104,6 @@ export class SceneEngine {
     this.controls.minDistance = 2.5;
     this.controls.maxDistance = 8.0;
 
-    // Environment
     const pmrem = new THREE.PMREMGenerator(this.renderer);
     this.envTexture = pmrem.fromScene(
       new RoomEnvironment(this.renderer),
@@ -106,7 +111,6 @@ export class SceneEngine {
     ).texture;
     this.scene.environment = this.envTexture;
 
-    // Lights
     this.scene.add(new THREE.AmbientLight(0xffffff, 1.2));
 
     const key = new THREE.DirectionalLight(0xffffff, 2.2);
@@ -117,7 +121,6 @@ export class SceneEngine {
     fill.position.set(-4, -2, -2);
     this.scene.add(fill);
 
-    // Materials / shapes
     this.materials = new MaterialManager(colorMode);
     this.materials.setPreset(initialMaterial);
 
@@ -176,8 +179,8 @@ export class SceneEngine {
   setPalette(index: number) {
     const p = PALETTES[index];
     if (!p) return;
-    this.shapes.coreUniforms.uColorPrimary.value.copy(p.primary);
-    this.shapes.coreUniforms.uColorSecondary.value.copy(p.secondary);
+    this.shapes.coreUniforms.uColorPrimary.value.copy(p.mid);
+    this.shapes.coreUniforms.uColorSecondary.value.copy(p.pastel);
   }
 
   private handleResize = () => {
@@ -203,7 +206,6 @@ export class SceneEngine {
 
     this.shapes.update(elapsed, bands.average);
 
-    // Mode-aware rotation — spikes look static at very slow spin
     switch (this.currentShape) {
       case 'cluster':
         this.group.rotation.y = elapsed * 0.15;

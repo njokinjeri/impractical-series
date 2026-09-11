@@ -5,10 +5,10 @@ export type MaterialPreset = 'clear' | 'frosted' | 'iridescent';
 export type ColorMode = 'dark' | 'light';
 
 export interface Palette {
-  primary: THREE.Color;
-  secondary: THREE.Color;
+  dark: THREE.Color;
+  mid: THREE.Color;
+  pastel: THREE.Color;
 }
-
 export interface MaterialSpec {
   roughness: number;
   transmission: number;

@@ -41,10 +41,18 @@
             </svg>
           </span>
         </summary>
-        <nav class="control-deck" id="dock-content" aria-label="Visualizer Options">
+        <nav
+          class="control-deck"
+          id="dock-content"
+          aria-label="Visualizer Options"
+        >
           <fieldset class="control-group">
             <legend class="group-label">Toggle Mode</legend>
-            <div class="segmented-control" role="tablist" aria-label="Visual Surface Mode">
+            <div
+              class="segmented-control"
+              role="tablist"
+              aria-label="Visual Surface Mode"
+            >
               <button
                 type="button"
                 class="option-btn"
@@ -76,7 +84,11 @@
               <button type="button" class="option-btn" data-shape="ribbon">
                 Ribbon
               </button>
-              <button type="button" class="option-btn active" data-shape="spiked">
+              <button
+                type="button"
+                class="option-btn active"
+                data-shape="spiked"
+              >
                 Spiked
               </button>
             </div>
@@ -87,10 +99,18 @@
               <button type="button" class="option-btn" data-material="clear">
                 Solid
               </button>
-              <button type="button" class="option-btn active" data-material="frosted">
+              <button
+                type="button"
+                class="option-btn active"
+                data-material="frosted"
+              >
                 Frosted
               </button>
-              <button type="button" class="option-btn" data-material="iridescent">
+              <button
+                type="button"
+                class="option-btn"
+                data-material="iridescent"
+              >
                 Iris
               </button>
             </div>
@@ -104,7 +124,12 @@
                 data-palette="0"
                 aria-label="Sunset Quartz Palette"
                 style="
-                  --swatch-gradient: linear-gradient(135deg, #f472b6, #fb923c);
+                  --swatch-gradient: linear-gradient(
+                    135deg,
+                    #2a0a1a 0%,
+                    #f472b6 55%,
+                    #fb923c 100%
+                  );
                 "
               ></button>
               <button
@@ -113,7 +138,12 @@
                 data-palette="1"
                 aria-label="Cyber Sky Palette"
                 style="
-                  --swatch-gradient: linear-gradient(135deg, #38bdf8, #818cf8);
+                  --swatch-gradient: linear-gradient(
+                    135deg,
+                    #0a1526 0%,
+                    #38bdf8 55%,
+                    #818cf8 100%
+                  );
                 "
               ></button>
               <button
@@ -122,7 +152,12 @@
                 data-palette="2"
                 aria-label="Electric Lilac Palette"
                 style="
-                  --swatch-gradient: linear-gradient(135deg, #c084fc, #38bdf8);
+                  --swatch-gradient: linear-gradient(
+                    135deg,
+                    #1a0a2e 0%,
+                    #c084fc 55%,
+                    #38bdf8 100%
+                  );
                 "
               ></button>
               <button
@@ -131,7 +166,12 @@
                 data-palette="3"
                 aria-label="Acid Emerald Palette"
                 style="
-                  --swatch-gradient: linear-gradient(135deg, #34d399, #fbbf24);
+                  --swatch-gradient: linear-gradient(
+                    135deg,
+                    #0a241a 0%,
+                    #34d399 55%,
+                    #fbbf24 100%
+                  );
                 "
               ></button>
               <button
@@ -140,7 +180,12 @@
                 data-palette="4"
                 aria-label="Obsidian Neon Palette"
                 style="
-                  --swatch-gradient: linear-gradient(135deg, #a855f7, #06b6d4);
+                  --swatch-gradient: linear-gradient(
+                    135deg,
+                    #1a0a2e 0%,
+                    #a855f7 55%,
+                    #06b6d4 100%
+                  );
                 "
               ></button>
               <button
@@ -149,15 +194,29 @@
                 data-palette="5"
                 aria-label="Solar Flare Palette"
                 style="
-                  --swatch-gradient: linear-gradient(135deg, #f43f5e, #f59e0b);
+                  --swatch-gradient: linear-gradient(
+                    135deg,
+                    #2e0a0a 0%,
+                    #f43f5e 55%,
+                    #f59e0b 100%
+                  );
                 "
               ></button>
             </div>
           </fieldset>
           <div class="action-row">
-            <button type="button" id="play-btn" class="action-btn">Play Track</button>
-            <label for="file-input" class="action-btn secondary">Upload Track</label>
-            <input type="file" id="file-input" accept="audio/*" class="visually-hidden" />
+            <button type="button" id="play-btn" class="action-btn">
+              Play Track
+            </button>
+            <label for="file-input" class="action-btn secondary"
+              >Upload Track</label
+            >
+            <input
+              type="file"
+              id="file-input"
+              accept="audio/*"
+              class="visually-hidden"
+            />
           </div>
         </nav>
       </details>

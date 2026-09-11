@@ -3,7 +3,7 @@ import { SimplexNoise } from 'three/addons/math/SimplexNoise.js';
 import { Cluster } from './Cluster';
 import { Ribbon } from './Ribbon';
 import { Spiked } from './Spiked';
-import type { ShapeMode, ColorMode } from '../../types/state';
+import type { ShapeMode, ColorMode, Palette } from '../../types/state';
 import vertSrc from '../shaders/dispersion.vert?raw';
 import fragSrc from '../shaders/dispersion.frag?raw';
 
@@ -32,7 +32,7 @@ export class ShapeRegistry {
 
   constructor(
     glassMaterial: THREE.Material,
-    palette: { primary: THREE.Color; secondary: THREE.Color },
+    palette: Palette,
   ) {
     this.cluster = new Cluster(glassMaterial);
     this.ribbon = new Ribbon();
@@ -40,7 +40,6 @@ export class ShapeRegistry {
 
     this.mainMesh = new THREE.Mesh(this.cluster.geometry, glassMaterial);
 
-    // Core wave geometry
     this.coreStarGeometry = this.buildCoreGeometry();
     this.coreStarBase =
       this.coreStarGeometry.attributes.position.array.slice() as Float32Array;
@@ -48,8 +47,8 @@ export class ShapeRegistry {
     this.coreUniforms = {
       uTime: { value: 0 },
       uAudioFreq: { value: 0.1 },
-      uColorPrimary: { value: palette.primary.clone() },
-      uColorSecondary: { value: palette.secondary.clone() },
+      uColorPrimary:   { value: palette.mid.clone() },
+      uColorSecondary: { value: palette.pastel.clone() },
     };
 
     const coreMat = new THREE.ShaderMaterial({
@@ -88,36 +87,36 @@ export class ShapeRegistry {
     return geo;
   }
 
-private applyMode(mode: ShapeMode) {
-  this.current = mode;
+  private applyMode(mode: ShapeMode) {
+    this.current = mode;
 
-  const glass = this.mainMesh.material as THREE.MeshPhysicalMaterial;
+    const glass = this.mainMesh.material as THREE.MeshPhysicalMaterial;
 
-  switch (mode) {
-    case 'cluster':
-      this.mainMesh.geometry = this.cluster.geometry;
-      this.cluster.group.visible = true;
-      this.coreStar.visible = false;
-      glass.depthWrite = true;      
-      break;
+    switch (mode) {
+      case 'cluster':
+        this.mainMesh.geometry = this.cluster.geometry;
+        this.cluster.group.visible = true;
+        this.coreStar.visible = false;
+        glass.depthWrite = true;
+        break;
 
-    case 'ribbon':
-      this.mainMesh.geometry = this.ribbon.geometry;
-      this.cluster.group.visible = false;
-      this.coreStar.visible = true;
-      glass.depthWrite = false;   
-      break;
+      case 'ribbon':
+        this.mainMesh.geometry = this.ribbon.geometry;
+        this.cluster.group.visible = false;
+        this.coreStar.visible = true;
+        glass.depthWrite = false;
+        break;
 
-    case 'spiked':
-      this.mainMesh.geometry = this.spiked.geometry;
-      this.cluster.group.visible = false;
-      this.coreStar.visible = false;
-      glass.depthWrite = true;   
-      break;
+      case 'spiked':
+        this.mainMesh.geometry = this.spiked.geometry;
+        this.cluster.group.visible = false;
+        this.coreStar.visible = false;
+        glass.depthWrite = true;
+        break;
+    }
+
+    glass.needsUpdate = true;
   }
-
-  glass.needsUpdate = true;
-}
 
   setShape(mode: ShapeMode) {
     this.applyMode(mode);
@@ -128,6 +127,11 @@ private applyMode(mode: ShapeMode) {
     const mat = this.coreStar.material as THREE.ShaderMaterial;
     mat.blending = (mode === 'dark') ? THREE.AdditiveBlending : THREE.NormalBlending;
     mat.needsUpdate = true;
+  }
+
+  setPalette(palette: Palette) {
+    this.coreUniforms.uColorPrimary.value.copy(palette.mid);
+    this.coreUniforms.uColorSecondary.value.copy(palette.pastel);
   }
 
   getActiveChildren(): THREE.Object3D[] {
