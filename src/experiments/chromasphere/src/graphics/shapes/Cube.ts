@@ -3,7 +3,7 @@ import { SimplexNoise } from 'three/addons/math/SimplexNoise.js';
 
 const simplex = new SimplexNoise();
 
-export interface cubeSatellite {
+export interface CubeSatellite {
   mesh: THREE.Mesh;
   basePos: Float32Array;
   radius: number;
@@ -18,7 +18,10 @@ export class Cube {
   readonly group = new THREE.Group();
   readonly geometry: THREE.BoxGeometry;
   readonly basePositions: Float32Array;
-  readonly satellites: cubeSatellite[] = [];
+  readonly satellites: CubeSatellite[] = [];
+
+  private readonly mobile: boolean;
+  private frameCount = 0;
 
   private readonly satelliteConfig = [
     { radius: 1.9, speed: 0.55, phase: 0.0, size: 0.2 },
@@ -43,7 +46,9 @@ export class Cube {
     { radius: 2.7, speed: 0.45, phase: 5.386, size: 0.12 },
   ];
 
-  constructor(material: THREE.Material) {
+  constructor(material: THREE.Material, mobile = false) {
+    this.mobile = mobile;
+
     this.geometry = this.buildRoundedCube();
     this.basePositions =
       this.geometry.attributes.position.array.slice() as Float32Array;
@@ -51,8 +56,10 @@ export class Cube {
     const main = new THREE.Mesh(this.geometry, material);
     this.group.add(main);
 
+    const sphereSegments = mobile ? 16 : 24;
+
     this.satelliteConfig.forEach((cfg, idx) => {
-      const geo = new THREE.SphereGeometry(cfg.size, 24, 24);
+      const geo = new THREE.SphereGeometry(cfg.size, sphereSegments, sphereSegments);
 
       const baseColor = Cube.pickColor();
 
@@ -116,14 +123,18 @@ export class Cube {
       pos.setXYZ(i, bx + bx * noise, by + by * noise, bz + bz * noise);
     }
     pos.needsUpdate = true;
-    this.geometry.computeVertexNormals();
 
-    const speedMod = 1.0 + freq * 0.8;
+    this.frameCount++;
+    if (!this.mobile || this.frameCount % 3 === 0) {
+      this.geometry.computeVertexNormals();
+    }
+
+    const speedMod = 1.0 + freq * 2.0;
 
     for (const b of this.satellites) {
       const angle = elapsed * b.speed * speedMod + b.phase;
 
-      const pulseAmp = 0.08 * (1.0 + bass * 2.5);
+      const pulseAmp = 0.08 * (1.0 + bass * 6.0);
       const r = b.radius + Math.sin(elapsed * 2.0 + b.idx) * pulseAmp;
 
       const bobAmp = 0.35 * (1.0 + freq * 2.0);
@@ -152,7 +163,9 @@ export class Cube {
         );
       }
       mp.needsUpdate = true;
-      b.mesh.geometry.computeVertexNormals();
+      if (!this.mobile || this.frameCount % 3 === 0) {
+        b.mesh.geometry.computeVertexNormals();
+      }
     }
   }
 

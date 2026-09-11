@@ -12,10 +12,10 @@ export class ShapeRegistry {
   readonly mainMesh: THREE.Mesh;
   private current: ShapeMode = 'cube';
 
-  constructor(glassMaterial: THREE.Material) {
-    this.cube = new Cube(glassMaterial);
-    this.spiked = new Spiked(glassMaterial);
-    this.star = new Star(glassMaterial);
+  constructor(glassMaterial: THREE.Material, mobile = false) {
+    this.cube = new Cube(glassMaterial, mobile);
+    this.spiked = new Spiked(glassMaterial, mobile);
+    this.star = new Star(glassMaterial, mobile);
 
     this.mainMesh = new THREE.Mesh(this.cube.geometry, glassMaterial);
 
@@ -64,8 +64,6 @@ export class ShapeRegistry {
   }
 
   setColorMode(_mode: ColorMode) {
-    // No-op. Theme handling is done by MaterialManager. Kept for
-    // callers that still invoke it (SceneEngine.setColorMode).
   }
 
   getActiveChildren(): THREE.Object3D[] {

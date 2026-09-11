@@ -10,6 +10,12 @@ import type {
   ColorMode,
 } from '../types/state';
 
+const isMobile = () =>
+  typeof window !== 'undefined' &&
+  window.innerWidth < 900 &&
+  (window.matchMedia('(pointer: coarse)').matches ||
+    /Android|iPhone|iPad|iPod/i.test(navigator.userAgent));
+
 export interface SceneEngineOptions {
   container: HTMLElement;
   colorMode?: ColorMode;
@@ -30,6 +36,7 @@ export class SceneEngine {
   private lastTime = performance.now();
   private elapsed = 0;
   private readonly resizeObserver: ResizeObserver;
+  private readonly mobile: boolean;
   private freqSmooth = 0.05;
   private rafId = 0;
   private disposed = false;
@@ -42,6 +49,7 @@ export class SceneEngine {
     const initialMaterial = opts.material ?? 'iridescent';
 
     this.currentShape = initialShape;
+    this.mobile = isMobile();
 
     this.scene = new THREE.Scene();
 
@@ -55,7 +63,8 @@ export class SceneEngine {
 
     this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     this.renderer.setSize(window.innerWidth, window.innerHeight);
-    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    const maxDPR = this.mobile ? 1.5 : 2;
+    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, maxDPR));
     this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
     this.renderer.toneMappingExposure = 1.15;
     container.appendChild(this.renderer.domElement);
@@ -83,7 +92,17 @@ export class SceneEngine {
     this.materials = new MaterialManager(colorMode);
     this.materials.setPreset(initialMaterial);
 
-    this.shapes = new ShapeRegistry(this.materials.glass);
+    // Mobile: cap glass transmission so the swarm doesn't trigger as
+    // many refraction passes each frame.
+    if (this.mobile) {
+      this.materials.glass.transmission = Math.min(
+        this.materials.glass.transmission,
+        0.5
+      );
+      this.materials.glass.needsUpdate = true;
+    }
+
+    this.shapes = new ShapeRegistry(this.materials.glass, this.mobile);
     this.shapes.setColorMode(colorMode);
     this.shapes.setShape(initialShape);
 
@@ -125,6 +144,16 @@ export class SceneEngine {
 
   setMaterial(preset: MaterialPreset) {
     this.materials.setPreset(preset);
+
+    // Re-apply the mobile transmission cap after every preset change,
+    // since setPreset resets transmission to the preset value.
+    if (this.mobile) {
+      this.materials.glass.transmission = Math.min(
+        this.materials.glass.transmission,
+        0.5
+      );
+      this.materials.glass.needsUpdate = true;
+    }
   }
 
   setColorMode(mode: ColorMode) {

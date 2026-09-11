@@ -3,7 +3,7 @@ import { SimplexNoise } from 'three/addons/math/SimplexNoise.js';
 
 const simplex = new SimplexNoise();
 
-export interface starSatellite {
+export interface StarSatellite {
   mesh: THREE.Mesh;
   radius: number;
   speed: number;
@@ -17,9 +17,12 @@ export class Star {
   readonly group = new THREE.Group();
   readonly geometry: THREE.BufferGeometry;
   readonly basePositions: Float32Array;
-  readonly satellites: starSatellite[] = [];
+  readonly satellites: StarSatellite[] = [];
 
   private readonly mainMesh: THREE.Mesh;
+  private readonly mobile: boolean;
+  private readonly satSegments: number;
+  private frameCount = 0;
 
   private readonly satelliteConfig = [
     { radius: 1.9, speed: 0.55, phase: 0.0, size: 0.2 },
@@ -44,8 +47,11 @@ export class Star {
     { radius: 2.7, speed: 0.45, phase: 5.386, size: 0.12 },
   ];
 
-  constructor(material: THREE.Material) {
-    this.geometry = this.buildStar();
+  constructor(material: THREE.Material, mobile = false) {
+    this.mobile = mobile;
+    this.satSegments = mobile ? 32 : 128;
+
+    this.geometry = this.buildStar(1, this.satSegments);
     this.basePositions =
       this.geometry.attributes.position.array.slice() as Float32Array;
 
@@ -53,7 +59,7 @@ export class Star {
     this.group.add(this.mainMesh);
 
     this.satelliteConfig.forEach((cfg, idx) => {
-      const geo = this.buildStar(cfg.size * 2.5);
+      const geo = this.buildStar(cfg.size * 2.5, this.satSegments);
 
       const baseColor = Star.pickColor();
 
@@ -73,12 +79,19 @@ export class Star {
     });
   }
 
-  private buildStar(scale = 1): THREE.BufferGeometry {
+  private static pickColor(): THREE.Color {
+    const r = Math.random();
+    if (r < 0.1) return new THREE.Color('#1a0a2e');
+    else if (r < 0.3) return new THREE.Color('#38bdf8');
+    else if (r < 0.6) return new THREE.Color('#c084fc');
+    else return new THREE.Color('#ff7a1a');
+  }
+
+  private buildStar(scale: number, segments: number): THREE.BufferGeometry {
     const BASE_RADIUS = 0.45 * scale;
     const ARM_LENGTH = 0.55 * scale;
-    const SEGMENTS = 128;
 
-    const geo = new THREE.SphereGeometry(BASE_RADIUS, SEGMENTS, SEGMENTS);
+    const geo = new THREE.SphereGeometry(BASE_RADIUS, segments, segments);
     const pos = geo.attributes.position;
     const v = new THREE.Vector3();
 
@@ -131,22 +144,31 @@ export class Star {
       pos.setXYZ(i, bx + bx * noise, by + by * noise, bz + bz * noise);
     }
     pos.needsUpdate = true;
-    this.geometry.computeVertexNormals();
 
-    const speedMod = 1.0 + freq * 0.8;
+    this.frameCount++;
+    if (!this.mobile || this.frameCount % 3 === 0) {
+      this.geometry.computeVertexNormals();
+    }
+
+    const speedMod = 1.0 + freq * 2.0;
 
     for (const s of this.satellites) {
       const angle = elapsed * s.speed * speedMod + s.phase;
 
-      const pulseAmp = 0.06 * (1.0 + bass * 2.5);
+      const pulseAmp = 0.06 * (1.0 + bass * 6.0);
       const r = s.radius + Math.sin(elapsed * 2.0 + s.idx) * pulseAmp;
 
       const bobAmp = 0.15 * (1.0 + freq * 2.0);
       const y = Math.sin(elapsed * 0.9 + s.phase) * bobAmp;
 
-      s.mesh.position.set(Math.cos(angle) * r, y, Math.sin(angle) * r);
+      s.mesh.position.set(
+        Math.cos(angle) * r,
+        y,
+        Math.sin(angle) * r
+      );
     }
   }
+
   setSatellitesVisible(visible: boolean) {
     for (const s of this.satellites) s.mesh.visible = visible;
   }
@@ -155,13 +177,5 @@ export class Star {
     for (const s of this.satellites) {
       s.mesh.material = material;
     }
-  }
-
-  private static pickColor(): THREE.Color {
-    const r = Math.random();
-    if (r < 0.1) return new THREE.Color('#1a0a2e');
-    else if (r < 0.3) return new THREE.Color('#38bdf8');
-    else if (r < 0.6) return new THREE.Color('#c084fc');
-    else return new THREE.Color('#ff7a1a');
   }
 }

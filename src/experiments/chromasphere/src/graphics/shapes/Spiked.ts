@@ -38,15 +38,16 @@ export class Spiked {
     { radius: 2.7, speed: 0.45, phase: 5.386, size: 0.12 },
   ];
 
-  constructor(material: THREE.Material) {
+  constructor(material: THREE.Material, mobile = false) {
     const BASE_RADIUS = 0.95;
     const SPIKE_COUNT = 42;
     const SPIKE_HEIGHT = 0.55;
     const SPIKE_SHARPNESS = 3.2;
+    const SUBDIVISION = mobile ? 32 : 96;
 
     const spikeDirs = Spiked.fibonacciSphere(SPIKE_COUNT);
 
-    this.geometry = new THREE.IcosahedronGeometry(BASE_RADIUS, 96);
+    this.geometry = new THREE.IcosahedronGeometry(BASE_RADIUS, SUBDIVISION);
     const pos = this.geometry.attributes.position;
     const dir = new THREE.Vector3();
 
@@ -105,18 +106,22 @@ export class Spiked {
   }
 
   update(elapsed: number, freq: number, bass: number) {
-    const speedMod = 1.0 + freq * 0.8;
+    const speedMod = 1.0 + freq * 2.0;
 
     for (const s of this.satellites) {
       const angle = elapsed * s.speed * speedMod + s.phase;
 
-      const pulseAmp = 0.06 * (1.0 + bass * 2.5);
+      const pulseAmp = 0.06 * (1.0 + bass * 6.0);
       const r = s.radius + Math.sin(elapsed * 2.0 + s.idx) * pulseAmp;
 
       const bobAmp = 0.5 * (1.0 + freq * 2.0);
       const y = Math.sin(elapsed * 0.9 + s.phase) * bobAmp;
 
-      s.mesh.position.set(Math.cos(angle) * r, y, Math.sin(angle) * r);
+      s.mesh.position.set(
+        Math.cos(angle) * r,
+        y,
+        Math.sin(angle) * r
+      );
 
       s.mesh.rotation.x = elapsed * 0.4 + s.phase;
       s.mesh.rotation.y = elapsed * 0.55 + s.phase * 0.5;
