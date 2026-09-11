@@ -21,7 +21,7 @@ const scene = new SceneEngine({
   colorMode: state.colorMode,
 });
 
-const audio = new AudioAnalyzer('/james-bond.mp3');
+const audio = new AudioAnalyzer('./james-bond.mp3');
 
 function bindGroup<T extends string>(
   selector: string,

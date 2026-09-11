@@ -27,13 +27,13 @@ export class SceneEngine {
   readonly group: THREE.Group;
   readonly envTexture: THREE.Texture;
 
-  private readonly clock = new THREE.Clock();
+  private lastTime = performance.now();
+  private elapsed = 0;
   private readonly resizeObserver: ResizeObserver;
   private freqSmooth = 0.05;
   private rafId = 0;
   private disposed = false;
   private currentShape: ShapeMode = 'spiked';
-  private currentColorMode: ColorMode = 'light';
 
   constructor(opts: SceneEngineOptions) {
     const { container } = opts;
@@ -41,7 +41,6 @@ export class SceneEngine {
     const initialShape = opts.shape ?? 'spiked';
     const initialMaterial = opts.material ?? 'iridescent';
 
-    this.currentColorMode = colorMode;
     this.currentShape = initialShape;
 
     this.scene = new THREE.Scene();
@@ -68,10 +67,7 @@ export class SceneEngine {
     this.controls.maxDistance = 8.0;
 
     const pmrem = new THREE.PMREMGenerator(this.renderer);
-    this.envTexture = pmrem.fromScene(
-      new RoomEnvironment(this.renderer),
-      0.04
-    ).texture;
+    this.envTexture = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
     this.scene.environment = this.envTexture;
 
     this.scene.add(new THREE.AmbientLight(0xffffff, 1.2));
@@ -112,8 +108,6 @@ export class SceneEngine {
   }
 
   private applyColorMode(mode: ColorMode) {
-    this.currentColorMode = mode;
-
     if (mode === 'dark') {
       this.renderer.setClearColor(0x000000, 1);
       this.renderer.toneMappingExposure = 1.05;
@@ -149,7 +143,10 @@ export class SceneEngine {
     if (this.disposed) return;
     this.rafId = requestAnimationFrame(() => this.tick(getBands));
 
-    const elapsed = this.clock.getElapsedTime();
+    const now = performance.now();
+    this.elapsed += (now - this.lastTime) / 1000;
+    this.lastTime = now;
+    const elapsed = this.elapsed;
     const bands = getBands();
 
     this.freqSmooth = THREE.MathUtils.lerp(

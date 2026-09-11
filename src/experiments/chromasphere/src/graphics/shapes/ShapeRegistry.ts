@@ -10,9 +10,7 @@ export class ShapeRegistry {
   readonly spiked: Spiked;
 
   readonly mainMesh: THREE.Mesh;
-
   private current: ShapeMode = 'cube';
-  private colorMode: ColorMode = 'dark';
 
   constructor(glassMaterial: THREE.Material) {
     this.cube = new Cube(glassMaterial);
@@ -65,8 +63,9 @@ export class ShapeRegistry {
     this.applyMode(mode);
   }
 
-  setColorMode(mode: ColorMode) {
-    this.colorMode = mode;
+  setColorMode(_mode: ColorMode) {
+    // No-op. Theme handling is done by MaterialManager. Kept for
+    // callers that still invoke it (SceneEngine.setColorMode).
   }
 
   getActiveChildren(): THREE.Object3D[] {
