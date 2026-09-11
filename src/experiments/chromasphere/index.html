@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Audio-reactive 3D glass orb visualization with custom GLSL shaders and real-time dispersion"
+    />
+    <title>Chromasphere ~ Acoustic Glass Visualizer</title>
+    <link rel="icon" href="/impractical-series/bulb.png" type="image/png" />
+    <script type="module" crossorigin src="/impractical-series/assets/chromasphere-CdlZr4Pr.js"></script>
+    <link rel="modulepreload" crossorigin href="/impractical-series/assets/modulepreload-polyfill-BdX5DvLD.js">
+    <link rel="modulepreload" crossorigin href="/impractical-series/assets/three.module-DiaHpdSS.js">
+    <link rel="modulepreload" crossorigin href="/impractical-series/assets/OrbitControls-BKQxUEuy.js">
+    <link rel="stylesheet" crossorigin href="/impractical-series/assets/chromasphere-_Xz_ig9F.css">
+  </head>
+  <body>
+    <main id="app" aria-label="Interactive 3D Glass Orb Visualizer"></main>
+    <header class="hud-overlay">
+      <h1 class="brand-title">Chromasphere</h1>
+      <p class="brand-subtitle">Audio-Reactive Dispersion</p>
+    </header>
+    <aside
+      class="controls-dock"
+      id="controls-dock"
+      aria-label="Visualizer Controls"
+    >
+      <details class="dock-disclosure" open>
+        <summary class="dock-header" aria-label="Toggle visual controls menu">
+          <span class="dock-title">Visual Controls</span>
+          <span class="btn-icon-toggle" aria-hidden="true">
+            <svg
+              class="toggle-icon"
+              viewBox="0 0 24 24"
+              width="18"
+              height="18"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </span>
+        </summary>
+        <nav
+          class="control-deck"
+          id="dock-content"
+          aria-label="Visualizer Options"
+        >
+          <fieldset class="control-group">
+            <legend class="group-label">Toggle Mode</legend>
+            <div
+              class="segmented-control"
+              role="tablist"
+              aria-label="Visual Surface Mode"
+            >
+              <button
+                type="button"
+                class="option-btn"
+                data-mode="dark"
+                role="tab"
+                aria-selected="true"
+                id="tab-mode-dark"
+              >
+                Dark
+              </button>
+              <button
+                type="button"
+                class="option-btn active"
+                data-mode="light"
+                role="tab"
+                aria-selected="false"
+                id="tab-mode-light"
+              >
+                Light
+              </button>
+            </div>
+          </fieldset>
+          <fieldset class="control-group">
+            <legend class="group-label">Shapes</legend>
+            <div class="segmented-control">
+              <button type="button" class="option-btn" data-shape="cube">
+                Cube
+              </button>
+              <button type="button" class="option-btn" data-shape="star">
+                Star
+              </button>
+              <button
+                type="button"
+                class="option-btn active"
+                data-shape="spiked"
+              >
+                Spiked
+              </button>
+            </div>
+          </fieldset>
+          <fieldset class="control-group">
+            <legend class="group-label">Material Presets</legend>
+            <div class="segmented-control">
+              <button type="button" class="option-btn" data-material="clear">
+                Glossy
+              </button>
+              <button type="button" class="option-btn" data-material="frosted">
+                Frosted
+              </button>
+              <button
+                type="button"
+                class="option-btn active"
+                data-material="iridescent"
+              >
+                Iridescent
+              </button>
+            </div>
+          </fieldset>
+          <div class="action-row">
+            <button type="button" id="play-btn" class="action-btn">
+              Play Track
+            </button>
+            <label for="file-input" class="action-btn secondary"
+              >Upload Track</label
+            >
+            <input
+              type="file"
+              id="file-input"
+              accept="audio/*"
+              class="visually-hidden"
+            />
+          </div>
+        </nav>
+      </details>
+    </aside>
+
+  </body>
+</html>
