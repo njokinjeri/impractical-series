@@ -1,9 +1,44 @@
 import * as THREE from 'three';
 
+export interface SpikedSatellite {
+  mesh: THREE.Mesh;
+  radius: number;
+  speed: number;
+  phase: number;
+  size: number;
+  idx: number;
+  baseColor: THREE.Color;
+}
+
 export class Spiked {
   readonly geometry: THREE.IcosahedronGeometry;
+  readonly group = new THREE.Group();
+  readonly satellites: SpikedSatellite[] = [];
 
-  constructor() {
+  private readonly satelliteConfig = [
+    { radius: 1.9, speed: 0.55, phase: 0.0, size: 0.2 },
+    { radius: 1.9, speed: 0.55, phase: 1.047, size: 0.2 },
+    { radius: 1.9, speed: 0.55, phase: 2.094, size: 0.2 },
+    { radius: 1.9, speed: 0.55, phase: 3.142, size: 0.2 },
+    { radius: 1.9, speed: 0.55, phase: 4.189, size: 0.2 },
+    { radius: 1.9, speed: 0.55, phase: 5.236, size: 0.2 },
+    { radius: 2.3, speed: 0.65, phase: 0.0, size: 0.15 },
+    { radius: 2.3, speed: 0.65, phase: 0.898, size: 0.15 },
+    { radius: 2.3, speed: 0.65, phase: 1.795, size: 0.15 },
+    { radius: 2.3, speed: 0.65, phase: 2.693, size: 0.15 },
+    { radius: 2.3, speed: 0.65, phase: 3.59, size: 0.15 },
+    { radius: 2.3, speed: 0.65, phase: 4.488, size: 0.15 },
+    { radius: 2.3, speed: 0.65, phase: 5.386, size: 0.15 },
+    { radius: 2.7, speed: 0.45, phase: 0.0, size: 0.12 },
+    { radius: 2.7, speed: 0.45, phase: 0.898, size: 0.12 },
+    { radius: 2.7, speed: 0.45, phase: 1.795, size: 0.12 },
+    { radius: 2.7, speed: 0.45, phase: 2.693, size: 0.12 },
+    { radius: 2.7, speed: 0.45, phase: 3.59, size: 0.12 },
+    { radius: 2.7, speed: 0.45, phase: 4.488, size: 0.12 },
+    { radius: 2.7, speed: 0.45, phase: 5.386, size: 0.12 },
+  ];
+
+  constructor(material: THREE.Material) {
     const BASE_RADIUS = 0.95;
     const SPIKE_COUNT = 42;
     const SPIKE_HEIGHT = 0.55;
@@ -35,7 +70,62 @@ export class Spiked {
     }
 
     this.geometry.computeVertexNormals();
+
+    for (let i = 0; i < this.satelliteConfig.length; i++) {
+      const cfg = this.satelliteConfig[i];
+
+      const baseColor = Spiked.pickColor();
+
+      const mat = (material as THREE.MeshPhysicalMaterial).clone();
+      mat.color.copy(baseColor);
+      mat.transmission = Math.min(mat.transmission, 0.5);
+
+      const mesh = new THREE.Mesh(this.geometry, mat);
+      mesh.scale.setScalar(cfg.size / 0.95);
+
+      this.group.add(mesh);
+      this.satellites.push({
+        mesh,
+        baseColor,
+        radius: cfg.radius,
+        speed: cfg.speed,
+        phase: cfg.phase,
+        size: cfg.size,
+        idx: i,
+      });
+    }
   }
+
+  private static pickColor(): THREE.Color {
+    const r = Math.random();
+    if (r < 0.1) return new THREE.Color('#1a0a2e');
+    else if (r < 0.3) return new THREE.Color('#38bdf8');
+    else if (r < 0.6) return new THREE.Color('#c084fc');
+    else return new THREE.Color('#ff7a1a');
+  }
+
+  update(elapsed: number, freq: number) {
+    for (const s of this.satellites) {
+      const angle = elapsed * s.speed + s.phase;
+      const r =
+        s.radius + Math.sin(elapsed * 2.0 + s.idx) * 0.06 * (1.0 + freq * 1.5);
+
+      s.mesh.position.set(
+        Math.cos(angle) * r,
+        Math.sin(elapsed * 0.9 + s.phase) * 0.5,
+        Math.sin(angle) * r
+      );
+
+      s.mesh.rotation.x = elapsed * 0.4 + s.phase;
+      s.mesh.rotation.y = elapsed * 0.55 + s.phase * 0.5;
+    }
+  }
+
+  setSatellitesVisible(visible: boolean) {
+    for (const s of this.satellites) s.mesh.visible = visible;
+  }
+
+  setMaterial(_material: THREE.Material) {}
 
   private static fibonacciSphere(n: number): THREE.Vector3[] {
     const pts: THREE.Vector3[] = [];

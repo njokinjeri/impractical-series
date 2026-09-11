@@ -2,51 +2,16 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 import { MaterialManager } from './materials/MaterialManager';
-import { ShapeRegistry } from './shapes/shapeRegistry';
+import { ShapeRegistry } from './shapes/ShapeRegistry';
 import type {
   AudioBands,
   MaterialPreset,
-  Palette,
   ShapeMode,
   ColorMode,
 } from '../types/state';
 
-export const PALETTES: Palette[] = [
-  {
-    dark: new THREE.Color('#2a0a1a'),
-    mid: new THREE.Color('#f472b6'),
-    pastel: new THREE.Color('#fb923c'),
-  },
-  {
-    dark: new THREE.Color('#0a1526'),
-    mid: new THREE.Color('#38bdf8'),
-    pastel: new THREE.Color('#818cf8'),
-  },
-  {
-    dark: new THREE.Color('#1a0a2e'),
-    mid: new THREE.Color('#c084fc'),
-    pastel: new THREE.Color('#38bdf8'),
-  },
-  {
-    dark: new THREE.Color('#0a241a'),
-    mid: new THREE.Color('#34d399'),
-    pastel: new THREE.Color('#fbbf24'),
-  },
-  {
-    dark: new THREE.Color('#1a0a2e'),
-    mid: new THREE.Color('#a855f7'),
-    pastel: new THREE.Color('#06b6d4'),
-  },
-  {
-    dark: new THREE.Color('#2e0a0a'),
-    mid: new THREE.Color('#f43f5e'),
-    pastel: new THREE.Color('#f59e0b'),
-  },
-];
-
 export interface SceneEngineOptions {
   container: HTMLElement;
-  paletteIndex?: number;
   colorMode?: ColorMode;
   shape?: ShapeMode;
   material?: MaterialPreset;
@@ -62,7 +27,7 @@ export class SceneEngine {
   readonly group: THREE.Group;
   readonly envTexture: THREE.Texture;
 
-  private readonly timer = new THREE.Timer();
+  private readonly clock = new THREE.Clock();
   private readonly resizeObserver: ResizeObserver;
   private freqSmooth = 0.05;
   private rafId = 0;
@@ -72,11 +37,9 @@ export class SceneEngine {
 
   constructor(opts: SceneEngineOptions) {
     const { container } = opts;
-    const paletteIndex = opts.paletteIndex ?? 3;
     const colorMode = opts.colorMode ?? 'light';
     const initialShape = opts.shape ?? 'spiked';
-    const initialMaterial = opts.material ?? 'frosted';
-    const palette = PALETTES[paletteIndex];
+    const initialMaterial = opts.material ?? 'iridescent';
 
     this.currentColorMode = colorMode;
     this.currentShape = initialShape;
@@ -124,7 +87,7 @@ export class SceneEngine {
     this.materials = new MaterialManager(colorMode);
     this.materials.setPreset(initialMaterial);
 
-    this.shapes = new ShapeRegistry(this.materials.glass, palette);
+    this.shapes = new ShapeRegistry(this.materials.glass);
     this.shapes.setColorMode(colorMode);
     this.shapes.setShape(initialShape);
 
@@ -176,13 +139,6 @@ export class SceneEngine {
     this.applyColorMode(mode);
   }
 
-  setPalette(index: number) {
-    const p = PALETTES[index];
-    if (!p) return;
-    this.shapes.coreUniforms.uColorPrimary.value.copy(p.mid);
-    this.shapes.coreUniforms.uColorSecondary.value.copy(p.pastel);
-  }
-
   private handleResize = () => {
     this.camera.aspect = window.innerWidth / window.innerHeight;
     this.camera.updateProjectionMatrix();
@@ -193,8 +149,7 @@ export class SceneEngine {
     if (this.disposed) return;
     this.rafId = requestAnimationFrame(() => this.tick(getBands));
 
-    this.timer.update();
-    const elapsed = this.timer.getElapsed();
+    const elapsed = this.clock.getElapsedTime();
     const bands = getBands();
 
     this.freqSmooth = THREE.MathUtils.lerp(
@@ -202,7 +157,6 @@ export class SceneEngine {
       bands.average * 2.0,
       0.1
     );
-    this.shapes.coreUniforms.uAudioFreq.value = this.freqSmooth;
 
     this.shapes.update(elapsed, bands.average);
 
@@ -211,8 +165,8 @@ export class SceneEngine {
         this.group.rotation.y = elapsed * 0.15;
         this.group.rotation.x = Math.sin(elapsed * 0.1) * 0.08;
         break;
-      case 'ribbon':
-        this.group.rotation.y = elapsed * 0.12;
+      case 'icosa':
+        this.group.rotation.y = elapsed * 0.10;
         this.group.rotation.x = 0;
         break;
       case 'spiked':
