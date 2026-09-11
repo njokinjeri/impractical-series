@@ -33,6 +33,14 @@ export const ACCENT_HEX: Record<AccentColor, string> = {
 const R2_PUBLIC_URL = 'https://pub-8402fa6a331e4ef2816e36e19bc1431e.r2.dev'
 
 export const projects: Project[] = [
+    {
+    slug: 'chromasphere',
+    title: 'Chromasphere',
+    description:
+      'Audio-reactive 3D glass shapes with orbiting swarms that move to your music.',
+    stack: ['Three.js', 'Web Audio API', 'GLSL', 'TypeScript'],
+    accent: 'amber',
+  },
   {
     slug: 'cascadia',
     title: 'Cascadia',
