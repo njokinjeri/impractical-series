@@ -12,14 +12,12 @@ const container = document.getElementById('app')!;
 
 const state: VisualizerState = {
   shape: 'spiked',
-  material: 'frosted',
+  material: 'iridescent',
   colorMode: 'light',
-  paletteIndex: 3,
 };
 
 const scene = new SceneEngine({
   container,
-  paletteIndex: state.paletteIndex,
   colorMode: state.colorMode,
 });
 
@@ -57,21 +55,6 @@ bindGroup<ColorMode>('[data-mode]', 'mode', (v) => {
   document.documentElement.dataset.theme = v;
   scene.setColorMode(v);
 });
-
-document
-  .querySelectorAll<HTMLElement>('.chromatic-swatch')
-  .forEach((swatch) => {
-    swatch.addEventListener('click', (e) => {
-      const target = e.currentTarget as HTMLElement;
-      document
-        .querySelectorAll('.chromatic-swatch')
-        .forEach((s) => s.classList.remove('active'));
-      target.classList.add('active');
-      const idx = parseInt(target.dataset.palette ?? '0', 10);
-      state.paletteIndex = idx;
-      scene.setPalette(idx);
-    });
-  });
 
 const playBtn = document.getElementById('play-btn') as HTMLButtonElement;
 playBtn.addEventListener('click', async () => {
