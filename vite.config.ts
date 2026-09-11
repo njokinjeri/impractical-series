@@ -63,6 +63,10 @@ export default defineConfig({
         cascadia: resolve(
           __dirname,
           'src/experiments/cascadia/index.html'
+        ),
+        chromasphere: resolve(
+          __dirname,
+          'src/experiments/chromasphere/index.html'
         )
         
       },
