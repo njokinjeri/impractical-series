@@ -62,6 +62,11 @@ playBtn.addEventListener('click', async () => {
   playBtn.textContent = playing ? 'Pause Track' : 'Play Track';
 });
 
+audio.audio.addEventListener('ended', () => {
+  playBtn.textContent = 'Play Track';
+  audio.isPlaying = false;
+});
+
 const fileInput = document.getElementById('file-input') as HTMLInputElement;
 fileInput.addEventListener('change', async (e) => {
   const file = (e.target as HTMLInputElement).files?.[0];

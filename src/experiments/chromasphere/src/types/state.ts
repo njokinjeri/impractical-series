@@ -1,4 +1,4 @@
-export type ShapeMode = 'cluster' | 'ribbon' | 'spiked' | 'icosa';
+export type ShapeMode = 'cube' | 'star' | 'spiked';
 export type MaterialPreset = 'clear' | 'frosted' | 'iridescent';
 export type ColorMode = 'dark' | 'light';
 

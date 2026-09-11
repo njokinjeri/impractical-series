@@ -104,17 +104,19 @@ export class Spiked {
     else return new THREE.Color('#ff7a1a');
   }
 
-  update(elapsed: number, freq: number) {
-    for (const s of this.satellites) {
-      const angle = elapsed * s.speed + s.phase;
-      const r =
-        s.radius + Math.sin(elapsed * 2.0 + s.idx) * 0.06 * (1.0 + freq * 1.5);
+  update(elapsed: number, freq: number, bass: number) {
+    const speedMod = 1.0 + freq * 0.8;
 
-      s.mesh.position.set(
-        Math.cos(angle) * r,
-        Math.sin(elapsed * 0.9 + s.phase) * 0.5,
-        Math.sin(angle) * r
-      );
+    for (const s of this.satellites) {
+      const angle = elapsed * s.speed * speedMod + s.phase;
+
+      const pulseAmp = 0.06 * (1.0 + bass * 2.5);
+      const r = s.radius + Math.sin(elapsed * 2.0 + s.idx) * pulseAmp;
+
+      const bobAmp = 0.5 * (1.0 + freq * 2.0);
+      const y = Math.sin(elapsed * 0.9 + s.phase) * bobAmp;
+
+      s.mesh.position.set(Math.cos(angle) * r, y, Math.sin(angle) * r);
 
       s.mesh.rotation.x = elapsed * 0.4 + s.phase;
       s.mesh.rotation.y = elapsed * 0.55 + s.phase * 0.5;

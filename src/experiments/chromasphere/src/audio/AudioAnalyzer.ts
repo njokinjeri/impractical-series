@@ -54,9 +54,19 @@ export class AudioAnalyzer {
 
   getBands(): AudioBands {
     if (!this.analyser || !this.dataArray || !this.isPlaying) {
+      const a = 0.1;
+      this.smoothed = {
+        average: this.smoothed.average * (1 - a),
+        bass: this.smoothed.bass * (1 - a),
+        mid: this.smoothed.mid * (1 - a),
+        treble: this.smoothed.treble * (1 - a),
+      };
       return this.smoothed;
     }
-    this.analyser.getByteFrequencyData(this.dataArray as Uint8Array<ArrayBuffer>);
+
+    this.analyser.getByteFrequencyData(
+      this.dataArray as Uint8Array<ArrayBuffer>
+    );
 
     const n = this.dataArray.length;
     const third = Math.floor(n / 3);
@@ -74,13 +84,13 @@ export class AudioAnalyzer {
       treble: avg(third * 2, n),
     };
 
-    // Exponential smoothing
     const a = 0.15;
     this.smoothed = {
-      average: this.smoothed.average + (target.average - this.smoothed.average) * a,
-      bass:    this.smoothed.bass    + (target.bass    - this.smoothed.bass)    * a,
-      mid:     this.smoothed.mid     + (target.mid     - this.smoothed.mid)     * a,
-      treble:  this.smoothed.treble  + (target.treble  - this.smoothed.treble)  * a,
+      average:
+        this.smoothed.average + (target.average - this.smoothed.average) * a,
+      bass: this.smoothed.bass + (target.bass - this.smoothed.bass) * a,
+      mid: this.smoothed.mid + (target.mid - this.smoothed.mid) * a,
+      treble: this.smoothed.treble + (target.treble - this.smoothed.treble) * a,
     };
     return this.smoothed;
   }

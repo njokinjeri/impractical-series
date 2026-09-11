@@ -52,7 +52,7 @@ export class SceneEngine {
       0.1,
       100
     );
-    this.camera.position.set(0, 0, 4.8);
+    this.camera.position.set(0, 0, 7.0);
 
     this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     this.renderer.setSize(window.innerWidth, window.innerHeight);
@@ -154,19 +154,19 @@ export class SceneEngine {
 
     this.freqSmooth = THREE.MathUtils.lerp(
       this.freqSmooth,
-      bands.average * 2.0,
+      bands.average * 1.0,
       0.1
     );
 
-    this.shapes.update(elapsed, bands.average);
+    this.shapes.update(elapsed, this.freqSmooth, bands.bass);
 
     switch (this.currentShape) {
-      case 'cluster':
+      case 'cube':
         this.group.rotation.y = elapsed * 0.15;
         this.group.rotation.x = Math.sin(elapsed * 0.1) * 0.08;
         break;
-      case 'icosa':
-        this.group.rotation.y = elapsed * 0.10;
+      case 'star':
+        this.group.rotation.y = elapsed * 0.1;
         this.group.rotation.x = 0;
         break;
       case 'spiked':

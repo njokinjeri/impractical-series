@@ -98,7 +98,7 @@ export class Cube {
     return geo;
   }
 
-  update(elapsed: number, freq: number) {
+  update(elapsed: number, freq: number, bass: number) {
     const pos = this.geometry.attributes.position;
     const base = this.basePositions;
     for (let i = 0; i < pos.count; i++) {
@@ -118,15 +118,18 @@ export class Cube {
     pos.needsUpdate = true;
     this.geometry.computeVertexNormals();
 
+    const speedMod = 1.0 + freq * 0.8;
+
     for (const b of this.satellites) {
-      const angle = elapsed * b.speed + b.phase;
-      const r =
-        b.radius + Math.sin(elapsed * 2.0 + b.idx) * 0.08 * (1.0 + freq * 1.5);
-      b.mesh.position.set(
-        Math.cos(angle) * r,
-        Math.sin(elapsed * 1.2 + b.phase) * 0.35,
-        Math.sin(angle) * r
-      );
+      const angle = elapsed * b.speed * speedMod + b.phase;
+
+      const pulseAmp = 0.08 * (1.0 + bass * 2.5);
+      const r = b.radius + Math.sin(elapsed * 2.0 + b.idx) * pulseAmp;
+
+      const bobAmp = 0.35 * (1.0 + freq * 2.0);
+      const y = Math.sin(elapsed * 1.2 + b.phase) * bobAmp;
+
+      b.mesh.position.set(Math.cos(angle) * r, y, Math.sin(angle) * r);
 
       const mp = b.mesh.geometry.attributes.position;
       for (let i = 0; i < mp.count; i++) {

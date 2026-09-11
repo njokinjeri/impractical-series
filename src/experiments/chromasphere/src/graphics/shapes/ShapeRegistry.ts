@@ -11,7 +11,7 @@ export class ShapeRegistry {
 
   readonly mainMesh: THREE.Mesh;
 
-  private current: ShapeMode = 'cluster';
+  private current: ShapeMode = 'cube';
   private colorMode: ColorMode = 'dark';
 
   constructor(glassMaterial: THREE.Material) {
@@ -21,7 +21,7 @@ export class ShapeRegistry {
 
     this.mainMesh = new THREE.Mesh(this.cube.geometry, glassMaterial);
 
-    this.applyMode('cluster');
+    this.applyMode('cube');
   }
 
   private applyMode(mode: ShapeMode) {
@@ -30,7 +30,7 @@ export class ShapeRegistry {
     const glass = this.mainMesh.material as THREE.MeshPhysicalMaterial;
 
     switch (mode) {
-      case 'cluster':
+      case 'cube':
         this.mainMesh.geometry = this.cube.geometry;
         this.mainMesh.visible = true;
         this.cube.group.visible = true;
@@ -39,7 +39,7 @@ export class ShapeRegistry {
         glass.depthWrite = true;
         break;
 
-      case 'icosa':
+      case 'star':
         this.mainMesh.geometry = this.star.geometry;
         this.mainMesh.visible = true;
         this.cube.group.visible = false;
@@ -71,26 +71,26 @@ export class ShapeRegistry {
 
   getActiveChildren(): THREE.Object3D[] {
     switch (this.current) {
-      case 'cluster':
+      case 'cube':
         return [this.mainMesh, this.cube.group];
-      case 'icosa':
+      case 'star':
         return [this.mainMesh, this.star.group];
       case 'spiked':
         return [this.mainMesh, this.spiked.group];
     }
   }
 
-  update(elapsed: number, freq: number) {
-    if (this.current === 'cluster') {
-      this.cube.update(elapsed, freq);
+  update(elapsed: number, freq: number, bass: number) {
+    if (this.current === 'cube') {
+      this.cube.update(elapsed, freq, bass);
     }
 
     if (this.current === 'spiked') {
-      this.spiked.update(elapsed, freq);
+      this.spiked.update(elapsed, freq, bass);
     }
 
-    if (this.current === 'icosa') {
-      this.star.update(elapsed, freq);
+    if (this.current === 'star') {
+      this.star.update(elapsed, freq, bass);
     }
   }
 }
