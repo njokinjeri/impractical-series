@@ -1,0 +1,59 @@
+@import '../../../design-system/fonts.css';
+
+:root {
+  --font-body: var(--font-body);
+  --font-display: var(--font-display);
+  --font-mono: 'JetBrains Mono', monospace;
+  --bg-dark: #05070c;
+  --gold-glow: #ffb703;
+  --amber-warm: #fb8500;
+  --text-primary: #f8fafc;
+  --text-muted: #94a3b8;
+
+  --glass-bg: rgba(15, 23, 42, 0.45);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --glass-blur: blur(16px);
+  --ease-out-cubic: cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: var(--bg-dark);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, .landing-title, .main-title {
+  font-family: var(--font-display);
+}
+
+#canvas-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+.divider {
+  height: 1px;
+  background: var(--glass-border);
+  margin: 0.75rem 0;
+}
+
+.control-label {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  display: block;
+  margin-bottom: 0.5rem;
+}

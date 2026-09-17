@@ -1,13 +1,143 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/bulb.png" type="image/png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>sky-lanterns</title>
+    <title>Sky Lanterns | WebGL Visual Experience</title>
+    <link rel="stylesheet" href="./src/style.css" />
   </head>
-  <body>
-    <div id="app"></div>
-    <script type="module" src="/src/main.ts"></script>
+  <body class="landing-active">
+    <div id="loader-overlay" role="status" aria-live="polite">
+        <div class="spinner" aria-hidden="true"></div>
+        <div class="loader-text">Rebuilding Swarm Pipeline...</div>
+    </div>
+    <section id="landing-stage" aria-label="Landing Stage">
+        <header class="landing-header">
+            <h1 class="landing-title">Sky Lanterns</h1>
+            <p class="landing-subtitle">Light your lantern and send your wish drifting into the night sky.</p>
+        </header>
+
+        <div class="landing-controls">
+            <fieldset class="color-radio-group">
+                <legend class="color-selection-title">Select Lantern Color</legend>
+                <label class="radio-option">
+                    <input type="radio" name="lanternColor" value="0" checked onchange="changeHeroColor(0)">
+                    <span>Warm Amber</span>
+                </label>
+                <label class="radio-option">
+                    <input type="radio" name="lanternColor" value="1" onchange="changeHeroColor(1)">
+                    <span>Teal Blue</span>
+                </label>
+                <label class="radio-option">
+                    <input type="radio" name="lanternColor" value="2" onchange="changeHeroColor(2)">
+                    <span>Crimson Red</span>
+                </label>
+                <label class="radio-option">
+                    <input type="radio" name="lanternColor" value="3" onchange="changeHeroColor(3)">
+                    <span>Violet Purple</span>
+                </label>
+            </fieldset>
+            <div class="action-row">
+                <button id="ritual-action-btn" class="ritual-btn" onclick="handleRitualStep()">Ignite Lantern</button>
+            </div>
+        </div>
+    </section>
+    <aside id="left-panel-wrapper" aria-label="App Information and Telemetry">
+        <header class="app-header">
+            <h1 class="main-title">Sky Lanterns</h1>
+            <p class="main-desc">Light your lantern and send your wish drifting into the night sky.</p>
+        </header>
+
+        <section id="fps-wrapper" aria-label="Telemetry Metrics">
+            <button id="toggle-fps-btn" onclick="toggleFpsPanel()" aria-expanded="true" aria-controls="fps-container">[ FPS Metrics ]</button>
+            <div id="fps-container">
+                <header class="fps-header">
+                    <span class="fps-title">Telemetry Engine</span>
+                    <span class="fps-desc">Real-time render stats and frame rates.</span>
+                </header>
+                <div class="fps-wave-row">
+                    <span id="fps-val" class="fps-main-val">60 FPS</span>
+                    <svg id="wave-svg" aria-hidden="true"><path id="wave-path" d="M 0 12 Q 25 12 50 12 T 100 12" /></svg>
+                </div>
+                <div class="fps-stats-grid">
+                    <div class="stat-card"><span class="stat-label">Frame Time</span><span id="ms-val" class="stat-value">16.6 ms</span></div>
+                    <div class="stat-card"><span class="stat-label">Avg FPS (1s)</span><span id="avg-fps-val" class="stat-value">60 FPS</span></div>
+                    <div class="stat-card"><span class="stat-label">1% Low FPS</span><span id="low-fps-val" class="stat-value">58 FPS</span></div>
+                    <div class="stat-card"><span class="stat-label">Target Sync</span><span class="stat-value" style="color: #00e5ff;">60 Hz</span></div>
+                </div>
+                <canvas id="fps-graph-canvas" width="250" height="32" aria-label="FPS Performance Graph"></canvas>
+            </div>
+        </section>
+    </aside>
+
+    <main id="ui-wrapper" aria-label="Swarm Controls">
+        <button id="toggle-menu-btn" onclick="toggleMenu()" aria-expanded="true" aria-controls="ui-container">[ Collapse Controls ]</button>
+        
+        <div id="ui-container">
+            <div class="control-group">
+                <label for="cameraMode">Camera View Mode</label>
+                <select id="cameraMode" onchange="setCameraMode(this.value)">
+                    <option value="orbit">1. Free Manual Orbit</option>
+                    <option value="follow">2. Follow Focus Lantern</option>
+                    <option value="drone">3. Drone Cinematic Sweep</option>
+                </select>
+            </div>
+
+            <div class="divider" role="separator"></div>
+
+            <div class="control-group">
+                <span class="control-label">Swarm Density Tiers</span>
+                <div class="tier-buttons" role="group" aria-label="Swarm Density Tiers">
+                    <button type="button" class="tier-btn" onclick="selectDensityTier(30, this)">30</button>
+                    <button type="button" class="tier-btn active" onclick="selectDensityTier(45, this)">45</button>
+                    <button type="button" class="tier-btn" onclick="selectDensityTier(90, this)">90</button>
+                    <button type="button" class="tier-btn" onclick="selectDensityTier(120, this)">120</button>
+                    <button type="button" class="tier-btn" onclick="selectDensityTier(150, this)">150</button>
+                </div>
+            </div>
+
+            <div class="divider" role="separator"></div>
+
+            <div class="control-group">
+                <label for="windAngle">Wind Direction <span id="windAngleVal">45°</span></label>
+                <input type="range" id="windAngle" min="-180" max="180" value="45" oninput="updateWind()">
+            </div>
+            <div class="control-group">
+                <label for="windSpeed">Wind Force <span id="windSpeedVal">0.8</span></label>
+                <input type="range" id="windSpeed" min="0" max="3" step="0.1" value="0.8" oninput="updateWind()">
+            </div>
+
+            <div class="divider" role="separator"></div>
+
+            <div class="control-group">
+                <label class="checkbox-label">
+                    Starry Night Background
+                    <input type="checkbox" id="starryToggle" checked onchange="toggleStarryNight(this.checked)">
+                </label>
+            </div>
+
+            <div class="control-group">
+                <label for="fogSlider">Atmospheric Fog Density</label>
+                <input type="range" id="fogSlider" min="0.0005" max="0.015" step="0.0005" value="0.003" oninput="updateFog(this.value)">
+            </div>
+
+            <div class="divider" role="separator"></div>
+
+            <div class="control-group">
+                <label for="colorSelect">Swarm Palette</label>
+                <select id="colorSelect" onchange="handleColorChange(this.value)">
+                    <option value="random">Randomized Swarm</option>
+                    <option value="0">Warm Amber</option>
+                    <option value="1">Teal Blue</option>
+                    <option value="2">Crimson Red</option>
+                    <option value="3">Violet Purple</option>
+                </select>
+            </div>
+            <button type="button" class="action-btn" onclick="reRandomize()">Re-Randomize Positions</button>
+        </div>
+    </main>
+    <div id="canvas-container" aria-hidden="true"></div>
+    <script type="module" src="./src/main.ts"></script>
   </body>
 </html>
