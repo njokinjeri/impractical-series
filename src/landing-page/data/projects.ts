@@ -30,10 +30,18 @@ export const ACCENT_HEX: Record<AccentColor, string> = {
   amber: '#E8A33D',
 };
 
-const R2_PUBLIC_URL = 'https://pub-8402fa6a331e4ef2816e36e19bc1431e.r2.dev'
+const R2_PUBLIC_URL = 'https://pub-8402fa6a331e4ef2816e36e19bc1431e.r2.dev';
 
 export const projects: Project[] = [
-    {
+  {
+    slug: 'sky-lanterns',
+    title: 'Sky Lanterns',
+    description:
+      'A 3D swarm of floating sky lanterns you ignite, color, and release into a night sky with live wind and camera controls.',
+    stack: ['Three.js', 'TypeScript'],
+    accent: 'amber',
+  },
+  {
     slug: 'chromasphere',
     title: 'Chromasphere',
     description:
