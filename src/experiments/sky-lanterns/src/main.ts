@@ -40,7 +40,7 @@ function animate() {
   timer.update();
 
   const now = performance.now();
-  const delta = Math.min(timer.getDelta(), 0.033);
+  const delta = Math.min(timer.getDelta(), 0.1);
   const time = timer.getElapsed();
 
   ctx.updateFps(now);

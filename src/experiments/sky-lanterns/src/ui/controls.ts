@@ -96,8 +96,8 @@ export function initControls(
     uiContainer!.classList.toggle('collapsed');
     const collapsed = uiContainer!.classList.contains('collapsed');
     menuBtn.innerText = collapsed
-      ? '[ Expand Controls ]'
-      : '[ Collapse Controls ]';
+      ? '[ Show Controls ]'
+      : '[ Hide Controls ]';
     menuBtn.setAttribute('aria-expanded', collapsed ? 'false' : 'true');
   });
 
