@@ -67,8 +67,11 @@ export default defineConfig({
         chromasphere: resolve(
           __dirname,
           'src/experiments/chromasphere/index.html'
+        ),
+        'sky-lanterns': resolve(
+          __dirname,
+          'src/experiments/sky-lanterns/index.html'
         )
-        
       },
       output: {
         manualChunks(id) {
