@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Zabibu | 3D Botanical Grape Cluster</title>
+    <link rel="stylesheet" href="./src/style.css" />
+  </head>
+  <body>
+    <header id="app-header">
+      <h1>Zabibu</h1>
+      <p>
+        An interactive 3D botanical study exploring procedural grape clusters.
+      </p>
+    </header>
+
+    <div id="canvas-container"></div>
+
+    <div class="paper-overlay"></div>
+
+    <div id="ui-panel">
+      <h2>Botanical Controls</h2>
+
+      <div class="control-group">
+        <label for="palette-select">Palette</label>
+        <select id="palette-select">
+          <option value="0">Vibrant Red</option>
+          <option value="1">Botanical Green</option>
+          <option value="2" selected>Deep Purple</option>
+          <option value="3">Charcoal & Ink</option>
+        </select>
+      </div>
+
+      <div class="control-group">
+        <label for="hatch-scale">Hatch Density</label>
+        <input
+          type="range"
+          id="hatch-scale"
+          min="5"
+          max="25"
+          value="12"
+          step="1"
+        />
+      </div>
+
+      <div class="control-group">
+        <label for="berry-count">Berry Count</label>
+        <input
+          type="range"
+          id="berry-count"
+          min="10"
+          max="80"
+          value="45"
+          step="1"
+        />
+      </div>
+
+      <button id="reset-btn" class="btn">Regenerate Cluster</button>
+    </div>
+
+    <div id="instruction">Click and drag berries to pluck them</div>
+
+    <script type="module" src="./src/main.ts"></script>
+  </body>
+</html>
