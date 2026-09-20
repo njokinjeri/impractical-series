@@ -83,18 +83,14 @@ export function initControls(
     'colorSelect'
   ) as HTMLSelectElement;
   colorSelect.addEventListener('change', () => {
-    showLoader(() => {
       swarm.setPaletteMode(colorSelect.value as PaletteMode);
-    });
   });
 
   const rerandomizeBtn = document.getElementById(
     'rerandomize-btn'
   ) as HTMLButtonElement;
   rerandomizeBtn.addEventListener('click', () => {
-    showLoader(() => {
       swarm.rerandomize();
-    });
   });
 
   const menuBtn = document.getElementById(
