@@ -4,7 +4,6 @@ import type { Ritual } from '../stage/ritual';
 import type { Swarm } from '../swarm/swarm';
 import type { Starfield } from '../scene/starfield';
 import type { CameraMode, PaletteMode } from '../types';
-import { showLoader } from './loader';
 import { updateWindFromInputs } from '../swarm/swarm';
 
 let cameraMode: CameraMode = 'orbit';
@@ -25,6 +24,10 @@ export function initControls(
   });
 
   const tierBtns = document.querySelectorAll<HTMLButtonElement>('.tier-btn');
+  const tierStatus = document.getElementById(
+    'tier-status'
+  ) as HTMLElement | null;
+
   tierBtns.forEach((btn) => {
     btn.addEventListener('click', () => {
       tierBtns.forEach((b) => {
@@ -35,8 +38,14 @@ export function initControls(
       btn.setAttribute('aria-pressed', 'true');
 
       const count = parseInt(btn.dataset.count || '45', 10);
-      showLoader(() => {
-        swarm.selectDensity(count);
+
+      if (tierStatus) tierStatus.classList.add('visible');
+
+      requestAnimationFrame(() => {
+        setTimeout(() => {
+          swarm.selectDensity(count);
+          if (tierStatus) tierStatus.classList.remove('visible');
+        }, 0);
       });
     });
   });
@@ -95,9 +104,7 @@ export function initControls(
   menuBtn.addEventListener('click', () => {
     uiContainer!.classList.toggle('collapsed');
     const collapsed = uiContainer!.classList.contains('collapsed');
-    menuBtn.innerText = collapsed
-      ? '[ Show Controls ]'
-      : '[ Hide Controls ]';
+    menuBtn.innerText = collapsed ? '[ Show Controls ]' : '[ Hide Controls ]';
     menuBtn.setAttribute('aria-expanded', collapsed ? 'false' : 'true');
   });
 

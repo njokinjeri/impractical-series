@@ -48,6 +48,13 @@ let fuelBlockGeo: THREE.BoxGeometry;
 let flameGeo: THREE.LatheGeometry;
 let textureCache: THREE.CanvasTexture[] = [];
 
+let pointLightBudget = 0;
+const MAX_POINT_LIGHTS = 12;
+
+export function resetPointLightBudget(): void {
+  pointLightBudget = 0;
+}
+
 function createSundropTexture(palette: Palette): THREE.CanvasTexture {
   const canvas = document.createElement('canvas');
   canvas.width = 1024;
@@ -209,9 +216,15 @@ export function createLantern(paletteIndex: number): THREE.Group {
 
   skyLantern.add(ringGroup);
 
-  const pointLight = new THREE.PointLight(pal.lightColor, 0.0, 5.0);
-  pointLight.position.y = -0.5;
-  skyLantern.add(pointLight);
+  let pointLight: THREE.PointLight;
+  if (pointLightBudget < MAX_POINT_LIGHTS) {
+    pointLightBudget++;
+    pointLight = new THREE.PointLight(pal.lightColor, 0.0, 5.0);
+    pointLight.position.y = -0.5;
+    skyLantern.add(pointLight);
+  } else {
+    pointLight = new THREE.PointLight(pal.lightColor, 0.0, 0.0);
+  }
 
   const userData: LanternUserData = {
     bodyMat,

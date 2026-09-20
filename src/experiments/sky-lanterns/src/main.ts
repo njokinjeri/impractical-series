@@ -7,7 +7,6 @@ import { createStarfield } from './scene/starfield';
 import { initLanternFactory } from './scene/lanterns';
 import { initRitual } from './stage/ritual';
 import { initSwarm, addLanternsToScene, tickSwarm } from './swarm/swarm';
-import { initLoader } from './ui/loader';
 import { initTelemetry } from './ui/telemetry';
 import { initControls, tickCamera } from './ui/controls';
 import { initFpsPanel } from './ui/fpsPanel';
@@ -19,7 +18,6 @@ initLanternFactory();
 const starfield = createStarfield();
 ctx.scene.add(starfield.points);
 
-initLoader();
 
 const swarm = initSwarm();
 addLanternsToScene(ctx.scene);
