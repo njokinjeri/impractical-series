@@ -38,7 +38,7 @@ export const projects: Project[] = [
     slug: 'zabibu',
     title: 'Zabibu',
     description:
-      'A procedural grape cluster simulation featuring ink crosshatch shading, custom botanical color palettes, and interactive rigid-body impact physics.',
+      'Interactive procedural grape clusters brought to life with storybook ink shading and realistic weight.',
     stack: ['Three.js', 'Rapier.js', 'GLSL', 'TypeScript'],
     accent: 'amber',
   },
@@ -46,7 +46,7 @@ export const projects: Project[] = [
     slug: 'sky-lanterns',
     title: 'Sky Lanterns',
     description:
-      'A 3D swarm of floating sky lanterns you ignite, color, and release into a night sky with live wind and camera controls.',
+      'An atmospheric web experience that fills a dark canopy with glowing, wind-borne lanterns and ambient warmth.',
     stack: ['Three.js', 'TypeScript'],
     accent: 'amber',
   },
