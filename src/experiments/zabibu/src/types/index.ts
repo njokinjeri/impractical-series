@@ -1,37 +1,26 @@
 import * as THREE from 'three';
+import RAPIER from '@dimforge/rapier3d-compat';
 
 export interface BotanicalPalette {
   name: string;
   mode: number;
   base: number;
   highlight: number;
+  stemBase: number;
+  stemHighlight: number;
 }
 
-export interface InkHatchUniforms {
-  uPaperColor: { value: THREE.Color };
-  uInkColor: { value: THREE.Color };
-  uBaseColor: { value: THREE.Color };
-  uHighlightColor: { value: THREE.Color };
-  uColorMode: { value: number };
-  uHatchScale: { value: number };
-  uLightDirection: { value: THREE.Vector3 };
-  uResolution: { value: THREE.Vector2 };
+export interface AppConfig {
+  colorPaletteIndex: number;
+  hatchDensity: number;
+  berryBounciness: number;
+  grapeCount: number;
 }
 
-export interface ClusterConfig {
-  berryCount: number;
-  clusterRadius: number;
-  clusterHeight: number;
-  hatchScale: number;
-  gravity: number;
-  palette: BotanicalPalette;
-}
-
-export interface GrapeData {
-  id: string;
+export interface GrapeItem {
   mesh: THREE.Mesh;
-  pedicelMesh?: THREE.Line;
-  attachPoint: THREE.Vector3;
+  pedicelMesh: THREE.Mesh;
   isDetached: boolean;
-  rigidBodyHandle?: any;
+  body: RAPIER.RigidBody | null;
+  collider: RAPIER.Collider | null;
 }
