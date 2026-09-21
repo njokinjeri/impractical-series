@@ -4,9 +4,14 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Zabibu | 3D Botanical Grape Cluster</title>
+    <link rel="icon" href="/bulb.png" type="image/png" />
     <link rel="stylesheet" href="./src/style.css" />
   </head>
   <body>
+    <div id="loading">Drawing Botanical Anatomy & Physics...</div>
+    <div class="paper-overlay"></div>
+    <div id="canvas-container"></div>
+
     <header id="app-header">
       <h1>Zabibu</h1>
       <p>
@@ -14,51 +19,51 @@
       </p>
     </header>
 
-    <div id="canvas-container"></div>
-
-    <div class="paper-overlay"></div>
-
     <div id="ui-panel">
-      <h2>Botanical Controls</h2>
-
-      <div class="control-group">
-        <label for="palette-select">Palette</label>
-        <select id="palette-select">
-          <option value="0">Vibrant Red</option>
-          <option value="1">Botanical Green</option>
-          <option value="2" selected>Deep Purple</option>
-          <option value="3">Charcoal & Ink</option>
-        </select>
+      <div class="ui-panel-header">
+        <h2>Botanical Sketch Controls</h2>
+        <button id="btn-collapse" class="icon-btn" aria-label="Toggle Panel">—</button>
       </div>
 
-      <div class="control-group">
-        <label for="hatch-scale">Hatch Density</label>
-        <input
-          type="range"
-          id="hatch-scale"
-          min="5"
-          max="25"
-          value="12"
-          step="1"
-        />
-      </div>
+      <div id="ui-content">
+        <div class="control-group">
+          <label>Color Palette <span id="mode-val">Vibrant Red</span></label>
+          <button class="btn" id="btn-toggle-color">Next Palette</button>
+        </div>
 
-      <div class="control-group">
-        <label for="berry-count">Berry Count</label>
-        <input
-          type="range"
-          id="berry-count"
-          min="10"
-          max="80"
-          value="45"
-          step="1"
-        />
-      </div>
+        <div class="control-group">
+          <label>Cross-Hatching Density <span id="hatch-val">3.0</span></label>
+          <input
+            type="range"
+            id="slider-hatch"
+            min="1.0"
+            max="6.0"
+            step="0.1"
+            value="3.0"
+          />
+        </div>
 
-      <button id="reset-btn" class="btn">Regenerate Cluster</button>
+        <div class="control-group">
+          <label>Berry Bounciness <span id="bounce-val">0.55</span></label>
+          <input
+            type="range"
+            id="slider-bounce"
+            min="0.1"
+            max="0.9"
+            step="0.05"
+            value="0.55"
+          />
+        </div>
+
+        <div class="control-group" style="margin-top: 10px">
+          <button class="btn" id="btn-reset">Rebuild Botanical Cluster</button>
+        </div>
+      </div>
     </div>
 
-    <div id="instruction">Click and drag berries to pluck them</div>
+    <div id="instruction">
+      🍇 Click any individual grape to sever its pedicel stem
+    </div>
 
     <script type="module" src="./src/main.ts"></script>
   </body>
