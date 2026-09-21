@@ -5,7 +5,7 @@ import { Grapes } from './Grapes';
 import { PhysicsWorld } from '../utils/PhysicsWorld';
 
 export class UIControls {
-  private activePaletteIndex = 0;
+  private activePaletteIndex = 2;
   private branch: Branch;
   private tendrils: Tendrils;
   private grapes: Grapes;

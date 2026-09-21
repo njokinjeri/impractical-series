@@ -26,7 +26,7 @@ export class Grapes {
     this.scene = scene;
     this.world = world;
 
-    const initialPalette = PALETTES[0];
+    const initialPalette = PALETTES[2];
 
     this.grapeMaterial = baseShaderMaterial.clone();
     this.grapeMaterial.uniforms = THREE.UniformsUtils.clone(
