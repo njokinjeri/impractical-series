@@ -71,6 +71,10 @@ export default defineConfig({
         'sky-lanterns': resolve(
           __dirname,
           'src/experiments/sky-lanterns/index.html'
+        ),
+        'zabibu': resolve(
+          __dirname,
+          'src/experiments/zabibu/index.html'
         )
       },
       output: {

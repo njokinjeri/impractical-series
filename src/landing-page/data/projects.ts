@@ -11,6 +11,7 @@ export type StackTag =
   | 'TSL'
   | 'Simplex Noise'
   | 'Physics'
+  | 'Rapier.js'
   | 'Parametric Math'
   | 'Web Audio API';
 
@@ -33,6 +34,14 @@ export const ACCENT_HEX: Record<AccentColor, string> = {
 const R2_PUBLIC_URL = 'https://pub-8402fa6a331e4ef2816e36e19bc1431e.r2.dev';
 
 export const projects: Project[] = [
+  {
+    slug: 'zabibu',
+    title: 'Zabibu',
+    description:
+      'A procedural grape cluster simulation featuring ink crosshatch shading, custom botanical color palettes, and interactive rigid-body impact physics.',
+    stack: ['Three.js', 'Rapier.js', 'GLSL', 'TypeScript'],
+    accent: 'amber',
+  },
   {
     slug: 'sky-lanterns',
     title: 'Sky Lanterns',
