@@ -292,3 +292,56 @@ input[type='range']::-webkit-slider-thumb:hover {
   opacity: 0;
   visibility: hidden;
 }
+
+@media (max-width: 640px) {
+  #app-header {
+    max-width: calc(100vw - 80px);
+    top: 15px;
+    left: 15px;
+  }
+
+  #app-header h1 {
+    font-size: 1.5rem;
+  }
+
+  #app-header p {
+    font-size: 0.75rem;
+  }
+
+  #ui-panel {
+    top: 15px;
+    right: 15px;
+    width: min(280px, calc(100vw - 30px));
+  }
+
+  .ui-panel-header {
+    position: relative;
+    padding-right: 30px;
+  }
+
+  .icon-btn {
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+
+  #ui-panel.collapsed {
+    width: 42px; 
+    height: 42px;
+    padding: 10px;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    backdrop-filter: none;
+  }
+
+  #ui-panel.collapsed .ui-panel-header {
+    margin: 0;
+    padding: 0;
+    border: none;
+  }
+
+  #ui-panel.collapsed .ui-panel-header h2 {
+    display: none;
+  }
+}
