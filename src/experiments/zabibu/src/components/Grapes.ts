@@ -164,12 +164,22 @@ export class Grapes {
       const pedicelMesh = new THREE.Mesh(pedicelGeo, this.pedicelMaterial);
       this.scene.add(pedicelMesh);
 
+      const rigidBodyDesc = RAPIER.RigidBodyDesc.fixed().setTranslation(
+        validPos.x,
+        validPos.y,
+        validPos.z
+      );
+      const staticBody = this.world.createRigidBody(rigidBodyDesc);
+
+      const colliderDesc = RAPIER.ColliderDesc.ball(0.28);
+      const staticCollider = this.world.createCollider(colliderDesc, staticBody);
+
       this.grapesList.push({
         mesh: berryMesh,
         pedicelMesh,
         isDetached: false,
-        body: null,
-        collider: null,
+        body: staticBody,
+        collider: staticCollider,
       });
     }
   }
@@ -184,6 +194,10 @@ export class Grapes {
 
     if (grapeItem.pedicelMesh) {
       this.scene.remove(grapeItem.pedicelMesh);
+    }
+
+    if (grapeItem.body) {
+      this.world.removeRigidBody(grapeItem.body);
     }
 
     const rigidBodyDesc = RAPIER.RigidBodyDesc.dynamic()
@@ -276,16 +290,17 @@ export class Grapes {
   }
 
   public reset(): void {
-    this.physicsBodies.forEach((item) => {
-      if (item.body) this.world.removeRigidBody(item.body);
-      this.scene.remove(item.mesh);
-    });
-    this.physicsBodies = [];
-
     this.grapesList.forEach((item) => {
+      if (item.body) {
+        this.world.removeRigidBody(item.body);
+      }
       this.scene.remove(item.mesh);
-      if (item.pedicelMesh) this.scene.remove(item.pedicelMesh);
+      if (item.pedicelMesh) {
+        this.scene.remove(item.pedicelMesh);
+      }
     });
+
+    this.physicsBodies = [];
     this.grapesList = [];
 
     this.buildCluster();
