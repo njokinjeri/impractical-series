@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Daze | Generative Shader Engine</title>
+  <link rel="stylesheet" href="./src/style.css" />
+</head>
+<body>
+  <canvas id="webgl-canvas"></canvas>
+  <header class="app-header">
+    <section class="hud-card brand-card">
+      <div class="brand-row">
+        <h1 class="brand-title">DAZE</h1>
+        <div class="scene-cube" aria-hidden="true">
+          <div id="nav-cube" class="cube">
+            <div class="cube-face cube-face-front"></div>
+            <div class="cube-face cube-face-back"></div>
+            <div class="cube-face cube-face-right"></div>
+            <div class="cube-face cube-face-left"></div>
+            <div class="cube-face cube-face-top"></div>
+            <div class="cube-face cube-face-bottom"></div>
+          </div>
+        </div>
+      </div>
+      
+      <p class="shader-heading" id="shader-title-display">Dither Liquid</p>
+      <p class="pattern-subtitle hidden" id="pattern-subtitle">
+        <span id="pattern-index-display" class="accent-text">[01]</span> 
+        <span id="pattern-name-display" class="pattern-text">THICK CHEVRON WEAVE</span> 
+        <small class="pattern-hint">&lt;CLICK TO CYCLE&gt;</small>
+      </p>
+    </section>
+
+    <nav class="app-toolbar">
+      <fieldset class="hud-card palette-switcher" aria-label="Color Palettes">
+        <button type="button" id="pal-mono" class="accent-btn active">Mono</button>
+        <button type="button" id="pal-crimson" class="accent-btn">Crimson</button>
+        <button type="button" id="pal-cyber" class="accent-btn">Electric</button>
+      </fieldset>
+      <button type="button" id="btn-fullscreen" class="hud-card icon-btn" aria-label="Toggle Fullscreen">
+        <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" width="16" height="16">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/>
+        </svg>
+      </button>
+    </nav>
+  </header>
+  <aside class="control-hud">
+    <button type="button" id="btn-toggle-hud" class="hud-card toggle-btn">
+      <span id="toggle-label">COLLAPSE CONTROLS</span>
+      <svg id="toggle-icon" class="toggle-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" width="12" height="12">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+      </svg>
+    </button>
+
+    <section id="hud-bottom-panel" class="hud-card control-panel">
+      <nav class="shader-grid" id="shader-buttons" aria-label="Shader Modes">
+        <button type="button" data-index="0" class="accent-btn active shader-tab">
+          <span class="tab-num">01</span>
+          <span class="tab-label">DITHER</span>
+        </button>
+        <button type="button" data-index="1" class="accent-btn shader-tab">
+          <span class="tab-num">02</span>
+          <span class="tab-label">HORIZON</span>
+        </button>
+        <button type="button" data-index="2" class="accent-btn shader-tab">
+          <span class="tab-num">03</span>
+          <span class="tab-label">DISPERSION</span>
+        </button>
+        <button type="button" data-index="3" class="accent-btn shader-tab">
+          <span class="tab-num">04</span>
+          <span class="tab-label">PATTERNS</span>
+        </button>
+      </nav>
+
+      <form class="slider-group" onsubmit="return false;">
+        <label class="slider-field">
+          <span class="slider-label">Flow Speed</span>
+          <input type="range" id="slider-speed" min="0.1" max="3.0" step="0.05" value="1.0" />
+        </label>
+        <label class="slider-field">
+          <span class="slider-label">Grain Intensity</span>
+          <input type="range" id="slider-grain" min="0.0" max="0.5" step="0.02" value="0.15" />
+        </label>
+      </form>
+    </section>
+  </aside>
+
+  <script type="module" src="./src/main.ts"></script>
+</body>
+</html>
