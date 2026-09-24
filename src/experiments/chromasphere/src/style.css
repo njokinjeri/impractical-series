@@ -1,7 +1,6 @@
 @import '../../../design-system/fonts.css';
 
 :root {
-  /* Font Families */
   --font-body: var(--font-body);
   --font-display: var(--font-display);
   --color-bg-solid: #07090e;

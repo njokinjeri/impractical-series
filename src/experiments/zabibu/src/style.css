@@ -1,8 +1,8 @@
 @import '../../../design-system/fonts.css';
 
 :root {
-  --font-body: 'Geist', system-ui, sans-serif;
-  --font-display: 'Space Grotesk', system-ui, sans-serif;
+  --font-body: var(--font-body);
+  --font-display: var(--font-display);
   --bg-paper: #f2ebd9;
   --ink-dark: #2b2015;
   --ink-accent: #705b45;
