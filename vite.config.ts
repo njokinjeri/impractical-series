@@ -1,7 +1,7 @@
 import { defineConfig } from 'vite';
 import { resolve } from 'path';
 import { fileURLToPath } from 'url';
-import vitePluginString from 'vite-plugin-string'
+import vitePluginString from 'vite-plugin-string';
 
 const __dirname = fileURLToPath(new URL('.', import.meta.url));
 
@@ -14,8 +14,8 @@ export default defineConfig({
 
   plugins: [
     vitePluginString({
-      include: '**/*glsl'
-    })
+      include: '**/*glsl',
+    }),
   ],
 
   build: {
@@ -56,14 +56,8 @@ export default defineConfig({
           __dirname,
           'src/experiments/singularity/index.html'
         ),
-        vinyl: resolve(
-          __dirname,
-          'src/experiments/vinyl/index.html'
-        ),
-        cascadia: resolve(
-          __dirname,
-          'src/experiments/cascadia/index.html'
-        ),
+        vinyl: resolve(__dirname, 'src/experiments/vinyl/index.html'),
+        cascadia: resolve(__dirname, 'src/experiments/cascadia/index.html'),
         chromasphere: resolve(
           __dirname,
           'src/experiments/chromasphere/index.html'
@@ -72,10 +66,8 @@ export default defineConfig({
           __dirname,
           'src/experiments/sky-lanterns/index.html'
         ),
-        'zabibu': resolve(
-          __dirname,
-          'src/experiments/zabibu/index.html'
-        )
+        zabibu: resolve(__dirname, 'src/experiments/zabibu/index.html'),
+        daze: resolve(__dirname, 'src/experiments/daze/index.html'),
       },
       output: {
         manualChunks(id) {
