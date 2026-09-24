@@ -35,6 +35,14 @@ const R2_PUBLIC_URL = 'https://pub-8402fa6a331e4ef2816e36e19bc1431e.r2.dev';
 
 export const projects: Project[] = [
   {
+    slug: 'daze',
+    title: 'Daze',
+    description:
+      'Interactive WebGL experiment featuring real-time generative shaders, pattern controls, and multiple visual styles.',
+    stack: ['WebGL', 'GLSL', 'TypeScript'],
+    accent: 'amber',
+  },
+  {
     slug: 'zabibu',
     title: 'Zabibu',
     description:
