@@ -68,6 +68,7 @@ export default defineConfig({
         ),
         zabibu: resolve(__dirname, 'src/experiments/zabibu/index.html'),
         daze: resolve(__dirname, 'src/experiments/daze/index.html'),
+        kyube: resolve(__dirname, 'src/experiments/kyube/index.html'),
       },
       output: {
         manualChunks(id) {

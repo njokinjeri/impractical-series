@@ -35,6 +35,14 @@ const R2_PUBLIC_URL = 'https://pub-8402fa6a331e4ef2816e36e19bc1431e.r2.dev';
 
 export const projects: Project[] = [
   {
+    slug: 'kyube',
+    title: 'Kyube',
+    description:
+      'An ancient stone cube floating in deep space covered in glowing alien moss, floating space rocks, and a glowing central core.',
+    stack: ['Three.js', 'TypeScript'],
+    accent: 'amber',
+  },
+  {
     slug: 'daze',
     title: 'Daze',
     description:
