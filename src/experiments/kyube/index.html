@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kyube | space cube with Xeno-spore</title>
+    <script type="module" crossorigin src="/impractical-series/assets/kyube-DErGIRSe.js"></script>
+    <link rel="modulepreload" crossorigin href="/impractical-series/assets/modulepreload-polyfill-BdX5DvLD.js">
+    <link rel="modulepreload" crossorigin href="/impractical-series/assets/three.module-CdyxZSh9.js">
+    <link rel="stylesheet" crossorigin href="/impractical-series/assets/kyube-BuxxQg2J.css">
+  </head>
+  <body>
+    <div id="ui-header">
+      <h1>Kyube</h1>
+      <p><strong>An ancient stone cube adrift in deep space.</strong></p>
+    </div>
+
+    <div id="top-right-info">
+      <button
+        class="neobrutal-green-btn"
+        id="btn-top-info"
+        title="Information Log"
+      >
+        <svg viewBox="0 0 24 24">
+          <circle cx="12" cy="12" r="10" />
+          <path d="M12 16v-4" />
+          <path d="M12 8h.01" />
+        </svg>
+      </button>
+    </div>
+    <button id="toggle-toolbar-btn">⚙️ Controls</button>
+    <div id="cinematic-bar">
+      <button class="close-bar-btn" id="btn-close-bar" title="Close Toolbar">
+        ✕
+      </button>
+      <div class="controls-row">
+        <button
+          class="toggle-icon"
+          id="toggle-moss"
+          title="Toggle Xeno-Spore On/Off"
+        >
+          🌿 Xeno-Spore
+        </button>
+        <button
+          class="toggle-icon"
+          id="toggle-gas"
+          title="Toggle Cosmic Gas / Stars"
+        >
+          ✨ Stars
+        </button>
+        <button
+          class="toggle-icon"
+          id="toggle-mode"
+          title="Toggle Day / Night Light Mode"
+        >
+          ☀️
+        </button>
+      </div>
+      <div class="controls-row">
+        <button class="pill-btn active" id="btn-outside">Exterior</button>
+        <button class="pill-btn" id="btn-inside">Core Shaft</button>
+        <button class="pill-btn" id="btn-orbit">Orbit Sweep</button>
+      </div>
+    </div>
+    <div id="info-modal">
+      <div class="modal-card">
+        <span class="badge">Field Log EXOPLANETARY CONSTRUCT</span>
+        <h2>KYUBE</h2>
+        <p>
+          An interlocking basalt cube drifts through deep space. No atmosphere.
+          No warmth. Yet something lives here.
+        </p>
+        <div class="commands-list">
+          <h4>Orbital Commands</h4>
+          <div class="command-item">
+            <strong>Grab & Drag:</strong> Spin the cube to inspect every seam
+            and crater.
+          </div>
+          <div class="command-item">
+            <strong>Scroll / Pinch:</strong> Move in close to the glowing core,
+            or pull back for the full debris field.
+          </div>
+          <div class="command-item">
+            <strong>Xeno-Spore Switch:</strong> Strip the cube down to bare
+            stone.
+          </div>
+          <div class="command-item">
+            <strong>Sun / Core Mode:</strong> Switch between deep-space dark and
+            full stellar light.
+          </div>
+        </div>
+
+        <button class="close-btn" id="btn-close-modal">
+          Resume Observation
+        </button>
+      </div>
+    </div>
+
+    <div id="canvas-container"></div>
+
+  </body>
+</html>
