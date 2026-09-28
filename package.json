@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build && npm run build:kyube",
+    "build:kyube": "cd src/experiments/kyube && npm ci && npm run build",
     "preview": "vite preview",
     "lint": "eslint .",
     "format": "prettier --write ."
