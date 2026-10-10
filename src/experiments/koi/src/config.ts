@@ -46,6 +46,8 @@ export function pickFishCount(viewMode: ViewMode, width: number): number {
   return 9;
 }
 
-export const FISH_STL_URL = import.meta.env.DEV ? '/fish.stl' : '../../fish.stl';
+export const FISH_STL_URL = import.meta.env.DEV
+  ? '/fish.stl'
+  : '../../../fish.stl';
 export const STAR_KEEP_RATIO = 0.08;
 export const NUM_POINTS = 511;
