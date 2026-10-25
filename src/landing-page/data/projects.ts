@@ -15,7 +15,7 @@ export type StackTag =
   | 'Parametric Math'
   | 'Web Audio API';
 
-export type AccentColor = 'green' | 'blue' | 'amber';
+export type AccentColor = 'green' | 'blue' | 'amber' | 'pink';
 
 export interface Project {
   slug: string;
@@ -29,16 +29,24 @@ export const ACCENT_HEX: Record<AccentColor, string> = {
   green: '#33D17A',
   blue: '#3FA0E0',
   amber: '#E8A33D',
+  pink: '#FF5FA8',
 };
 
 const R2_PUBLIC_URL = 'https://pub-8402fa6a331e4ef2816e36e19bc1431e.r2.dev';
 
 export const projects: Project[] = [
-    {
+  {
+    slug: 'dough',
+    title: 'Dough',
+    description:
+      'A gallery of 14 donuts, no two rendered the same way. Browse, click, find the golden one.',
+    stack: ['Three.js', 'TypeScript', 'GLSL'],
+    accent: 'pink',
+  },
+  {
     slug: 'koi',
     title: 'Koi',
-    description:
-      'Spirit koi drifting as constellations through deep water.',
+    description: 'Spirit koi drifting as constellations through deep water.',
     stack: ['Three.js', 'TypeScript', 'GLSL'],
     accent: 'blue',
   },
