@@ -2,6 +2,7 @@
 *::before,
 *::after {
   box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
 }
 
 html,
@@ -31,4 +32,16 @@ body {
   position: fixed;
   z-index: 10;
   pointer-events: none;
+}
+
+.nav,
+button {
+  touch-action: manipulation;
+}
+
+.nav__item,
+.nav__emblem {
+  -webkit-touch-callout: none;
+  user-select: none;
+  -webkit-user-select: none;
 }
