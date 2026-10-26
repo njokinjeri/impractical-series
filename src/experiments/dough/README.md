@@ -4,7 +4,7 @@ A gallery of 14 procedurally generated donuts, built with **Three.js** and **Typ
 
 Each donut is a small experiment in a different rendering technique, shader-driven glaze, instanced fur, transmission materials, raycast interaction, chrome reflections, and more. They all share the same renderer, camera, lighting architecture, and UI. Only the donut itself differs.
 
-**[Live demo →](https://your-url-here)**
+**[Live demo]🍩(https://njokinjeri.github.io/impractical-series/src/experiments/dough/#glitter)**
 
 ---
 
